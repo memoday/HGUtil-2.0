@@ -63,10 +63,51 @@ def fontBatang():
     hwp.HAction.Execute("CharShape", hwp.HParameterSet.HCharShape.HSet)
     hwp.HAction.Run('Cancel')
 
+def fontHeadline():
+    hwp.HAction.GetDefault("CharShape", hwp.HParameterSet.HCharShape.HSet)
+    hwp.HParameterSet.HCharShape.FaceNameUser = "HY헤드라인M"
+    hwp.HParameterSet.HCharShape.FontTypeUser = hwp.FontType("TTF")
+    hwp.HParameterSet.HCharShape.FaceNameSymbol = "HY헤드라인M"
+    hwp.HParameterSet.HCharShape.FontTypeSymbol = hwp.FontType("TTF")
+    hwp.HParameterSet.HCharShape.FaceNameOther = "HY헤드라인M"
+    hwp.HParameterSet.HCharShape.FontTypeOther = hwp.FontType("TTF")
+    hwp.HParameterSet.HCharShape.FaceNameJapanese = "HY헤드라인M"
+    hwp.HParameterSet.HCharShape.FontTypeJapanese = hwp.FontType("TTF")
+    hwp.HParameterSet.HCharShape.FaceNameHanja = "HY헤드라인M"
+    hwp.HParameterSet.HCharShape.FontTypeHanja = hwp.FontType("TTF")
+    hwp.HParameterSet.HCharShape.FaceNameLatin = "HY헤드라인M"
+    hwp.HParameterSet.HCharShape.FontTypeLatin = hwp.FontType("TTF")
+    hwp.HParameterSet.HCharShape.FaceNameHangul = "HY헤드라인M"
+    hwp.HParameterSet.HCharShape.FontTypeHangul = hwp.FontType("TTF")
+    hwp.HAction.Execute("CharShape", hwp.HParameterSet.HCharShape.HSet)
+
 hwp.HAction.Run("ParagraphShapeAlignCenter")
-hwp.HAction.Run("CharShapeHeightIncrease")
-hwp.HAction.Run("CharShapeHeightIncrease")
+for i in range(20):
+    hwp.HAction.Run("CharShapeHeightIncrease")
 hwpText('언론 모니터링\r\n')
+
+hwp.HAction.GetDefault("TableCreate", hwp.HParameterSet.HTableCreation.HSet)  # 표 생성 시작
+hwp.HParameterSet.HTableCreation.Rows = 1  # 행 갯수
+hwp.HParameterSet.HTableCreation.Cols = 1  # 열 갯수
+hwp.HParameterSet.HTableCreation.WidthType = 2  # 너비 지정(0:단에맞춤, 1:문단에맞춤, 2:임의값)
+hwp.HParameterSet.HTableCreation.HeightType = 1  # 높이 지정(0:자동, 1:임의값)
+hwp.HParameterSet.HTableCreation.WidthValue = hwp.MiliToHwpUnit(106.0)  # 표 너비
+hwp.HParameterSet.HTableCreation.HeightValue = hwp.MiliToHwpUnit(15.0)  # 표 높이
+hwp.HParameterSet.HTableCreation.CreateItemArray("ColWidth", 1)  # 열 1개 생성
+hwp.HParameterSet.HTableCreation.ColWidth.SetItem(0, hwp.MiliToHwpUnit(106.0))  # 1열
+hwp.HParameterSet.HTableCreation.CreateItemArray("RowHeight", 1)  # 행 1개 생성
+hwp.HParameterSet.HTableCreation.RowHeight.SetItem(0, hwp.MiliToHwpUnit(15.0))  # 1행
+hwp.HParameterSet.HTableCreation.TableProperties.TreatAsChar = 1  # 글자처럼 취급
+hwp.HAction.Execute("TableCreate", hwp.HParameterSet.HTableCreation.HSet)  # 위 코드 실행
+hwpText("언론 모니터링")
+hwp.HAction.Run("TableCellBorderAll") #테두리 삭제 후
+hwp.HAction.Run("TableCellBorderBottom") #아래 테두리 추가
+
+hwp.HAction.Run("MoveDown")
+for i in range(20):
+    hwp.HAction.Run("CharShapeHeightDecrease")
+
+
 hwp.HAction.Run("ParagraphShapeAlignRight")
 hwpText(f'<{today}>')
 fontBatang()
