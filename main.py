@@ -1,4 +1,8 @@
 import win32com.client as win32  # 모듈 임포트
+from datetime import date
+
+today = date.today()
+today= today.strftime("%Y.%m.%d.")
 
 hwp = win32.gencache.EnsureDispatch("hwpframe.hwpobject")  # 한/글 실행하기
 hwp.XHwpWindows.Item(0).Visible = True  # 백그라운드 숨김 해제
@@ -64,7 +68,7 @@ hwp.HAction.Run("CharShapeHeightIncrease")
 hwp.HAction.Run("CharShapeHeightIncrease")
 hwpText('언론 모니터링\r\n')
 hwp.HAction.Run("ParagraphShapeAlignRight")
-hwpText('<2023.02.14>')
+hwpText(f'<{today}>')
 fontBatang()
 hwpText('\r\n')
 hwp.HAction.Run("ParagraphShapeAlignJustify")
@@ -116,49 +120,50 @@ hwp.HAction.Run("CharShapeBold")
 hwp.HAction.GetDefault("CellFill", hwp.HParameterSet.HCellBorderFill.HSet) #2행 배경색 칠하기
 hwp.HParameterSet.HCellBorderFill.FillAttr.type = hwp.BrushType("NullBrush|WinBrush")
 hwp.HParameterSet.HCellBorderFill.FillAttr.WinBrushFaceColor = hwp.RGBColor(153, 204, 2551)
-hwp.HParameterSet.HCellBorderFill.FillAttr.WinBrushHatchColor = hwp.RGBColor(153, 204, 255)
+hwp.HParameterSet.HCellBorderFill.FillAttr.WinBrushHatchColor = hwp.RGBColor(153, 204, 2551)
 hwp.HParameterSet.HCellBorderFill.FillAttr.WinBrushFaceStyle = hwp.HatchStyle("None")
 hwp.HParameterSet.HCellBorderFill.FillAttr.WindowsBrush = 1
 hwp.HAction.Execute("CellFill", hwp.HParameterSet.HCellBorderFill.HSet)
 
 hwp.HAction.Run("TableColBegin") #2행 처음으로 돌아오기
 
-hwp.HAction.GetDefault("InsertText", hwp.HParameterSet.HInsertText.HSet)
-hwp.HParameterSet.HInsertText.Text = "일자"
-hwp.HAction.Execute("InsertText", hwp.HParameterSet.HInsertText.HSet)
+hwpText('일자')
 hwp.HAction.Run("ParagraphShapeAlignCenter")
-
 hwp.HAction.Run("TableRightCell")  # 우측셀로 이동
-hwp.HAction.GetDefault("InsertText", hwp.HParameterSet.HInsertText.HSet)
-hwp.HParameterSet.HInsertText.Text = "언론사"
-hwp.HAction.Execute("InsertText", hwp.HParameterSet.HInsertText.HSet)
+
+hwpText('언론사')
 hwp.HAction.Run("ParagraphShapeAlignCenter")
-
 hwp.HAction.Run("TableRightCell")  # 우측셀로 이동
-hwp.HAction.GetDefault("InsertText", hwp.HParameterSet.HInsertText.HSet)
-hwp.HParameterSet.HInsertText.Text = "기사 제목"
-hwp.HAction.Execute("InsertText", hwp.HParameterSet.HInsertText.HSet)
+
+hwpText('기사 제목')
 hwp.HAction.Run("ParagraphShapeAlignCenter")
-
 hwp.HAction.Run("TableRightCell")  # 우측셀로 이동
-hwp.HAction.GetDefault("InsertText", hwp.HParameterSet.HInsertText.HSet)
-hwp.HParameterSet.HInsertText.Text = "주요내용"
-hwp.HAction.Execute("InsertText", hwp.HParameterSet.HInsertText.HSet)
+
+hwpText('주요내용')
 hwp.HAction.Run("ParagraphShapeAlignCenter")
 hwp.HAction.Run("TableRightCell")
 
-test = []
-test[0] = ('2023.2.14','KBS','테스트제목입니다')
-test[1] = ('2023.2.15','SBS','테스트제목입니다2')
+newsInfo = []
+newsInfo.append(('2023.2.14','KBS','테스트제목입니다',''))
+newsInfo.append(('2023.2.15','SBS','테스트제목입니다2',''))
 
-def fillData(date,press,title):
+def fillData(date,press,title,summary):
     hwpText(date)
+    hwp.HAction.Run("ParagraphShapeAlignCenter")
     hwp.HAction.Run("TableRightCell")
     hwpText(press)
+    hwp.HAction.Run("ParagraphShapeAlignCenter")
     hwp.HAction.Run("TableRightCell")
     hwpText(title)
+    hwp.HAction.Run("ParagraphShapeAlignLeft")
     hwp.HAction.Run("TableRightCell")
+    hwpText(summary)
+    hwp.HAction.Run("ParagraphShapeAlignLeft")
+    hwp.HAction.Run("TableCellBlockRow") #행 모두 선택
+    fontDodum()
     hwp.HAction.Run("TableRightCell")
 
-date, press, title = test[0]
-fillData(date,press,title)
+date, press, title, summary = newsInfo[0][0], newsInfo[0][1], newsInfo[0][2], newsInfo[0][3]
+fillData(date,press,title,summary)
+date, press, title, summary = newsInfo[1][0], newsInfo[1][1], newsInfo[1][2], newsInfo[1][3]
+fillData(date,press,title,summary)
