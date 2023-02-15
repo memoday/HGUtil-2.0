@@ -7,6 +7,10 @@ today= today.strftime("%Y.%m.%d.")
 hwp = win32.gencache.EnsureDispatch("hwpframe.hwpobject")  # 한/글 실행하기
 hwp.XHwpWindows.Item(0).Visible = True  # 백그라운드 숨김 해제
 
+act = hwp.CreateAction("ParagraphShape")  # 액션 생성 #linespacing을 위한 값
+pset = act.CreateSet()  # 파라미터셋 생성
+act.GetDefault(pset)  # 파라미터셋에 현재 상태값 채워넣기
+
 hwp.HAction.GetDefault("ModifySection", hwp.HParameterSet.HSecDef.HSet)
 hwp.HParameterSet.HSecDef.PageDef.LeftMargin = hwp.MiliToHwpUnit(20.0)
 hwp.HParameterSet.HSecDef.PageDef.RightMargin = hwp.MiliToHwpUnit(20.0)
@@ -101,6 +105,10 @@ def graphBorder():
     hwp.HAction.Execute("CellBorder", hwp.HParameterSet.HCellBorderFill.HSet)
     hwp.HAction.Run("Cancel")
 
+def lineSpacing(value):
+    pset.SetItem("LineSpacing", value)  # 줄간격을 value로 설정
+    act.Execute(pset)  # 설정한 파라미터셋으로 액션 실행
+
 hwp.HAction.Run("ParagraphShapeAlignCenter")
 #제목 표 만들기
 hwp.HAction.GetDefault("TableCreate", hwp.HParameterSet.HTableCreation.HSet)  # 표 생성 시작
@@ -136,10 +144,11 @@ hwp.HAction.Run("CharShapeHeightIncrease")
 hwpText('\r\n')
 
 hwp.HAction.Run("ParagraphShapeAlignRight")
-hwpText(f'<{today}>')
+hwpText(f'<{today} time>')
 fontBatang()
 hwpText('\r\n')
 hwp.HAction.Run("ParagraphShapeAlignJustify")
+lineSpacing(120)
 hwpText('※ 자세한 기사 내용을 보시려면 shift 키를 누른 채 아래의 기사 제목을 클릭하시면 새창으로 뜹니다.')
 fontBatang()
 hwpText('\r\n\r\n')
@@ -212,26 +221,30 @@ hwp.HAction.Run("ParagraphShapeAlignCenter")
 hwp.HAction.Run("TableRightCell")
 
 newsInfo = []
-newsInfo.append(('2023.2.14','KBS','테스트제목입니다',''))
-newsInfo.append(('2023.2.15','SBS','테스트제목입니다2',''))
+newsInfo.append(('2023.2.14','KBS','테스트제목입니다\r\n줄 간격 테스트',''))
+newsInfo.append(('2023.2.15','SBS','테스트제목입니다2\r\n줄 간격 테스트',''))
 
 def fillData(date,press,title,summary):
-    hwpText(date)
+    lineSpacing(100)
     hwp.HAction.Run("ParagraphShapeAlignCenter")
+    hwpText(date)
     hwp.HAction.Run("TableRightCell")
+    lineSpacing(100)
     hwpText(press)
     hwp.HAction.Run("ParagraphShapeAlignCenter")
     hwp.HAction.Run("TableRightCell")
+    lineSpacing(100)
     hwpText(title)
     hwp.HAction.Run("ParagraphShapeAlignLeft")
     hwp.HAction.Run("TableRightCell")
+    lineSpacing(100)
     hwpText(summary)
     hwp.HAction.Run("ParagraphShapeAlignLeft")
     hwp.HAction.Run("TableCellBlockRow") #행 모두 선택
     fontDodum()
     hwp.HAction.Run("TableRightCell")
 
-date, press, title, summary = newsInfo[0][0], newsInfo[0][1], newsInfo[0][2], newsInfo[0][3]
-fillData(date,press,title,summary)
-date, press, title, summary = newsInfo[1][0], newsInfo[1][1], newsInfo[1][2], newsInfo[1][3]
-fillData(date,press,title,summary)
+today, press, title, summary = newsInfo[0][0], newsInfo[0][1], newsInfo[0][2], newsInfo[0][3]
+fillData(today,press,title,summary)
+today, press, title, summary = newsInfo[1][0], newsInfo[1][1], newsInfo[1][2], newsInfo[1][3]
+fillData(today,press,title,summary)
