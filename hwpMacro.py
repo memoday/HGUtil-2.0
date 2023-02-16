@@ -172,8 +172,8 @@ def createTable(category,count): #category: 테이블명 count: 테이블별 행
     hwp.HParameterSet.HTableCreation.HeightValue = hwp.MiliToHwpUnit(150.0)  # 표 높이
     hwp.HParameterSet.HTableCreation.CreateItemArray("ColWidth", 4)  # 열 4개 생성
     hwp.HParameterSet.HTableCreation.ColWidth.SetItem(0, hwp.MiliToHwpUnit(21.0))  # 1열
-    hwp.HParameterSet.HTableCreation.ColWidth.SetItem(1, hwp.MiliToHwpUnit(17.0))  # 2열
-    hwp.HParameterSet.HTableCreation.ColWidth.SetItem(2, hwp.MiliToHwpUnit(77.0))  # 3열
+    hwp.HParameterSet.HTableCreation.ColWidth.SetItem(1, hwp.MiliToHwpUnit(18.0))  # 2열
+    hwp.HParameterSet.HTableCreation.ColWidth.SetItem(2, hwp.MiliToHwpUnit(76.0))  # 3열
     hwp.HParameterSet.HTableCreation.ColWidth.SetItem(3, hwp.MiliToHwpUnit(40.0))  # 4열
     hwp.HParameterSet.HTableCreation.CreateItemArray("RowHeight", 5)  # 행 5개 생성
     hwp.HParameterSet.HTableCreation.RowHeight.SetItem(0, hwp.MiliToHwpUnit(7.0))  # 1행
@@ -356,15 +356,15 @@ def main(paperNewsList,internetNewsList):
             title = str(title+"\r\n"+url)
             fillData(publishedDate,press,title,summary)
     hwp.MovePos(3)
-    hwp.HAction.Run("BreakPage")
 
     if len(paperNewsList) > 0:
+        hwp.HAction.Run("BreakPage")
         for i in range(len(paperNewsList)):
             title, press, publishedDate, publishedTime,content = paperNewsList[i]['title'], paperNewsList[i]['press'], paperNewsList[i]['publishedDate'], paperNewsList[i]['publishedTime'], paperNewsList[i]['content']
             fillScrap(title, press, publishedDate, publishedTime,content)
         hwp.MovePos(3)
-        hwp.HAction.Run("BreakPage")
     if len(internetNewsList) > 0:
+        hwp.HAction.Run("BreakPage")
         for i in range(len(internetNewsList)):
             title, press, publishedDate, publishedTime,content = internetNewsList[i]['title'], internetNewsList[i]['press'], internetNewsList[i]['publishedDate'], internetNewsList[i]['publishedTime'], internetNewsList[i]['content']
             fillScrap(title, press, publishedDate, publishedTime,content)
