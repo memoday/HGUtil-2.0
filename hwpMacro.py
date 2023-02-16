@@ -4,6 +4,7 @@ from datetime import date
 today = date.today()
 today= today.strftime("%Y.%m.%d.")
 
+#한글 생성, 쪽 여백 등 기본 설정 및 헤더 생성 작업
 def createHWP():
     global hwp
     global act
@@ -225,6 +226,7 @@ def createTable(category,count): #category: 테이블명 count: 테이블별 행
     hwp.HAction.Run("ParagraphShapeAlignCenter")
     hwp.HAction.Run("TableRightCell")
 
+#표 아래 스크랩 내용 작성 함수
 def scrapTitle():
     hwp.HAction.Run("Select")
     hwp.HAction.Run("Select")
@@ -299,33 +301,7 @@ def scrapContent():
     hwp.HAction.Execute("CharShape", hwp.HParameterSet.HCharShape.HSet)
     hwp.HAction.Run('Cancel')
 
-paperNewsList = []
-paperNews = {
-    'title' : '제목 입니다',
-    'press' : '언론사',
-    'publishedDate' : '2023.02.15',
-    'publishedTime' : '',
-    'shortenUrl' : 'https://news.naver.com',
-    'summary' : '테스트 띄어쓰기',
-}
-
-paperNewsList.append(paperNews)
-paperNewsList.append(paperNews)
-
-internetNewsList = []
-internetNews = {
-    'title' : '인터넷 제목',
-    'press' : '언론사',
-    'publishedDate' : '2023.02.15',
-    'publishedTime' : '',
-    'shortenUrl' : 'https://news.naver.com',
-    'summary' : '테스트 띄어쓰기',
-}
-
-internetNewsList.append(internetNews)
-internetNewsList.append(internetNews)
-internetNewsList.append(internetNews)
-
+#요약표 작성 함수
 def fillData(date,press,title,summary):
     lineSpacing(100)
     hwp.HAction.Run("ParagraphShapeAlignCenter")
@@ -362,12 +338,13 @@ def fillScrap(title,press,publishedDate,publishedTime,summary):
     scrapContent()
     hwpText("\r\n\r\n\r\n\r\n\r\n")
 
-if __name__ == "__main__":
+#메인 함수
+def main(paperNewsList,internetNewsList):
     createHWP()
     if len(paperNewsList) > 0:
         createTable(category="신문/방송 보도사항", count=len(paperNewsList))
         for i in range(len(paperNewsList)):
-            publishedDate, press, title,url, summary = paperNewsList[i-1]['publishedDate'], paperNewsList[i-1]['press'], paperNewsList[i-1]['title'], paperNewsList[i-1]['shortenUrl'], paperNewsList[i-1]['summary']
+            publishedDate, press, title,url, summary = paperNewsList[i]['publishedDate'], paperNewsList[i]['press'], paperNewsList[i]['title'], paperNewsList[i]['shortenUrl'], paperNewsList[i]['summary']
             title = str(title+"\r\n"+url)
             fillData(publishedDate,press,title,summary)
     hwp.MovePos(3)
@@ -375,7 +352,7 @@ if __name__ == "__main__":
     if len(internetNewsList) > 0:
         createTable(category="인터넷 보도사항", count=len(internetNewsList))
         for i in range(len(internetNewsList)):
-            publishedDate, press, title, url, summary = internetNewsList[i-1]['publishedDate'], internetNewsList[i-1]['press'], internetNewsList[i-1]['title'], internetNewsList[i-1]['shortenUrl'], internetNewsList[i-1]['summary']
+            publishedDate, press, title, url, summary = internetNewsList[i]['publishedDate'], internetNewsList[i]['press'], internetNewsList[i]['title'], internetNewsList[i]['shortenUrl'], internetNewsList[i]['summary']
             title = str(title+"\r\n"+url)
             fillData(publishedDate,press,title,summary)
     hwp.MovePos(3)
@@ -383,12 +360,12 @@ if __name__ == "__main__":
 
     if len(paperNewsList) > 0:
         for i in range(len(paperNewsList)):
-            title, press, publishedDate, publishedTime,summary = paperNewsList[i-1]['title'], paperNewsList[i-1]['press'], paperNewsList[i-1]['publishedDate'], paperNewsList[i-1]['publishedTime'], paperNewsList[i-1]['summary']
-            fillScrap(title, press, publishedDate, publishedTime,summary)
+            title, press, publishedDate, publishedTime,content = paperNewsList[i]['title'], paperNewsList[i]['press'], paperNewsList[i]['publishedDate'], paperNewsList[i]['publishedTime'], paperNewsList[i]['content']
+            fillScrap(title, press, publishedDate, publishedTime,content)
         hwp.MovePos(3)
         hwp.HAction.Run("BreakPage")
     if len(internetNewsList) > 0:
         for i in range(len(internetNewsList)):
-            title, press, publishedDate, publishedTime,summary = internetNewsList[i-1]['title'], internetNewsList[i-1]['press'], internetNewsList[i-1]['publishedDate'], internetNewsList[i-1]['publishedTime'], internetNewsList[i-1]['summary']
-            fillScrap(title, press, publishedDate, publishedTime,summary)
+            title, press, publishedDate, publishedTime,content = internetNewsList[i]['title'], internetNewsList[i]['press'], internetNewsList[i]['publishedDate'], internetNewsList[i]['publishedTime'], internetNewsList[i]['content']
+            fillScrap(title, press, publishedDate, publishedTime,content)
 
