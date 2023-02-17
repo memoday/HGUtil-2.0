@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>751</width>
+    <height>507</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTableWidget" name="paperTable">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>751</width>
+      <height>301</height>
+     </rect>
+    </property>
+    <property name="alternatingRowColors">
+     <bool>true</bool>
+    </property>
+    <property name="sortingEnabled">
+     <bool>true</bool>
+    </property>
+    <property name="cornerButtonEnabled">
+     <bool>false</bool>
+    </property>
+    <property name="rowCount">
+     <number>3</number>
+    </property>
+    <attribute name="horizontalHeaderDefaultSectionSize">
+     <number>70</number>
+    </attribute>
+    <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+     <bool>false</bool>
+    </attribute>
+    <row/>
+    <row/>
+    <row/>
+    <column>
+     <property name="text">
+      <string>선택</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>업태</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>발행일자</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>언론사</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>제목</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>본문</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>주요내용</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>주소</string>
+     </property>
+    </column>
+    <item row="0" column="0">
+     <property name="text">
+      <string>checkBox</string>
+     </property>
+    </item>
+    <item row="0" column="1">
+     <property name="text">
+      <string>comboBox</string>
+     </property>
+    </item>
+    <item row="0" column="2">
+     <property name="text">
+      <string>테스트</string>
+     </property>
+    </item>
+    <item row="0" column="3">
+     <property name="text">
+      <string>테스트</string>
+     </property>
+    </item>
+    <item row="0" column="4">
+     <property name="text">
+      <string>테스트</string>
+     </property>
+    </item>
+    <item row="0" column="5">
+     <property name="text">
+      <string>테스트</string>
+     </property>
+    </item>
+    <item row="0" column="6">
+     <property name="text">
+      <string>테스트</string>
+     </property>
+    </item>
+    <item row="0" column="7">
+     <property name="text">
+      <string>테스트</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QPushButton" name="btn_delete">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>330</y>
+      <width>75</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>선택삭제</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="newsLink">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>330</y>
+      <width>221</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_message">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>410</y>
+      <width>75</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>메시지</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_hwp">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>410</y>
+      <width>75</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>한글</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_addRow">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>330</y>
+      <width>75</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>행 추가</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_addNews">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>330</y>
+      <width>75</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>등록</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
