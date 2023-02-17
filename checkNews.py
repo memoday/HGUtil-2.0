@@ -89,21 +89,7 @@ def checkNews(url) -> tuple : #언론사별 selector
         contentStr = str(contentStr).replace('</table>','\r\n') #이미지 부연설명 내용과 분리
         contentStr = contentStr.replace('</img>','') #이미지 위치 확인
         to_clean = re.compile('<.*?>') # <> 사이에 있는 것들
-        contentEdited = re.sub(to_clean,'',contentStr) #html태그 모두 지우기
-
-    # elif "newspim.com" in url: #뉴스핌
-    #     print('newspim.com checked')
-    #     title = source.select_one("#main-title").text
-    #     press = "뉴스핌"
-    #     content = source.select_one("#wrap > div.container.subwrap > div > div:nth-child(2) > div.left > div > div.contents")
-    #     date = source.select_one("#send-time").text
-    #     date = date.replace("년",".").replace("월",".").replace("일","")
-    #     contentStr = str(content).replace('<br/>','\n') #<br>태그 Enter키로 변경
-    #     contentStr = str(contentStr).replace('</table>','\n') #이미지 부연설명 내용과 분리
-    #     contentStr = contentStr.replace('</img>','[사진]\n') #이미지 위치 확인
-    #     to_clean = re.compile('<.*?>') # <> 사이에 있는 것들
-    #     contentEdited = re.sub(to_clean,'',contentStr) #html태그 모두 지우기
-        
+        contentEdited = re.sub(to_clean,'',contentStr) #html태그 모두 지우기        
         
     else:
         print("호환되지 않는 링크로 meta값을 탐색합니다.")
@@ -166,7 +152,6 @@ def checkNews(url) -> tuple : #언론사별 selector
                 press = '푸드경제신문'
             elif 'ktv.go.kr' in press:
                 press = 'KTV국민방송'
-
 
         except: #meta값을 찾지 못했을 때 pressSetting 딕셔너리를 통해 언론사 이름을 불러옴
             if domain in pressSetting:
