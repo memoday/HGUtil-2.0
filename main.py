@@ -51,23 +51,19 @@ class WindowClass(QMainWindow, form_class) :
         self.setWindowTitle('HGUtil '+__version__)
         self.statusBar().showMessage('프로그램 정상 구동 중')
 
-
-        table = self.newsTable #테이블 가로 길이 설정
-        table.setColumnWidth(0, 5)
-        table.setColumnWidth(1, 80)
-        table.setColumnWidth(2, 130)
-        table.setColumnWidth(3, 70)
-        table.setColumnWidth(4, 200)
-        table.setColumnWidth(5, 100)
-        table.setColumnWidth(6, 100)
-        table.setColumnWidth(7, 100)
-        table.setColumnWidth(8, 50)
-
         self.btn_addNews.clicked.connect(self.addNews)
         self.btn_hwp.clicked.connect(self.exportHangul)
         self.input_link.setText("https://n.news.naver.com/mnews/article/001/0013766266?sid=102")
 
-
+        header = self.newsTable.horizontalHeader()       
+        header.setSectionResizeMode(0, QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(1, QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(2, QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(3, QHeaderView.Stretch)
+        header.setSectionResizeMode(4, QHeaderView.Stretch)
+        header.setSectionResizeMode(5, QHeaderView.Stretch)
+        header.setSectionResizeMode(6, QHeaderView.Stretch)
+        header.setSectionResizeMode(7, QHeaderView.Stretch)
         #첫 번째 주소에 예시값 삽입
         self.btn_delete.clicked.connect(self.deleteRow)
 

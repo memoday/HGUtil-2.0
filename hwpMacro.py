@@ -347,8 +347,8 @@ def main(paperNewsList,internetNewsList):
             publishedDate, press, title,url, summary = paperNewsList[i]['publishedDate'], paperNewsList[i]['press'], paperNewsList[i]['title'], paperNewsList[i]['shortenUrl'], paperNewsList[i]['summary']
             title = str(title+"\r\n"+url)
             fillData(publishedDate,press,title,summary)
-    hwp.MovePos(3)
-    hwpText('\r\n\r\n')
+        hwp.MovePos(3)
+        hwpText('\r\n\r\n')
     if len(internetNewsList) > 0:
         createTable(category="인터넷 보도사항", count=len(internetNewsList))
         for i in range(len(internetNewsList)):
