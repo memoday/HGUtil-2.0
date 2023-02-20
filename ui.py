@@ -5,6 +5,8 @@ from PyQt5.QtGui import *
 import os
 from PyQt5.QtCore import Qt
 import main
+from datetime import datetime
+import hwpMacro
 
 __version__ = '0.0.1'
 
@@ -29,8 +31,7 @@ class WindowClass(QMainWindow, form_class) :
         self.statusBar().showMessage('프로그램 정상 구동 중')
 
 
-        table = self.newsTable
-
+        table = self.newsTable #테이블 가로 길이 설정
         table.setColumnWidth(0, 5)
         table.setColumnWidth(1, 80)
         table.setColumnWidth(2, 100)
@@ -42,6 +43,7 @@ class WindowClass(QMainWindow, form_class) :
         table.setColumnWidth(8, 50)
 
         self.btn_addNews.clicked.connect(self.addNews)
+        self.btn_hwp.clicked.connect(self.exportHangul)
         self.input_link.setText("https://n.news.naver.com/mnews/article/001/0013766266?sid=102")
 
 
@@ -71,17 +73,20 @@ class WindowClass(QMainWindow, form_class) :
                 self.newsTable.insertRow(row_index)
                 self.newsTable.selectRow(row_index)
 
-                self.combo = QComboBox() #추후에 콤보박스 기준으로 데이터 분류 예정
+                self.combo = QComboBox() #신문/방송 or 인터넷 콤보박스 추가
                 self.combo.addItem("신문/방송")
                 self.combo.addItem("인터넷")
                 self.combo.setCurrentIndex(1)
+                self.checkbox = QCheckBox() #체크박스 추가
 
-                self.checkbox = QCheckBox()
+                date_obj = datetime.strptime(publishedDate, '%Y.%m.%d.') #시간 순 정렬 편의를 위해 날짜/시간을 한 칸에 임시로 합쳐둠
+                time_obj = datetime.strptime(publishedTime,'%H:%M').time()
+                publishedDateTime = datetime.combine(date_obj.date(),time_obj)
+                publishedDateTime = publishedDateTime.strftime('%Y-%m-%dT%H:%M')
 
                 self.newsTable.setCellWidget(row_index,0,self.checkbox)
-
                 self.newsTable.setCellWidget(row_index,1,self.combo)
-                self.newsTable.setItem(row_index,2,QTableWidgetItem(publishedDate))
+                self.newsTable.setItem(row_index,2,QTableWidgetItem(publishedDateTime))
                 self.newsTable.setItem(row_index,3,QTableWidgetItem(press))
                 self.newsTable.setItem(row_index,4,QTableWidgetItem(title))
                 self.newsTable.setItem(row_index,5,QTableWidgetItem(content))
@@ -94,7 +99,58 @@ class WindowClass(QMainWindow, form_class) :
         else:
             pass
 
+    def exportHangul(self):
+        rows = self.newsTable.rowCount()
+        columns = self.newsTable.columnCount()
+        print(rows)
+        print(columns)
 
+        finalNewsList = []
+        paperNewsList = []
+        internetNewsList = []
+        for i in range(rows):
+            newsType = self.newsTable.cellWidget(i,1).currentText() #table데이터를 배열화하는 작업
+            publishedDateTime = self.newsTable.item(i,2).text()
+            press = self.newsTable.item(i,3).text()
+            title = self.newsTable.item(i,4).text()
+            content = self.newsTable.item(i,5).text()
+            summary = self.newsTable.item(i,6).text()
+            shortenUrl = self.newsTable.item(i,7).text()
+            # print(newsType)
+            # print(publishedDateTime,press,title,content,summary,shortenUrl)
+
+            publishedDate, publishedTime = publishedDateTime.split('T')
+
+            news = {
+                'title' : title,
+                'press' : press,
+                'publishedDate' : publishedDate,
+                'publishedTime' : publishedTime,
+                'shortenUrl' : shortenUrl,
+                'content': content,
+                'summary' : summary,
+                'newsType' : newsType,
+                }
+            # print(publishedDateTime)
+            # print(publishedDate)
+            # print(publishedTime)
+
+            finalNewsList.append(news)
+        
+        for i in range(len(finalNewsList)):
+            if finalNewsList[i]["newsType"] == "신문/방송":
+                paperNewsList.append(finalNewsList[i])
+            elif finalNewsList[i]["newsType"] == "인터넷":
+                internetNewsList.append(finalNewsList[i])
+
+        print(paperNewsList)
+        print('=========================')
+        print(internetNewsList)
+        hwpMacro.main(paperNewsList,internetNewsList)
+
+            
+    def newsOrganize(finalNewsList):
+        print(finalNewsList)
 
     def addRow(self):
         selected = self.newsTable.currentRow()
