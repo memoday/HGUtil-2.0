@@ -68,6 +68,7 @@ class WindowClass(QMainWindow, form_class) :
         self.btn_delete.clicked.connect(self.deleteRow)
 
     def addNews(self):
+        self.newsTable.setSortingEnabled(False)
         try:
             input_link = []
 
@@ -126,7 +127,8 @@ class WindowClass(QMainWindow, form_class) :
             else:
                 pass
         except Exception as e:
-            self.statusBar().showMessage("addNews() 오류: "+e)
+            self.statusBar().showMessage("addNews() 오류: "+str(e))
+        self.newsTable.setSortingEnabled(True)
 
     def exportHangul(self):
         try:
@@ -179,7 +181,7 @@ class WindowClass(QMainWindow, form_class) :
 
             hwpMacro.main(paperNewsList,internetNewsList)
         except Exception as e:
-            self.statusBar().showMessage("exportHangul 작업 실패: "+e)
+            self.statusBar().showMessage("exportHangul 작업 실패: "+str(e))
 
     def deleteRow(self):
         selected = self.newsTable.currentRow()

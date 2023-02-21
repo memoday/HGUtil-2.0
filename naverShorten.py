@@ -1,10 +1,10 @@
-import os
-import sys
 import urllib.request
 import json
 import requests
 import secret
 
+clientID = secret.getId()
+clientSecret = secret.getSecret()
 
 def get_real_url_from_shortlink(url): #단축링크 원본링크로 변경
     resp = requests.get(url,headers={'User-Agent':'Mozilla/5.0'})
@@ -24,8 +24,8 @@ def naverShorten(longUrl):
     data = "url=" + encText
     url = "https://openapi.naver.com/v1/util/shorturl"
     request = urllib.request.Request(url)
-    request.add_header("X-Naver-Client-Id",secret.getId())
-    request.add_header("X-Naver-Client-Secret",secret.getSecret())
+    request.add_header("X-Naver-Client-Id",clientID)
+    request.add_header("X-Naver-Client-Secret",clientSecret)
     response = urllib.request.urlopen(request, data=data.encode("utf-8"))
     rescode = response.getcode()
     if(rescode==200):

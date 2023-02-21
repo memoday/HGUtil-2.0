@@ -49,12 +49,15 @@ def checkNews(url) -> tuple : #언론사별 selector
         press = source.select_one("#pressLogo > a > img")['alt']
         content = source.select_one("#newsEndContents")
 
-        content.find(class_ = 'source').decompose()
-        content.find(class_ = 'byline').decompose()
-        content.find(class_ = 'reporter_area').decompose()
-        content.find(class_ = 'copyright').decompose()
-        content.find(class_ = 'categorize').decompose()
-        content.find(class_ = 'promotion').decompose()
+        try:
+            content.find(class_ = 'source').decompose()
+            content.find(class_ = 'byline').decompose()
+            content.find(class_ = 'reporter_area').decompose()
+            content.find(class_ = 'copyright').decompose()
+            content.find(class_ = 'categorize').decompose()
+            content.find(class_ = 'promotion').decompose()
+        except:
+            pass
 
         date = source.select_one("#content > div > div.content > div > div.news_headline > div > span:nth-child(1)").text
         date = date.replace('기사입력 ','')
