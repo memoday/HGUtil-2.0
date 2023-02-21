@@ -178,9 +178,8 @@ def createTable(category,count): #category: 테이블명 count: 테이블별 행
     hwp.HParameterSet.HTableCreation.CreateItemArray("RowHeight", 5)  # 행 5개 생성
     hwp.HParameterSet.HTableCreation.RowHeight.SetItem(0, hwp.MiliToHwpUnit(7.0))  # 1행
     hwp.HParameterSet.HTableCreation.RowHeight.SetItem(1, hwp.MiliToHwpUnit(7.0))  # 2행
-    hwp.HParameterSet.HTableCreation.RowHeight.SetItem(2, hwp.MiliToHwpUnit(16.0))  # 3행
-    hwp.HParameterSet.HTableCreation.RowHeight.SetItem(3, hwp.MiliToHwpUnit(16.0))  # 4행
-    hwp.HParameterSet.HTableCreation.RowHeight.SetItem(4, hwp.MiliToHwpUnit(16.0))  # 5행
+    for i in range(count):
+        hwp.HParameterSet.HTableCreation.RowHeight.SetItem(i+2, hwp.MiliToHwpUnit(15.0))  # 3행
     hwp.HParameterSet.HTableCreation.TableProperties.TreatAsChar = 1  # 글자처럼 취급
     hwp.HParameterSet.HTableCreation.TableProperties.Width = hwp.MiliToHwpUnit(148)  # 표 너비
     hwp.HAction.Execute("TableCreate", hwp.HParameterSet.HTableCreation.HSet)  # 위 코드 실행
@@ -336,7 +335,7 @@ def fillScrap(title,press,publishedDate,publishedTime,summary):
     hwp.HAction.Run("ParagraphShapeAlignJustify")
     hwpText(summary)
     scrapContent()
-    hwpText("\r\n\r\n\r\n\r\n\r\n")
+    hwpText("\r\n\r\n\r\n\r\n\r\n\r\n")
 
 #메인 함수
 def main(paperNewsList,internetNewsList):
@@ -347,6 +346,7 @@ def main(paperNewsList,internetNewsList):
             publishedDate, press, title,url, summary = paperNewsList[i]['publishedDate'], paperNewsList[i]['press'], paperNewsList[i]['title'], paperNewsList[i]['shortenUrl'], paperNewsList[i]['summary']
             title = str(title+"\r\n"+url)
             fillData(publishedDate,press,title,summary)
+
         hwp.MovePos(3)
         hwpText('\r\n\r\n')
     if len(internetNewsList) > 0:
