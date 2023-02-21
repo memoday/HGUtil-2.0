@@ -53,6 +53,7 @@ class WindowClass(QMainWindow, form_class) :
 
         self.btn_addNews.clicked.connect(self.addNews)
         self.btn_hwp.clicked.connect(self.exportHangul)
+        self.btn_message.clicked.connect(self.exportMessage)
         self.input_link.returnPressed.connect(self.addNews)
 
         header = self.newsTable.horizontalHeader()       
@@ -182,6 +183,53 @@ class WindowClass(QMainWindow, form_class) :
             hwpMacro.main(paperNewsList,internetNewsList)
         except Exception as e:
             self.statusBar().showMessage("exportHangul 작업 실패: "+str(e))
+
+    def exportMessage(self):
+        try:
+            rows = self.newsTable.rowCount()
+            columns = self.newsTable.columnCount()
+            print(rows)
+            print(columns)
+
+            totalNewsList = []
+            checkedNewsList = []
+            paperNewsList = []
+            internetNewsList = []
+            for i in range(rows):
+                checked = self.newsTable.cellWidget(i,0).isChecked()
+                newsType = self.newsTable.cellWidget(i,1).currentText() #table데이터를 배열화하는 작업
+                press = self.newsTable.item(i,3).text()
+                title = self.newsTable.item(i,4).text()
+                summary = self.newsTable.item(i,6).text()
+                shortenUrl = self.newsTable.item(i,7).text()
+                # print(newsType)
+                # print(publishedDateTime,press,title,content,summary,shortenUrl)
+
+                news = {
+                    'checked' : checked,
+                    'title' : title,
+                    'press' : press,
+                    'shortenUrl' : shortenUrl,
+                    'summary' : summary,
+                    'newsType' : newsType,
+                    }
+
+                totalNewsList.append(news)
+            
+            for i in range(len(totalNewsList)): #체크된 기사들 checkedNewsList 배열로 이동
+                if totalNewsList[i]['checked'] == True:
+                    checkedNewsList.append(totalNewsList[i])
+            
+            for i in range(len(checkedNewsList)): #checkedNewsList에서 신문/방송 기사와 인터넷 기사 분류
+                if checkedNewsList[i]["newsType"] == "신문/방송":
+                    paperNewsList.append(checkedNewsList[i])
+                elif checkedNewsList[i]["newsType"] == "인터넷":
+                    internetNewsList.append(checkedNewsList[i])
+            
+            
+
+        except Exception as e:
+            self.statusBar().showMessage("exportMessage 작업 실패: "+str(e))
 
     def deleteRow(self):
         selected = self.newsTable.currentRow()

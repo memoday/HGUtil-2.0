@@ -14,149 +14,148 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTableWidget" name="newsTable">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>750</width>
-      <height>301</height>
-     </rect>
-    </property>
-    <property name="alternatingRowColors">
-     <bool>true</bool>
-    </property>
-    <property name="sortingEnabled">
-     <bool>true</bool>
-    </property>
-    <property name="cornerButtonEnabled">
-     <bool>false</bool>
-    </property>
-    <property name="rowCount">
-     <number>0</number>
-    </property>
-    <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>70</number>
-    </attribute>
-    <attribute name="verticalHeaderShowSortIndicator" stdset="0">
-     <bool>false</bool>
-    </attribute>
-    <column>
-     <property name="text">
-      <string>선택</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>업태</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>발행일자</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>언론사</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>제목</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>본문</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>주요내용</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>주소</string>
-     </property>
-    </column>
-   </widget>
-   <widget class="QPushButton" name="btn_delete">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>330</y>
-      <width>75</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>선택삭제</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="input_link">
-    <property name="geometry">
-     <rect>
-      <x>240</x>
-      <y>330</y>
-      <width>221</width>
-      <height>21</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btn_message">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>410</y>
-      <width>75</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>메시지</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btn_hwp">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>410</y>
-      <width>75</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>한글</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btn_addRow">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>330</y>
-      <width>75</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>행 추가</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btn_addNews">
-    <property name="geometry">
-     <rect>
-      <x>480</x>
-      <y>330</y>
-      <width>75</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>등록</string>
-    </property>
-   </widget>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0" colspan="5">
+     <widget class="QTableWidget" name="newsTable">
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="alternatingRowColors">
+       <bool>true</bool>
+      </property>
+      <property name="sortingEnabled">
+       <bool>true</bool>
+      </property>
+      <property name="cornerButtonEnabled">
+       <bool>false</bool>
+      </property>
+      <property name="rowCount">
+       <number>0</number>
+      </property>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>70</number>
+      </attribute>
+      <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+       <bool>false</bool>
+      </attribute>
+      <column>
+       <property name="text">
+        <string>선택</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>업태</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>발행일자</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>언론사</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>제목</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>본문</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>주요내용</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>주소</string>
+       </property>
+      </column>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QPushButton" name="btn_delete">
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="text">
+       <string>선택삭제</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QPushButton" name="btn_hwp">
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="text">
+       <string>한글</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="autoDefault">
+       <bool>false</bool>
+      </property>
+      <property name="default">
+       <bool>false</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="4">
+     <widget class="QPushButton" name="btn_addNews">
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="text">
+       <string>등록</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QPushButton" name="btn_message">
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="text">
+       <string>메시지</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="3">
+     <widget class="QLineEdit" name="input_link">
+      <property name="inputMask">
+       <string notr="true"/>
+      </property>
+      <property name="dragEnabled">
+       <bool>true</bool>
+      </property>
+      <property name="placeholderText">
+       <string notr="true"/>
+      </property>
+      <property name="clearButtonEnabled">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>기사 주소</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
