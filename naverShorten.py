@@ -13,7 +13,12 @@ def get_real_url_from_shortlink(url): #단축링크 원본링크로 변경
 
 def naverShorten(longUrl): 
 
-    longUrl = get_real_url_from_shortlink(longUrl)
+    longUrl = longUrl.replace(" ","")
+
+    resp = requests.get(longUrl,headers={'User-Agent':'Mozilla/5.0'})
+    print('Original URL:'+resp.url)
+
+    longUrl = resp.url
 
     encText = urllib.parse.quote(longUrl)
     data = "url=" + encText

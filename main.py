@@ -53,14 +53,15 @@ class WindowClass(QMainWindow, form_class) :
 
         self.btn_addNews.clicked.connect(self.addNews)
         self.btn_hwp.clicked.connect(self.exportHangul)
-        self.input_link.setText("https://n.news.naver.com/mnews/article/001/0013766266?sid=102")
+        self.input_link.returnPressed.connect(self.addNews)
+        # self.input_link.setText("https://n.news.naver.com/mnews/article/001/0013766266?sid=102")
 
         header = self.newsTable.horizontalHeader()       
         header.setSectionResizeMode(0, QHeaderView.ResizeToContents)
         header.setSectionResizeMode(1, QHeaderView.ResizeToContents)
         header.setSectionResizeMode(2, QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(3, QHeaderView.Stretch)
-        header.setSectionResizeMode(4, QHeaderView.Stretch)
+        header.setSectionResizeMode(3, QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(4, QHeaderView.ResizeToContents)
         header.setSectionResizeMode(5, QHeaderView.Stretch)
         header.setSectionResizeMode(6, QHeaderView.Stretch)
         header.setSectionResizeMode(7, QHeaderView.Stretch)
@@ -70,7 +71,10 @@ class WindowClass(QMainWindow, form_class) :
     def addNews(self):
         input_link = []
 
-        input_link.append(self.input_link.text())
+        longUrl = self.input_link.text()
+        longUrl = longUrl.replace(" ","")
+
+        input_link.append(longUrl)
         if len(input_link) != 0:
             newsList = crawlStart(input_link)
             print(str(newsList))
@@ -83,12 +87,9 @@ class WindowClass(QMainWindow, form_class) :
             content = newsList[0]["content"]
             summary = newsList[0]["summary"]
 
-            print(title,press,publishedDate,publishedTime,shortenUrl,content,summary)
-
             for i in range(len(input_link)):
                 row_index = self.newsTable.rowCount()
                 self.newsTable.insertRow(row_index)
-                self.newsTable.selectRow(row_index)
 
                 self.combo = QComboBox() #신문/방송 or 인터넷 콤보박스 추가
                 self.combo.addItem("신문/방송")
@@ -96,10 +97,19 @@ class WindowClass(QMainWindow, form_class) :
                 self.combo.setCurrentIndex(1)
                 self.checkbox = QCheckBox() #체크박스 추가
 
-                date_obj = datetime.strptime(publishedDate, '%Y.%m.%d.') #시간 순 정렬 편의를 위해 날짜/시간을 한 칸에 임시로 합쳐둠
-                time_obj = datetime.strptime(publishedTime,'%H:%M').time()
-                publishedDateTime = datetime.combine(date_obj.date(),time_obj)
-                publishedDateTime = publishedDateTime.strftime('%Y-%m-%dT%H:%M')
+                if publishedDate != "" and publishedTime != "":
+                    date_obj = datetime.strptime(publishedDate, '%Y.%m.%d.')
+                    time_obj = datetime.strptime(publishedTime,'%H:%M').time()
+                    publishedDateTime = datetime.combine(date_obj.date(),time_obj)
+                    publishedDateTime = publishedDateTime.strftime('%Y-%m-%dT%H:%M')
+                elif publishedDate != "" and publishedTime == "":
+                    date_obj = datetime.strptime(publishedDate, '%Y.%m.%d.')
+                    publishedDateTime = date_obj.strftime('%Y-m-%d')
+                elif publishedDate == "" and publishedTime != "":
+                    time_obj = datetime.strptime(publishedTime,'%H:%M').time()
+                    publishedDateTime = time_obj.strftime('T%H:%M')
+                else:
+                    publishedDateTime = ""
 
                 self.newsTable.setCellWidget(row_index,0,self.checkbox)
                 self.newsTable.setCellWidget(row_index,1,self.combo)
@@ -136,7 +146,11 @@ class WindowClass(QMainWindow, form_class) :
             # print(newsType)
             # print(publishedDateTime,press,title,content,summary,shortenUrl)
 
+            if publishedDateTime == "":
+                self.statusBar().showMessage('날짜가 입력되지 않은 기사가 있습니다.')
+                return
             publishedDate, publishedTime = publishedDateTime.split('T')
+            publishedDate = publishedDate.replace("-",".")
 
             news = {
                 'title' : title,
@@ -160,9 +174,6 @@ class WindowClass(QMainWindow, form_class) :
             elif finalNewsList[i]["newsType"] == "인터넷":
                 internetNewsList.append(finalNewsList[i])
 
-        print(paperNewsList)
-        print('=========================')
-        print(internetNewsList)
         hwpMacro.main(paperNewsList,internetNewsList)
 
     def addRow(self):
@@ -173,10 +184,11 @@ class WindowClass(QMainWindow, form_class) :
     def deleteRow(self):
         selected = self.newsTable.currentRow()
         self.newsTable.removeRow(selected)
+        print(selected)
 
     def closeEvent(self, event):
         sys.exit(0)
-
+        
     def exit(self) :
         sys.exit(0)
 
