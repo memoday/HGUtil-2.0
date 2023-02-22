@@ -274,7 +274,7 @@ class messageWindow(QDialog,form_messageWindow):
         self.btn_internetDown.clicked.connect(self.internetDown)
         self.btn_paperUp.clicked.connect(self.paperUp)
         self.btn_paperDown.clicked.connect(self.paperDown)
-        self.btn_run.clicked.connect(self.message)
+        self.btn_run.clicked.connect(self.toMessage)
         self.btn_exit.clicked.connect(self.exit)
 
         SP_TitleBarShadeButton = self.style().standardIcon(QStyle.SP_TitleBarShadeButton)
@@ -297,6 +297,8 @@ class messageWindow(QDialog,form_messageWindow):
             self.internetNewsTable.setItem(i,1,QTableWidgetItem(iNewsList[i]['title']))
 
     def internetUp(self):
+        global pNewsList
+        global iNewsList
         selectedRow = self.internetNewsTable.currentRow()
         if selectedRow == 0:
             print('stopped')
@@ -326,11 +328,17 @@ class messageWindow(QDialog,form_messageWindow):
                 self.internetNewsTable.setItem(selectedRow,0,QTableWidgetItem(newsDataSwapList[1]['press']))
                 self.internetNewsTable.setItem(selectedRow,1,QTableWidgetItem(newsDataSwapList[1]['title']))
 
+                iTemp = iNewsList[selectedRow]
+                iNewsList[selectedRow] = iNewsList[selectedRow-1]
+                iNewsList[selectedRow-1] = iTemp
+
                 self.internetNewsTable.selectRow(selectedRow-1)
             except Exception as e:
                 print('Error: '+str(e))
 
     def internetDown(self):
+        global pNewsList
+        global iNewsList
         selectedRow = self.internetNewsTable.currentRow()
         rowCount = self.internetNewsTable.rowCount()
         if selectedRow == -1 or selectedRow+1 == rowCount:
@@ -360,6 +368,10 @@ class messageWindow(QDialog,form_messageWindow):
                 self.internetNewsTable.setItem(selectedRow+1,1,QTableWidgetItem(newsDataSwapList[0]['title']))
                 self.internetNewsTable.setItem(selectedRow,0,QTableWidgetItem(newsDataSwapList[1]['press']))
                 self.internetNewsTable.setItem(selectedRow,1,QTableWidgetItem(newsDataSwapList[1]['title']))
+
+                iTemp = iNewsList[selectedRow]
+                iNewsList[selectedRow] = iNewsList[selectedRow+1]
+                iNewsList[selectedRow+1] = iTemp
 
                 self.internetNewsTable.selectRow(selectedRow+1)
             except Exception as e:
@@ -394,6 +406,10 @@ class messageWindow(QDialog,form_messageWindow):
                 self.paperNewsTable.setItem(selectedRow-1,1,QTableWidgetItem(newsDataSwapList[0]['title']))
                 self.paperNewsTable.setItem(selectedRow,0,QTableWidgetItem(newsDataSwapList[1]['press']))
                 self.paperNewsTable.setItem(selectedRow,1,QTableWidgetItem(newsDataSwapList[1]['title']))
+
+                pTemp = pNewsList[selectedRow]
+                pNewsList[selectedRow] = pNewsList[selectedRow-1]
+                pNewsList[selectedRow-1] = pTemp
 
                 self.paperNewsTable.selectRow(selectedRow-1)
             except Exception as e:
@@ -430,15 +446,21 @@ class messageWindow(QDialog,form_messageWindow):
                 self.paperNewsTable.setItem(selectedRow,0,QTableWidgetItem(newsDataSwapList[1]['press']))
                 self.paperNewsTable.setItem(selectedRow,1,QTableWidgetItem(newsDataSwapList[1]['title']))
 
+                pTemp = pNewsList[selectedRow]
+                pNewsList[selectedRow] = pNewsList[selectedRow+1]
+                pNewsList[selectedRow+1] = pTemp
+
                 self.paperNewsTable.selectRow(selectedRow+1)
             except Exception as e:
                 print('Error: '+str(e))
 
-    def message(self):
-
+    def toMessage(self):
+        self.finalMessage.setText('')
         previewMessage = toMessage.toMessage(pNewsList,iNewsList)
+        self.finalMessage.append(toMessage.messageHeader())
         for i in range(len(previewMessage)):
             self.finalMessage.append(previewMessage[i])
+        self.finalMessage.append(toMessage.messageFooter())
         
     def exit(self) :
         self.close()

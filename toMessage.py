@@ -8,10 +8,16 @@ if hours <= 12:
 else :
    reportHour = '17' 
 
-messageCount = 1
+def messageHeader():
+    messageHeader = f'금일({today}) {reportHour}시까지 한강 관련 주요 보도사항입니다.\n'
+    return messageHeader
+
+def messageFooter():
+    messageFooter = '-문화홍보과-'
+    return messageFooter
 
 def toMessage(paperNewsList,internetNewsList):
-    global messageCount
+    messageCount = 1
     finalNews = []
     if len(paperNewsList) > 0:
         finalNews.append("[신문/방송]")
@@ -36,8 +42,3 @@ def toMessage(paperNewsList,internetNewsList):
             messageCount = messageCount+1
 
     return finalNews
-
-
-
-    finalMessage = f'금일({today}) {reportHour}시까지 한강 관련 주요 보도사항입니다.'\
-        '-문화홍보과-'
