@@ -8,6 +8,8 @@ from datetime import datetime
 import hwpMacro
 import naverShorten
 import checkNews as cn
+import toMessage
+from PyQt5.QtCore import QCoreApplication
 
 __version__ = '0.0.1'
 
@@ -16,8 +18,10 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
     
 form = resource_path('ui/main.ui')
+form_message = resource_path('ui/message.ui')
 
 form_class = uic.loadUiType(form)[0]
+form_messageWindow = uic.loadUiType(form_message)[0]
 print("프로그램이 구동됩니다.")
 
 def crawlStart(urlList): 
@@ -225,7 +229,10 @@ class WindowClass(QMainWindow, form_class) :
                     paperNewsList.append(checkedNewsList[i])
                 elif checkedNewsList[i]["newsType"] == "인터넷":
                     internetNewsList.append(checkedNewsList[i])
-            
+
+            self.messageWindow = messageWindow(paperNewsList,internetNewsList)
+            self.messageWindow.exec()
+            self.show()
             
 
         except Exception as e:
@@ -242,8 +249,202 @@ class WindowClass(QMainWindow, form_class) :
     def exit(self) :
         sys.exit(0)
 
+class messageWindow(QDialog,form_messageWindow):
+    
+    def __init__(self,paperNewsList,internetNewsList):
+        super().__init__()
+        self.setupUi(self)
+        self.show()
+
+        header = self.paperNewsTable.horizontalHeader()       
+        header.setSectionResizeMode(0, QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(1, QHeaderView.Stretch)
+
+        header = self.internetNewsTable.horizontalHeader()       
+        header.setSectionResizeMode(0, QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(1, QHeaderView.Stretch)
+        
+        global pNewsList
+        global iNewsList
+
+        pNewsList = paperNewsList
+        iNewsList = internetNewsList
+
+        self.btn_internetUp.clicked.connect(self.internetUp)
+        self.btn_internetDown.clicked.connect(self.internetDown)
+        self.btn_paperUp.clicked.connect(self.paperUp)
+        self.btn_paperDown.clicked.connect(self.paperDown)
+        self.btn_run.clicked.connect(self.message)
+        self.btn_exit.clicked.connect(self.exit)
+
+        SP_TitleBarShadeButton = self.style().standardIcon(QStyle.SP_TitleBarShadeButton)
+        SP_TitleBarUnshadeButton = self.style().standardIcon(QStyle.SP_TitleBarUnshadeButton)
+
+        self.btn_internetUp.setIcon(SP_TitleBarShadeButton)
+        self.btn_internetDown.setIcon(SP_TitleBarUnshadeButton)
+        self.btn_paperUp.setIcon(SP_TitleBarShadeButton)
+        self.btn_paperDown.setIcon(SP_TitleBarUnshadeButton)
+
+        self.paperNewsTable.setRowCount(len(pNewsList)) #전달받은 데이터 테이블화 작업
+        self.internetNewsTable.setRowCount(len(iNewsList))
+
+        for i in range(len(pNewsList)):
+            self.paperNewsTable.setItem(i,0,QTableWidgetItem(pNewsList[i]['press']))
+            self.paperNewsTable.setItem(i,1,QTableWidgetItem(pNewsList[i]['title']))
+
+        for i in range(len(iNewsList)):
+            self.internetNewsTable.setItem(i,0,QTableWidgetItem(iNewsList[i]['press']))
+            self.internetNewsTable.setItem(i,1,QTableWidgetItem(iNewsList[i]['title']))
+
+    def internetUp(self):
+        selectedRow = self.internetNewsTable.currentRow()
+        if selectedRow == 0:
+            print('stopped')
+        else:
+            try:
+                print('moved')
+                newsDataSwapList = []
+
+                press = self.internetNewsTable.item(selectedRow,0).text()
+                title = self.internetNewsTable.item(selectedRow,1).text()
+                newsData = {
+                    'press' : press,
+                    'title' : title,
+                }
+                newsDataSwapList.append(newsData)
+
+                press = self.internetNewsTable.item(selectedRow-1,0).text()
+                title = self.internetNewsTable.item(selectedRow-1,1).text()
+                newsData2 = {
+                    'press' : press,
+                    'title' : title,
+                }
+                newsDataSwapList.append(newsData2)
+
+                self.internetNewsTable.setItem(selectedRow-1,0,QTableWidgetItem(newsDataSwapList[0]['press']))
+                self.internetNewsTable.setItem(selectedRow-1,1,QTableWidgetItem(newsDataSwapList[0]['title']))
+                self.internetNewsTable.setItem(selectedRow,0,QTableWidgetItem(newsDataSwapList[1]['press']))
+                self.internetNewsTable.setItem(selectedRow,1,QTableWidgetItem(newsDataSwapList[1]['title']))
+
+                self.internetNewsTable.selectRow(selectedRow-1)
+            except Exception as e:
+                print('Error: '+str(e))
+
+    def internetDown(self):
+        selectedRow = self.internetNewsTable.currentRow()
+        rowCount = self.internetNewsTable.rowCount()
+        if selectedRow == -1 or selectedRow+1 == rowCount:
+            print('stopped')
+        else:
+            try:
+                print('moved')
+                newsDataSwapList = []
+
+                press = self.internetNewsTable.item(selectedRow,0).text()
+                title = self.internetNewsTable.item(selectedRow,1).text()
+                newsData = {
+                    'press' : press,
+                    'title' : title,
+                }
+                newsDataSwapList.append(newsData)
+
+                press = self.internetNewsTable.item(selectedRow+1,0).text()
+                title = self.internetNewsTable.item(selectedRow+1,1).text()
+                newsData2 = {
+                    'press' : press,
+                    'title' : title,
+                }
+                newsDataSwapList.append(newsData2)
+
+                self.internetNewsTable.setItem(selectedRow+1,0,QTableWidgetItem(newsDataSwapList[0]['press']))
+                self.internetNewsTable.setItem(selectedRow+1,1,QTableWidgetItem(newsDataSwapList[0]['title']))
+                self.internetNewsTable.setItem(selectedRow,0,QTableWidgetItem(newsDataSwapList[1]['press']))
+                self.internetNewsTable.setItem(selectedRow,1,QTableWidgetItem(newsDataSwapList[1]['title']))
+
+                self.internetNewsTable.selectRow(selectedRow+1)
+            except Exception as e:
+                print('Error: '+str(e))
+
+    def paperUp(self):
+        selectedRow = self.paperNewsTable.currentRow()
+        if selectedRow == 0:
+            print('stopped')
+        else:
+            try:
+                print('moved')
+                newsDataSwapList = []
+
+                press = self.paperNewsTable.item(selectedRow,0).text()
+                title = self.paperNewsTable.item(selectedRow,1).text()
+                newsData = {
+                    'press' : press,
+                    'title' : title,
+                }
+                newsDataSwapList.append(newsData)
+
+                press = self.paperNewsTable.item(selectedRow-1,0).text()
+                title = self.paperNewsTable.item(selectedRow-1,1).text()
+                newsData2 = {
+                    'press' : press,
+                    'title' : title,
+                }
+                newsDataSwapList.append(newsData2)
+
+                self.paperNewsTable.setItem(selectedRow-1,0,QTableWidgetItem(newsDataSwapList[0]['press']))
+                self.paperNewsTable.setItem(selectedRow-1,1,QTableWidgetItem(newsDataSwapList[0]['title']))
+                self.paperNewsTable.setItem(selectedRow,0,QTableWidgetItem(newsDataSwapList[1]['press']))
+                self.paperNewsTable.setItem(selectedRow,1,QTableWidgetItem(newsDataSwapList[1]['title']))
+
+                self.paperNewsTable.selectRow(selectedRow-1)
+            except Exception as e:
+                print('Error: '+str(e))
+
+    def paperDown(self):
+        selectedRow = self.paperNewsTable.currentRow()
+        rowCount = self.paperNewsTable.rowCount()
+        if selectedRow == -1 or selectedRow+1 == rowCount:
+            print('stopped')
+        else:
+            try:
+                print('moved')
+                newsDataSwapList = []
+
+                press = self.paperNewsTable.item(selectedRow,0).text()
+                title = self.paperNewsTable.item(selectedRow,1).text()
+                newsData = {
+                    'press' : press,
+                    'title' : title,
+                }
+                newsDataSwapList.append(newsData)
+
+                press = self.paperNewsTable.item(selectedRow+1,0).text()
+                title = self.paperNewsTable.item(selectedRow+1,1).text()
+                newsData2 = {
+                    'press' : press,
+                    'title' : title,
+                }
+                newsDataSwapList.append(newsData2)
+
+                self.paperNewsTable.setItem(selectedRow+1,0,QTableWidgetItem(newsDataSwapList[0]['press']))
+                self.paperNewsTable.setItem(selectedRow+1,1,QTableWidgetItem(newsDataSwapList[0]['title']))
+                self.paperNewsTable.setItem(selectedRow,0,QTableWidgetItem(newsDataSwapList[1]['press']))
+                self.paperNewsTable.setItem(selectedRow,1,QTableWidgetItem(newsDataSwapList[1]['title']))
+
+                self.paperNewsTable.selectRow(selectedRow+1)
+            except Exception as e:
+                print('Error: '+str(e))
+
+    def message(self):
+
+        previewMessage = toMessage.toMessage(pNewsList,iNewsList)
+        for i in range(len(previewMessage)):
+            self.finalMessage.append(previewMessage[i])
+        
+    def exit(self) :
+        self.close()
+
 if __name__ == "__main__":
-    app = QApplication(sys.argv) 
+    app = QApplication(sys.argv)
     myWindow = WindowClass() 
     myWindow.show()
     app.exec_()
