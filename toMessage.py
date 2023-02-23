@@ -19,6 +19,16 @@ def messageFooter():
 def toMessage(paperNewsList,internetNewsList):
     messageCount = 1
     finalNews = []
+    noNews = []
+
+    if len(paperNewsList) < 1 and len(internetNewsList) < 1:
+        reportNone = f'금일({today}) {reportHour}시까지 한강 관련 주요 보도사항 없습니다.\n\n-문화홍보과-'
+        noNews.append(reportNone)
+        return noNews
+
+    else:
+        finalNews.append(messageHeader())
+
     if len(paperNewsList) > 0:
         finalNews.append("[신문/방송]")
         for i in range(len(paperNewsList)):
@@ -40,5 +50,7 @@ def toMessage(paperNewsList,internetNewsList):
             news = f'{messageCount}. {title}({press}_{summary})\n{shortenUrl}\n'
             finalNews.append(news)
             messageCount = messageCount+1
+    
+    finalNews.append(messageFooter())
 
     return finalNews

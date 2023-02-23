@@ -3,15 +3,17 @@ from PyQt5.QtWidgets import *
 from PyQt5 import uic
 from PyQt5.QtGui import *
 import os
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import *
 from datetime import datetime
 import hwpMacro
 import naverShorten
 import checkNews as cn
 import toMessage
-from PyQt5.QtCore import QCoreApplication
+from PyQt5.QtCore import *
 
 __version__ = '0.0.1'
+
+settings = QSettings("table.ini", QSettings.IniFormat)
 
 def resource_path(relative_path):
     base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
@@ -59,6 +61,9 @@ class WindowClass(QMainWindow, form_class) :
         self.btn_hwp.clicked.connect(self.exportHangul)
         self.btn_message.clicked.connect(self.exportMessage)
         self.input_link.returnPressed.connect(self.addNews)
+        self.btn_exit.clicked.connect(self.exit)
+        self.btn_save.clicked.connect(self.save)
+        self.btn_load.clicked.connect(self.load)
 
         header = self.newsTable.horizontalHeader()       
         header.setSectionResizeMode(0, QHeaderView.ResizeToContents)
@@ -243,6 +248,84 @@ class WindowClass(QMainWindow, form_class) :
         self.newsTable.removeRow(selected)
         print(selected)
 
+    def save(self):
+        rowCount = self.newsTable.rowCount()
+        if rowCount == 0:
+            self.statusBar().showMessage('테이블에 저장할 데이터가 존재하지 않습니다.')
+        tableList = []
+        for i in range(rowCount):
+            checked = self.newsTable.cellWidget(i,0).isChecked()
+            newsType = self.newsTable.cellWidget(i,1).currentText() #table데이터를 배열화하는 작업
+            publishedDateTime = self.newsTable.item(i,2).text()
+            press = self.newsTable.item(i,3).text()
+            title = self.newsTable.item(i,4).text()
+            content = self.newsTable.item(i,5).text()
+            summary = self.newsTable.item(i,6).text()
+            shortenUrl = self.newsTable.item(i,7).text()
+
+            news = {
+                'checked' : checked,
+                'title' : title,
+                'publishedDateTime' : publishedDateTime,
+                'press' : press,
+                'shortenUrl' : shortenUrl,
+                'content' : content,
+                'summary' : summary,
+                'newsType' : newsType,
+                'shortenUrl' : shortenUrl,
+                }   
+
+            tableList.append(news)
+        settings.setValue("Table", tableList)
+        print('QSettings Saved')
+        self.statusBar().showMessage('테이블이 table.ini에 저장되었습니다.')
+    
+    def load(self):
+        try: 
+            ini = settings.value("Table")
+
+            self.newsTable.setRowCount(len(ini))
+
+            self.checkbox = QCheckBox() #체크박스 추가
+
+            for i in range(len(ini)):
+                checked = ini[i]['checked']
+                newsType = ini[i]['newsType']
+                publishedDateTime = ini[i]['publishedDateTime']
+                press = ini[i]['press']
+                title = ini[i]['title']
+                content = ini[i]['content']
+                summary = ini[i]['summary']
+                shortenUrl = ini[i]['shortenUrl']
+                
+                checked = str(checked)
+
+                if checked == 'False':
+                    self.newsTable.setCellWidget(i,0,QCheckBox())
+                else:
+                    checkedBox = QCheckBox()
+                    self.newsTable.setCellWidget(i,0,checkedBox)
+                    checkedBox.toggle()
+                
+                self.combo = QComboBox() #신문/방송 or 인터넷 콤보박스 추가
+                self.combo.addItem("신문/방송")
+                self.combo.addItem("인터넷")
+
+                if newsType == "신문/방송":
+                    self.combo.setCurrentIndex(0)
+                else:
+                    self.combo.setCurrentIndex(1)
+
+                self.newsTable.setCellWidget(i,1,self.combo)
+                self.newsTable.setItem(i,2,QTableWidgetItem(publishedDateTime))
+                self.newsTable.setItem(i,3,QTableWidgetItem(press))
+                self.newsTable.setItem(i,4,QTableWidgetItem(title))
+                self.newsTable.setItem(i,5,QTableWidgetItem(content))
+                self.newsTable.setItem(i,6,QTableWidgetItem(summary))
+                self.newsTable.setItem(i,7,QTableWidgetItem(shortenUrl))
+        except Exception as e:
+            self.statusBar().showMessage('load() Error: '+str(e))
+
     def closeEvent(self, event):
         sys.exit(0)
         
@@ -296,6 +379,8 @@ class messageWindow(QDialog,form_messageWindow):
             self.internetNewsTable.setItem(i,0,QTableWidgetItem(iNewsList[i]['press']))
             self.internetNewsTable.setItem(i,1,QTableWidgetItem(iNewsList[i]['title']))
 
+        self.toMessage()
+
     def internetUp(self):
         global pNewsList
         global iNewsList
@@ -333,6 +418,8 @@ class messageWindow(QDialog,form_messageWindow):
                 iNewsList[selectedRow-1] = iTemp
 
                 self.internetNewsTable.selectRow(selectedRow-1)
+
+                self.toMessage()
             except Exception as e:
                 print('Error: '+str(e))
 
@@ -374,6 +461,8 @@ class messageWindow(QDialog,form_messageWindow):
                 iNewsList[selectedRow+1] = iTemp
 
                 self.internetNewsTable.selectRow(selectedRow+1)
+
+                self.toMessage()
             except Exception as e:
                 print('Error: '+str(e))
 
@@ -412,6 +501,8 @@ class messageWindow(QDialog,form_messageWindow):
                 pNewsList[selectedRow-1] = pTemp
 
                 self.paperNewsTable.selectRow(selectedRow-1)
+
+                self.toMessage()
             except Exception as e:
                 print('Error: '+str(e))
 
@@ -451,16 +542,16 @@ class messageWindow(QDialog,form_messageWindow):
                 pNewsList[selectedRow+1] = pTemp
 
                 self.paperNewsTable.selectRow(selectedRow+1)
+
+                self.toMessage()
             except Exception as e:
                 print('Error: '+str(e))
 
     def toMessage(self):
         self.finalMessage.setText('')
         previewMessage = toMessage.toMessage(pNewsList,iNewsList)
-        self.finalMessage.append(toMessage.messageHeader())
         for i in range(len(previewMessage)):
             self.finalMessage.append(previewMessage[i])
-        self.finalMessage.append(toMessage.messageFooter())
         
     def exit(self) :
         self.close()
