@@ -11,7 +11,7 @@ import checkNews as cn
 import toMessage
 from PyQt5.QtCore import *
 
-__version__ = '0.0.1'
+__version__ = 'v1.0.0'
 
 settings = QSettings("table.ini", QSettings.IniFormat)
 
@@ -19,6 +19,7 @@ def resource_path(relative_path):
     base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base_path, relative_path)
     
+icon = resource_path('assets/icon.ico')
 form = resource_path('ui/main.ui')
 form_message = resource_path('ui/message.ui')
 
@@ -53,7 +54,7 @@ class WindowClass(QMainWindow, form_class) :
         self.setupUi(self)
 
         #프로그램 기본설정
-        # self.setWindowIcon(QIcon(icon))
+        self.setWindowIcon(QIcon(icon))
         self.setWindowTitle('HGUtil '+__version__)
         self.statusBar().showMessage('프로그램 정상 구동 중')
 
@@ -337,6 +338,9 @@ class messageWindow(QDialog,form_messageWindow):
     def __init__(self,paperNewsList,internetNewsList):
         super().__init__()
         self.setupUi(self)
+
+        self.setWindowIcon(QIcon(icon))
+
         self.show()
 
         header = self.paperNewsTable.horizontalHeader()       
