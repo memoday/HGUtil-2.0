@@ -322,8 +322,15 @@ def fillData(date,press,title,summary):
     hwpText(title)
     hwp.HAction.Run("TableRightCell")
     lineSpacing(100)
-    hwpText(summary)
     hwp.HAction.Run("ParagraphShapeAlignLeft")
+    if summary == "":
+        hwp.HAction.Run("TableCellBlock")
+        hwp.HAction.Run("TableCellBlockExtend")
+        hwp.HAction.Run("TableUpperCell")
+        hwp.HAction.Run("TableMergeCell")
+        hwp.HAction.Run("TableRightCell")
+    else:
+        hwpText(summary)
     hwp.HAction.Run("TableCellBlockRow") #행 모두 선택
     fontDodum()
     hwp.HAction.Run("TableRightCell")

@@ -253,6 +253,7 @@ class WindowClass(QMainWindow, form_class) :
         rowCount = self.newsTable.rowCount()
         if rowCount == 0:
             self.statusBar().showMessage('테이블에 저장할 데이터가 존재하지 않습니다.')
+            return
         tableList = []
         for i in range(rowCount):
             checked = self.newsTable.cellWidget(i,0).isChecked()
@@ -326,6 +327,10 @@ class WindowClass(QMainWindow, form_class) :
                 self.newsTable.setItem(i,7,QTableWidgetItem(shortenUrl))
         except Exception as e:
             self.statusBar().showMessage('load() Error: '+str(e))
+
+    def keyPressEvent(self, event):
+        if event.modifiers() == Qt.ControlModifier and event.key() == Qt.Key_S:
+            self.save()
 
     def closeEvent(self, event):
         sys.exit(0)
