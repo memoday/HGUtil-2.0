@@ -41,7 +41,7 @@ def crawlStart(urlList):
             'publishedTime' : publishedTime,
             'shortenUrl' : shortenUrl,
             'content': content,
-            'summary' : 'summary',
+            'summary' : '',
             }
         newsList.append(news)
 
