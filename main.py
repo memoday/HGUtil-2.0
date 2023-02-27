@@ -10,8 +10,9 @@ import naverShorten
 import checkNews as cn
 import toMessage
 from PyQt5.QtCore import *
+import pyperclip
 
-__version__ = 'v1.0.0'
+__version__ = 'v1.0.1'
 
 settings = QSettings("table.ini", QSettings.IniFormat)
 
@@ -58,7 +59,7 @@ class WindowClass(QMainWindow, form_class) :
         self.setWindowTitle('HGUtil '+__version__)
         self.statusBar().showMessage('프로그램 정상 구동 중')
 
-        self.btn_addNews.clicked.connect(self.addNews)
+        self.btn_addNews.clicked.connect(self.runCrawl)
         self.btn_hwp.clicked.connect(self.exportHangul)
         self.btn_message.clicked.connect(self.exportMessage)
         self.input_link.returnPressed.connect(self.addNews)
@@ -71,12 +72,20 @@ class WindowClass(QMainWindow, form_class) :
         header.setSectionResizeMode(1, QHeaderView.ResizeToContents)
         header.setSectionResizeMode(2, QHeaderView.ResizeToContents)
         header.setSectionResizeMode(3, QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(4, QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(4, QHeaderView.Stretch)
         header.setSectionResizeMode(5, QHeaderView.Stretch)
         header.setSectionResizeMode(6, QHeaderView.Stretch)
         header.setSectionResizeMode(7, QHeaderView.Stretch)
 
         self.btn_delete.clicked.connect(self.deleteRow)
+
+    def runCrawl(self):
+        if self.autoStart.isChecked() == True:
+            copied = pyperclip.paste()
+            self.input_link.setText(copied)
+            WindowClass.addNews(self)
+        else:
+            WindowClass.addNews(self)
 
     def addNews(self):
         self.newsTable.setSortingEnabled(False)

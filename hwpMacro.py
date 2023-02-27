@@ -381,4 +381,3 @@ def main(paperNewsList,internetNewsList):
         for i in range(len(internetNewsList)):
             title, press, publishedDate, publishedTime,content = internetNewsList[i]['title'], internetNewsList[i]['press'], internetNewsList[i]['publishedDate'], internetNewsList[i]['publishedTime'], internetNewsList[i]['content']
             fillScrap(title, press, publishedDate, publishedTime,content)
-
