@@ -10,7 +10,6 @@ import naverShorten
 import checkNews as cn
 import toMessage
 from PyQt5.QtCore import *
-import pyperclip
 
 __version__ = 'v1.0.1'
 
@@ -81,7 +80,7 @@ class WindowClass(QMainWindow, form_class) :
 
     def runCrawl(self):
         if self.autoStart.isChecked() == True:
-            copied = pyperclip.paste()
+            copied = app.clipboard().text()
             self.input_link.setText(copied)
             WindowClass.addNews(self)
         else:
