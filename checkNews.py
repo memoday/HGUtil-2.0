@@ -10,6 +10,61 @@ def get_real_url_from_shortlink(url): #단축링크 원본링크로 변경
     print('Original URL:'+resp.url)
     return resp.url
 
+def getPress(source,domain):
+        pressSetting = { #press meta값이 없을 때 수동으로 언론사 이름을 제공해줌
+            'www.sisa-news.com' : '시사뉴스',
+            'www.ilyosisa.co.kr' : '일요시사',
+            'www.skyedaily.com' : '스카이데일리',
+            'idsn.co.kr' : '매일안전신문',
+            'www.siminilbo.co.kr' : '시민일보',
+            'www.wsobi.com' : '여성소비자신문',
+            'realty.chosun.com' : '땅집고',
+            'www.the-pr.co.kr' : 'The PR Time',
+            'www.vegannews.co.kr' : '비건뉴스',
+            'www.wikitree.co.kr' : '위키트리',
+            'www.viva100.com' :'브릿지경제',
+            'www.discoverynews.kr' : '디스커버리뉴스',
+            'www.joongboo.com' : '중부일보',
+            'www.nspna.com' : 'NSP통신',
+            'www.asiatoday.co.kr' : '아시아투데이',
+            'www.kihoilbo.co.kr' : '기호일보',
+            'www.thedailypost.kr' : '데일리포스트',
+            'www.donga.com' : '동아일보',
+            'skbroadband.com' : 'SK브로드밴드',
+            'www.obs.co.kr' : 'OBS',
+            'www.harpersbazaar.co.kr' : '하퍼스바자',
+            'mbnmoney.mbn.co.kr' : '매일경제TV',
+            'www.jeonmae.co.kr' : '전국매일신문',
+            'www.queen.co.kr' : 'Queen',
+            'www.foodneconomy.com' : '푸드경제신문',
+            'www.ktv.go.kr' : 'KTV국민방송',
+        } 
+
+        if domain in pressSetting:
+            print('도메인 주소: '+domain)
+            press = pressSetting[domain]
+        else:
+            try:
+                press = source.find('meta',property='og:site_name')['content']
+            except:
+                press = ''
+                print('site_name meta값을 찾을 수 없습니다.')
+        return press
+
+
+        try:
+            press = source.find('meta',property='og:site_name')['content']
+
+        except: #meta값을 찾지 못했을 때 pressSetting 딕셔너리를 통해 언론사 이름을 불러옴
+            if domain in pressSetting:
+                print('도메인 주소: '+domain)
+                press = pressSetting[domain]
+            else:
+                print(domain)
+                press = ''
+                print('site_name meta값을 찾을 수 없습니다')
+        return press
+
 def checkNews(url) -> tuple : #언론사별 selector
 
     domain = urlparse(url).netloc #도메인 이름 가져옴 ex) https://www.example.com/ex/123 -> www.example.com
@@ -96,77 +151,18 @@ def checkNews(url) -> tuple : #언론사별 selector
         
     else:
         print("호환되지 않는 링크로 meta값을 탐색합니다.")
-
+        #제목 찾기
         try:
             title = source.find('meta',property='og:title')['content']
         except:
             title = ''
             print('title meta값을 찾을 수 없습니다')
+        #언론사 찾기
+        press = getPress(source,domain)
 
-        pressSetting = { #press meta값이 없을 때 수동으로 언론사 이름을 제공해줌
-            'www.sisa-news.com' : '시사뉴스',
-            'www.ilyosisa.co.kr' : '일요시사',
-            'www.skyedaily.com' : '스카이데일리',
-            'skyedaily.com' : '스카이데일리',
-            'idsn.co.kr' : '매일안전신문',
-            'www.siminilbo.co.kr' : '시민일보',
-            'www.wsobi.com' : '여성소비자신문',
-            'realty.chosum.com' : '땅집고',
-            'www.the-pr.co.kr' : 'The PR Time',
-            'www.vegannews.co.kr' : '비건뉴스',
-        } 
-
-        try:
-            press = source.find('meta',property='og:site_name')['content']
-
-            if '세상을 깨우는 재미진 목소리' in press: #언론사 이름에 이름 외 정보도 같이 포함되는 경우
-                press = '위키트리'
-            elif '100세시대의 동반자' in press:
-                press = '브릿지경제'
-            elif '(DISCOVERYNEWS)' in press:
-                press = '디스커버리뉴스'
-            elif '인천의 든든한 친구' in press:
-                press = '중부일보'
-            elif 'NSP뉴스통신사' in press:
-                press = 'NSP통신'
-            elif 'NSP뉴스통신사' in press:
-                press = 'NSP통신'
-            elif '종합일간지 : 신문/웹/모바일 등 멀티 채널로 국내외 실시간 뉴스와 수준 높은 정보를 제공' in press:
-                press = '아시아투데이'
-            elif '아침을 여는 신문' in press:
-                press = '기호일보'
-            elif '글로벌 뉴스 미디어 채널 데일리포스트' in press:
-                press = '데일리포스트'
-            elif 'www.donga.com' in press:
-                press = '동아일보'
-            elif 'tborad' in press:
-                press = 'SK브로드밴드'
-            elif ' OBS경인TV' in press:
-                press = 'OBS'
-            elif 'HARPERSBAZAAR' in press:
-                press = '하퍼스바자'
-            elif 'mbnmoney.mbn.co.kr' in press:
-                press = '매일경제TV'
-            elif '전국매일신문' in press:
-                press = '전국매일신문'
-            elif 'Queen' in press:
-                press = 'Queen'
-            elif '푸드경제신문'  in press:
-                press = '푸드경제신문'
-            elif 'ktv.go.kr' in press:
-                press = 'KTV국민방송'
-
-        except: #meta값을 찾지 못했을 때 pressSetting 딕셔너리를 통해 언론사 이름을 불러옴
-            if domain in pressSetting:
-                print('도메인 주소: '+domain)
-                press = pressSetting[domain]
-            else:
-                print(domain)
-                press = ''
-                print('site_name meta값을 찾을 수 없습니다')
-
+        #본문 찾기
         contentEdited = '' #내용은 기사마다 너무 달라 불러오지 않기로 함
-
+        #발행일자 찾기
         try:
             metaDate = source.find('meta',property='article:published_time')['content']
             rawDate = metaDate[0:10]
