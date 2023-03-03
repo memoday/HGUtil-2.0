@@ -51,19 +51,32 @@ def getPress(source,domain):
                 print('site_name meta값을 찾을 수 없습니다.')
         return press
 
-
+def getPublishedDatetime(source,domain) -> tuple:
         try:
-            press = source.find('meta',property='og:site_name')['content']
+            metaDate = source.find('meta',property='article:published_time')['content']
+            rawDate = metaDate[0:10]
+            rawDate = datetime.strptime(rawDate,'%Y-%m-%d')
+            finalDate = str(datetime.strftime(rawDate,'%Y.%m.%d.'))
 
-        except: #meta값을 찾지 못했을 때 pressSetting 딕셔너리를 통해 언론사 이름을 불러옴
-            if domain in pressSetting:
-                print('도메인 주소: '+domain)
-                press = pressSetting[domain]
+            finalTime = metaDate[11:16]
+
+            publishedDate = finalDate
+            publishedTime = finalTime
+
+        except:
+            if 'www.newspim.com' in domain:
+                rawDatetime = source.select_one('#send-time').text
+                print(rawDatetime)
+                datetime_obj = datetime.strptime(rawDatetime, '%Y년%m월%d일 %H:%M')
+                publishedDate = datetime_obj.strftime('%Y.%m.%d.')
+                publishedTime = datetime_obj.strftime('%H:%M')
+
             else:
-                print(domain)
-                press = ''
-                print('site_name meta값을 찾을 수 없습니다')
-        return press
+                publishedDate = ''
+                publishedTime = ''
+                print('published_time meta값을 찾을 수 없습니다')
+        
+        return publishedDate,publishedTime
 
 def checkNews(url) -> tuple : #언론사별 selector
 
@@ -163,21 +176,7 @@ def checkNews(url) -> tuple : #언론사별 selector
         #본문 찾기
         contentEdited = '' #내용은 기사마다 너무 달라 불러오지 않기로 함
         #발행일자 찾기
-        try:
-            metaDate = source.find('meta',property='article:published_time')['content']
-            rawDate = metaDate[0:10]
-            rawDate = datetime.strptime(rawDate,'%Y-%m-%d')
-            finalDate = str(datetime.strftime(rawDate,'%Y.%m.%d.'))
-
-            finalTime = metaDate[11:16]
-
-            publishedDate = finalDate
-            publishedTime = finalTime
-
-        except:
-            publishedDate = ''
-            publishedTime = ''
-            print('published_time meta값을 찾을 수 없습니다')
+        publishedDate,publishedTime = getPublishedDatetime(source,domain)
 
     contentEdited = html.unescape(contentEdited) #&lt;(<) &gt;(>) 정상적으로 다시 변환시킴
 
