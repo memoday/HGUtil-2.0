@@ -148,6 +148,7 @@ class WindowClass(QMainWindow, form_class) :
         except Exception as e:
             self.statusBar().showMessage("addNews() 오류: "+str(e))
         self.newsTable.setSortingEnabled(True)
+        self.statusBar().showMessage("뉴스가 정상적으로 등록됐습니다")
 
     def exportHangul(self):
         try:
