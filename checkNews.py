@@ -64,17 +64,21 @@ def getPublishedDatetime(source,domain) -> tuple:
             publishedTime = finalTime
 
         except:
-            if 'www.newspim.com' in domain:
-                rawDatetime = source.select_one('#send-time').text
-                print(rawDatetime)
-                datetime_obj = datetime.strptime(rawDatetime, '%Y년%m월%d일 %H:%M')
-                publishedDate = datetime_obj.strftime('%Y.%m.%d.')
-                publishedTime = datetime_obj.strftime('%H:%M')
+            try:
+                if 'www.newspim.com' in domain:
+                    rawDatetime = source.select_one('#send-time').text
+                    print(rawDatetime)
+                    datetime_obj = datetime.strptime(rawDatetime, '%Y년%m월%d일 %H:%M')
+                    publishedDate = datetime_obj.strftime('%Y.%m.%d.')
+                    publishedTime = datetime_obj.strftime('%H:%M')
 
-            else:
+                else:
+                    publishedDate = ''
+                    publishedTime = ''
+                    print('published_time meta값을 찾을 수 없습니다')
+            except:
                 publishedDate = ''
                 publishedTime = ''
-                print('published_time meta값을 찾을 수 없습니다')
         
         return publishedDate,publishedTime
 

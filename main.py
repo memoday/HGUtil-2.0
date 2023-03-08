@@ -11,7 +11,7 @@ import checkNews as cn
 import toMessage
 from PyQt5.QtCore import *
 
-__version__ = 'v1.0.1'
+__version__ = 'v1.0.2'
 
 settings = QSettings("table.ini", QSettings.IniFormat)
 

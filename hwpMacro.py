@@ -2,15 +2,6 @@ import win32com.client as win32  # 모듈 임포트
 from datetime import date
 import time
 
-today = date.today()
-today= today.strftime("%Y.%m.%d.")
-hours = int(time.strftime('%H'))
-
-if hours <= 12:
-   reportHour = "09:00"
-else :
-   reportHour = '17:00' 
-
 #한글 생성, 쪽 여백 등 기본 설정 및 헤더 생성 작업
 def createHWP():
     global hwp
@@ -70,6 +61,16 @@ def createHWP():
     hwpText('\r\n')
 
     hwp.HAction.Run("ParagraphShapeAlignRight")
+
+    today = date.today()
+    today= today.strftime("%Y.%m.%d.")
+    hours = int(time.strftime('%H'))
+
+    if hours <= 12:
+        reportHour = "09:00"
+    else :
+        reportHour = '17:00' 
+
     hwpText(f'<{today} {reportHour}>')
     fontBatang()
     hwpText('\r\n')
