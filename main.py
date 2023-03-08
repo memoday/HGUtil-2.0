@@ -289,10 +289,22 @@ class WindowClass(QMainWindow, form_class) :
             tableList.append(news)
         settings.setValue("Table", tableList)
         print('QSettings Saved')
-        self.statusBar().showMessage('테이블이 table.ini에 저장되었습니다.')
+        savedTime = datetime.now().replace(microsecond=0)
+        savedTime = savedTime.strftime("%H:%M:%S")
+        print(savedTime)
+        self.statusBar().showMessage('테이블이 table.ini에 저장되었습니다. '+str(savedTime))
     
     def load(self):
         try: 
+            warning_msgBox = QMessageBox()
+            reply = warning_msgBox.warning(self, '경고', '현재 작업 중인 테이블이 사라집니다. \n그래도 진행하시겠습니까?',
+                                        QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+
+            if reply == QMessageBox.Yes:
+                pass
+            else:
+                return
+            
             ini = settings.value("Table")
 
             self.newsTable.setRowCount(len(ini))
