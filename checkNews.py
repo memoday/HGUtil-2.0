@@ -99,7 +99,7 @@ def checkNews(url) -> tuple : #언론사별 selector
         content = source.select_one("#dic_area")
         publishedInfo = source.select_one("#ct > div.media_end_head.go_trans > div.media_end_head_info.nv_notrans > div.media_end_head_info_datestamp > div > span")['data-date-time']
         contentStr = str(content).replace('<br/>','\r\n') #<br>태그 Enter키로 변경
-        contentStr = str(contentStr).replace('</table>','\r\n') #이미지 부연설명 내용과 분리
+        contentStr = str(contentStr).replace('</table>','\r\n\r\n') #이미지 부연설명 내용과 분리
         contentStr = contentStr.replace('</img>','') #이미지 위치 확인
         to_clean = re.compile('<.*?>') # <> 사이에 있는 것들
         contentEdited = re.sub(to_clean,'',contentStr) #html태그 모두 지우기

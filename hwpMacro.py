@@ -349,7 +349,6 @@ def fillScrap(title,press,publishedDate,publishedTime,summary):
 
     hwp.HAction.Run("ParagraphShapeAlignJustify")
     hwpText(summary)
-    scrapContent()
     hwpText("\r\n\r\n\r\n\r\n\r\n\r\n")
 
 #메인 함수

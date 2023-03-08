@@ -256,7 +256,6 @@ class WindowClass(QMainWindow, form_class) :
     def deleteRow(self):
         selected = self.newsTable.currentRow()
         self.newsTable.removeRow(selected)
-        print(selected)
 
     def save(self):
         rowCount = self.newsTable.rowCount()
@@ -296,14 +295,15 @@ class WindowClass(QMainWindow, form_class) :
     
     def load(self):
         try: 
-            warning_msgBox = QMessageBox()
-            reply = warning_msgBox.warning(self, '경고', '현재 작업 중인 테이블이 사라집니다. \n그래도 진행하시겠습니까?',
-                                        QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+            if self.newsTable.rowCount() > 0: #테이블이 비어있지 않은 경우 경고창 표시
+                warning_msgBox = QMessageBox()
+                reply = warning_msgBox.warning(self, '경고', '현재 작업 중인 테이블이 사라집니다. \n그래도 진행하시겠습니까?',
+                                            QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
 
-            if reply == QMessageBox.Yes:
-                pass
-            else:
-                return
+                if reply == QMessageBox.Yes:
+                    pass
+                else:
+                    return
             
             ini = settings.value("Table")
 
