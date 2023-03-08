@@ -1,14 +1,15 @@
 import time
 
-today = time.strftime('%Y.%m.%d.') 
-hours = int(time.strftime('%H'))
-
-if hours <= 12:
-   reportHour = "09"
-else :
-   reportHour = '17' 
-
 def messageHeader():
+
+    today = time.strftime('%Y.%m.%d.') 
+    hours = int(time.strftime('%H'))
+
+    if hours <= 12:
+        reportHour = "09"
+    else :
+        reportHour = '17' 
+
     messageHeader = f'금일({today}) {reportHour}시까지 한강 관련 주요 보도사항입니다.\n'
     return messageHeader
 
@@ -17,6 +18,15 @@ def messageFooter():
     return messageFooter
 
 def toMessage(paperNewsList,internetNewsList):
+
+    today = time.strftime('%Y.%m.%d.') 
+    hours = int(time.strftime('%H'))
+
+    if hours <= 12:
+        reportHour = "09"
+    else :
+        reportHour = '17' 
+
     messageCount = 1
     finalNews = []
     noNews = []
