@@ -101,6 +101,8 @@ def checkNews(url) -> tuple : #언론사별 selector
         contentStr = str(content).replace('<br/>','\r\n') #<br>태그 Enter키로 변경
         contentStr = str(contentStr).replace('</table>','\r\n\r\n') #이미지 부연설명 내용과 분리
         contentStr = contentStr.replace('</img>','') #이미지 위치 확인
+        contentStr = contentStr.replace('</strong>','\r\n\r\n')
+        contentStr = contentStr.replace('			','') #방송기사 본문에서 [앵커] 앞에 알 수 없는 공백이 있어 이를 제거함
         to_clean = re.compile('<.*?>') # <> 사이에 있는 것들
         contentEdited = re.sub(to_clean,'',contentStr) #html태그 모두 지우기
 
@@ -185,3 +187,6 @@ def checkNews(url) -> tuple : #언론사별 selector
     contentEdited = html.unescape(contentEdited) #&lt;(<) &gt;(>) 정상적으로 다시 변환시킴
 
     return title,press,contentEdited,publishedDate,publishedTime
+
+if __name__ == "__main__":
+    title,press,contentEdited,publishedDate,publishedTime = checkNews('https://n.news.naver.com/mnews/article/052/0001858853?sid=102')
