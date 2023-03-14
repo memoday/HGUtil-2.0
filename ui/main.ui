@@ -15,6 +15,26 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
+    <item row="2" column="4">
+     <widget class="QCheckBox" name="autoStart">
+      <property name="toolTip">
+       <string>링크가 복사된 상태에서 등록을 하면 복사된 링크를 바로 등록합니다</string>
+      </property>
+      <property name="text">
+       <string>바로 등록</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QPushButton" name="btn_save">
+      <property name="toolTip">
+       <string>현재 테이블을 table.ini에 저장합니다(Ctrl+S)</string>
+      </property>
+      <property name="text">
+       <string>저장</string>
+      </property>
+     </widget>
+    </item>
     <item row="2" column="0">
      <widget class="QPushButton" name="btn_hwp">
       <property name="focusPolicy">
@@ -37,6 +57,29 @@
       </property>
       <property name="flat">
        <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QPushButton" name="btn_load">
+      <property name="toolTip">
+       <string>table.ini에서 저장한 테이블을 불러옵니다</string>
+      </property>
+      <property name="text">
+       <string>불러오기</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QPushButton" name="btn_delete">
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>선택된 셀의 행을 삭제합니다</string>
+      </property>
+      <property name="text">
+       <string>삭제</string>
       </property>
      </widget>
     </item>
@@ -105,6 +148,39 @@
       </column>
      </widget>
     </item>
+    <item row="1" column="3">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>   뉴스 링크</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="4">
+     <widget class="QLineEdit" name="input_link">
+      <property name="inputMask">
+       <string notr="true"/>
+      </property>
+      <property name="dragEnabled">
+       <bool>true</bool>
+      </property>
+      <property name="placeholderText">
+       <string notr="true"/>
+      </property>
+      <property name="clearButtonEnabled">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="5">
+     <widget class="QPushButton" name="btn_exit">
+      <property name="text">
+       <string>종료</string>
+      </property>
+     </widget>
+    </item>
     <item row="2" column="1">
      <widget class="QPushButton" name="btn_message">
       <property name="focusPolicy">
@@ -128,82 +204,6 @@
       </property>
       <property name="text">
        <string>등록</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="5">
-     <widget class="QPushButton" name="btn_exit">
-      <property name="text">
-       <string>종료</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="2">
-     <widget class="QPushButton" name="btn_delete">
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="toolTip">
-       <string>선택된 셀의 행을 삭제합니다</string>
-      </property>
-      <property name="text">
-       <string>삭제</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QPushButton" name="btn_load">
-      <property name="toolTip">
-       <string>table.ini에서 저장한 테이블을 불러옵니다</string>
-      </property>
-      <property name="text">
-       <string>불러오기</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="3">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>   뉴스 링크</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QPushButton" name="btn_save">
-      <property name="toolTip">
-       <string>현재 테이블을 table.ini에 저장합니다(Ctrl+S)</string>
-      </property>
-      <property name="text">
-       <string>저장</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="4">
-     <widget class="QLineEdit" name="input_link">
-      <property name="inputMask">
-       <string notr="true"/>
-      </property>
-      <property name="dragEnabled">
-       <bool>true</bool>
-      </property>
-      <property name="placeholderText">
-       <string notr="true"/>
-      </property>
-      <property name="clearButtonEnabled">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="4">
-     <widget class="QCheckBox" name="autoStart">
-      <property name="toolTip">
-       <string>링크가 복사된 상태에서 등록을 하면 복사된 링크를 바로 등록합니다</string>
-      </property>
-      <property name="text">
-       <string>바로 등록</string>
       </property>
      </widget>
     </item>
