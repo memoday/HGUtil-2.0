@@ -38,6 +38,7 @@ def getPress(source,domain):
             'www.queen.co.kr' : 'Queen',
             'www.foodneconomy.com' : '푸드경제신문',
             'www.ktv.go.kr' : 'KTV국민방송',
+            'www.areyou.co.kr' : '아유경제',
         } 
 
         if domain in pressSetting:
@@ -123,15 +124,13 @@ def checkNews(url) -> tuple : #언론사별 selector
         press = source.select_one("#pressLogo > a > img")['alt']
         content = source.select_one("#newsEndContents")
 
-        try:
-            content.find(class_ = 'source').decompose()
-            content.find(class_ = 'byline').decompose()
-            content.find(class_ = 'reporter_area').decompose()
-            content.find(class_ = 'copyright').decompose()
-            content.find(class_ = 'categorize').decompose()
-            content.find(class_ = 'promotion').decompose()
-        except:
-            pass
+        classes_to_remove = ['source', 'byline', 'reporter_area', 'copyright', 'categorize', 'promotion']
+
+        for class_name in classes_to_remove:
+            try:
+                content.find(class_ = class_name).decompose()
+            except:
+                pass
 
         date = source.select_one("#content > div > div.content > div > div.news_headline > div > span:nth-child(1)").text
         date = date.replace('기사입력 ','')
