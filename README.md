@@ -42,6 +42,9 @@
 
 네이버 외 주소는 meta데이터를 크롤링합니다. meta가 존재하지 않는 경우 공백으로 채워지게 됩니다.
 
+
+발행일자 meta 데이터가 존재하지 않는 경우 **<YYYY-MM-DD"T"HH:MM>** 양식으로 모두 채워주셔야합니다. ex) 2023-03-16T17:23
+
 <br>
 
 ![HGUtil_기사등록](https://user-images.githubusercontent.com/74040890/220837501-e6e20a6a-8a27-43dc-9d1d-a85a5140427c.gif)
