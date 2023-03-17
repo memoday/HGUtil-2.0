@@ -29,6 +29,9 @@
    </item>
    <item row="3" column="1">
     <widget class="QPushButton" name="btn_paperUp">
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="text">
       <string/>
      </property>
@@ -36,6 +39,9 @@
    </item>
    <item row="6" column="1">
     <widget class="QPushButton" name="btn_internetUp">
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="text">
       <string/>
      </property>
@@ -52,6 +58,9 @@
    </item>
    <item row="6" column="2">
     <widget class="QPushButton" name="btn_internetDown">
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="text">
       <string/>
      </property>
@@ -125,6 +134,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
    </item>
    <item row="3" column="2">
     <widget class="QPushButton" name="btn_paperDown">
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="text">
       <string/>
      </property>
@@ -132,6 +144,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
    </item>
    <item row="7" column="2">
     <widget class="QPushButton" name="btn_exit">
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="text">
       <string>닫기</string>
      </property>
