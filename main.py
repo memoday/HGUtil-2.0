@@ -12,7 +12,7 @@ import toMessage
 import webbrowser
 from PyQt5.QtCore import *
 
-__version__ = 'v1.0.2'
+__version__ = 'v1.1.0'
 
 settings = QSettings("table.ini", QSettings.IniFormat)
 
@@ -274,12 +274,16 @@ class WindowClass(QMainWindow, form_class) :
 
     def deleteRow(self):
         selected = self.newsTable.currentRow()
-        self.newsTable.removeRow(selected)
+        if selected >= 0:
+            self.newsTable.removeRow(selected)
+            self.statusBar().showMessage(f"{selected+1}번째 행을 삭제했습니다.")
+        else:
+            self.statusBar().showMessage("삭제할 기사를 선택해주세요.")
 
     def save(self):
         rowCount = self.newsTable.rowCount()
         if rowCount == 0:
-            self.statusBar().showMessage('테이블에 저장할 데이터가 존재하지 않습니다.')
+            self.statusBar().showMessage('table.ini에 저장할 데이터가 존재하지 않습니다.')
             return
         tableList = []
         for i in range(rowCount):
