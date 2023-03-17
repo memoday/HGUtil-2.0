@@ -9,6 +9,7 @@ import hwpMacro
 import naverShorten
 import checkNews as cn
 import toMessage
+import webbrowser
 from PyQt5.QtCore import *
 
 __version__ = 'v1.0.2'
@@ -78,6 +79,24 @@ class WindowClass(QMainWindow, form_class) :
 
         self.btn_delete.clicked.connect(self.deleteRow)
 
+        self.newsTable.doubleClicked.connect(self.on_double_click)
+
+    def on_double_click(self):
+        if self.doubleClickWeb.isChecked() == True:
+            for idx in self.newsTable.selectionModel().selectedIndexes():
+                    row_number = idx.row()
+                    column_number = idx.column()
+                    if column_number == 7: #더블클릭한 열이 7번째 열일 경우(주소)
+                        cellValue = self.newsTable.item(row_number,column_number).text()
+                        print(f'브라우저로 {cellValue}에 접속합니다. 테이블 좌표: ({row_number},{column_number})')
+                        try:
+                            webbrowser.open_new_tab(cellValue)
+                        except:
+                            print('URL 오류로 인해 작업을 취소합니다.')
+                            return
+                    else:
+                        pass
+
     def runCrawl(self):
         if self.autoStart.isChecked() == True:
             copied = app.clipboard().text()
@@ -139,7 +158,8 @@ class WindowClass(QMainWindow, form_class) :
                     self.newsTable.setItem(row_index,5,QTableWidgetItem(content))
                     self.newsTable.setItem(row_index,6,QTableWidgetItem(summary))
                     self.newsTable.setItem(row_index,7,QTableWidgetItem(shortenUrl))
-                
+
+                self.statusBar().showMessage(f"기사를 등록했습니다. {title}")
                 newsList.clear()
                 input_link.clear()
             
@@ -148,7 +168,6 @@ class WindowClass(QMainWindow, form_class) :
         except Exception as e:
             self.statusBar().showMessage("addNews() 오류: "+str(e))
         self.newsTable.setSortingEnabled(True)
-        self.statusBar().showMessage("뉴스가 정상적으로 등록됐습니다")
 
     def exportHangul(self):
         try:
@@ -291,7 +310,7 @@ class WindowClass(QMainWindow, form_class) :
         savedTime = datetime.now().replace(microsecond=0)
         savedTime = savedTime.strftime("%H:%M:%S")
         print(savedTime)
-        self.statusBar().showMessage('테이블이 table.ini에 저장되었습니다. '+str(savedTime))
+        self.statusBar().showMessage('테이블을 table.ini에 저장되었습니다. '+str(savedTime))
     
     def load(self):
         try: 
