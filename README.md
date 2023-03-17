@@ -112,5 +112,13 @@ def getSecret():
 발급받은 API Key는 하루 최대 25,000개의 단축링크를 생성할 수 있습니다.
 <br>
 
+<h1>4. 오류 해결법 </h1>
+<h2> 4-1. 한글 내보내기 실패 win32.com.gen_py has no attribute 'CLSIDToClassMap' </h2>
 
+- hwpMacro.py에 있는 win32.com.client 라이브러리의 오류입니다.
+- User > Appdata > Local > Temp 경로에 gen_py라는 폴더를 삭제해주면 됩니다.
+
+<br>
+
+![image](https://user-images.githubusercontent.com/74040890/225817878-f21786ae-6636-4619-ab98-abfc407c8aed.png)
 
