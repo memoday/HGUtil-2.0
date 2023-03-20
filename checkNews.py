@@ -39,6 +39,7 @@ def getPress(source,domain):
             'www.foodneconomy.com' : '푸드경제신문',
             'www.ktv.go.kr' : 'KTV국민방송',
             'www.areyou.co.kr' : '아유경제',
+            'www.newsmaker.or.kr' : '뉴스메이커',
         } 
 
         if domain in pressSetting:
