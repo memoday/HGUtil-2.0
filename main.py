@@ -12,7 +12,7 @@ import toMessage
 import webbrowser
 from PyQt5.QtCore import *
 
-__version__ = 'v1.1.0'
+__version__ = 'v1.1.1'
 
 settings = QSettings("table.ini", QSettings.IniFormat)
 
@@ -268,7 +268,6 @@ class WindowClass(QMainWindow, form_class) :
             self.messageWindow.exec()
             self.show()
             
-
         except Exception as e:
             self.statusBar().showMessage("exportMessage 작업 실패: "+str(e))
 

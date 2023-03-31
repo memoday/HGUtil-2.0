@@ -30,8 +30,8 @@ def getPress(source,domain):
             'www.kihoilbo.co.kr' : '기호일보',
             'www.thedailypost.kr' : '데일리포스트',
             'www.donga.com' : '동아일보',
-            'skbroadband.com' : 'SK브로드밴드',
-            'www.obs.co.kr' : 'OBS',
+            'ch1.skbroadband.com' : 'SK브로드밴드',
+            'www.obsnews.co.kr' : 'OBS',
             'www.harpersbazaar.co.kr' : '하퍼스바자',
             'mbnmoney.mbn.co.kr' : '매일경제TV',
             'www.jeonmae.co.kr' : '전국매일신문',
@@ -40,6 +40,7 @@ def getPress(source,domain):
             'www.ktv.go.kr' : 'KTV국민방송',
             'www.areyou.co.kr' : '아유경제',
             'www.newsmaker.or.kr' : '뉴스메이커',
+            'thepublic.kr' : '더퍼블릭'
         } 
 
         if domain in pressSetting:
@@ -73,7 +74,13 @@ def getPublishedDatetime(source,domain) -> tuple:
                     datetime_obj = datetime.strptime(rawDatetime, '%Y년%m월%d일 %H:%M')
                     publishedDate = datetime_obj.strftime('%Y.%m.%d.')
                     publishedTime = datetime_obj.strftime('%H:%M')
-
+                
+                elif 'ch1.skbroadband.com' in domain:
+                    rawDatetime = source.select_one('body > div.wrapper > div.container > div.contentBox > div > div.wrap_content_view > div.content_metadata > dl > dd > div > span').text
+                    print(rawDatetime)
+                    datetime_obj = datetime.strptime(rawDatetime,'%Y-%m-%d %H:%M:%S')
+                    publishedDate = datetime_obj.strftime('%Y.%m.%d.')
+                    publishedTime = datetime_obj.strftime('%H:%M')
                 else:
                     publishedDate = ''
                     publishedTime = ''
@@ -81,8 +88,18 @@ def getPublishedDatetime(source,domain) -> tuple:
             except:
                 publishedDate = ''
                 publishedTime = ''
+                print('published_time meta값을 찾을 수 없습니다')
         
         return publishedDate,publishedTime
+
+def getContent(source,domain):
+
+    if 'ch1.skbroadband.com' in domain:
+        content = source.find('meta',property='og:description')['content']
+    else:
+        content = ''
+
+    return content
 
 def checkNews(url) -> tuple : #언론사별 selector
 
@@ -98,11 +115,13 @@ def checkNews(url) -> tuple : #언론사별 selector
         print('n.news.naver checked')
         title = source.select_one("#ct > div.media_end_head.go_trans > div.media_end_head_title > h2").text
         press = source.select_one("#ct > div.media_end_head.go_trans > div.media_end_head_top > a > img.media_end_head_top_logo_img.light_type")['alt']
-        content = source.select_one("#dic_area")
+        content = source.select_one("#newsct_article")
         publishedInfo = source.select_one("#ct > div.media_end_head.go_trans > div.media_end_head_info.nv_notrans > div.media_end_head_info_datestamp > div > span")['data-date-time']
         contentStr = str(content).replace('<br/>','\r\n') #<br>태그 Enter키로 변경
         contentStr = str(contentStr).replace('</table>','\r\n\r\n') #이미지 부연설명 내용과 분리
         contentStr = contentStr.replace('</img>','') #이미지 위치 확인
+        contentStr = contentStr.replace('<em class="img_desc">','\r\n\r\n')
+        contentStr = contentStr.replace('</em>','\r\n')
         contentStr = contentStr.replace('</strong>','\r\n\r\n')
         contentStr = contentStr.replace('			','') #방송기사 본문에서 [앵커] 앞에 알 수 없는 공백이 있어 이를 제거함
         to_clean = re.compile('<.*?>') # <> 사이에 있는 것들
@@ -180,7 +199,7 @@ def checkNews(url) -> tuple : #언론사별 selector
         press = getPress(source,domain)
 
         #본문 찾기
-        contentEdited = '' #내용은 기사마다 너무 달라 불러오지 않기로 함
+        contentEdited = getContent(source,domain)
         #발행일자 찾기
         publishedDate,publishedTime = getPublishedDatetime(source,domain)
 
