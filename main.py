@@ -256,6 +256,12 @@ class WindowClass(QMainWindow, form_class) :
             
             for i in range(len(totalNewsList)): #체크된 기사들 checkedNewsList 배열로 이동
                 if totalNewsList[i]['checked'] == True:
+                    if totalNewsList[i]['summary'] == '':
+                        self.statusBar().showMessage(f"주요내용이 누락됐습니다. {totalNewsList[i]['title']}")
+                        return
+                    elif totalNewsList[i]['shortenUrl'] == '':
+                        self.statusBar().showMessage(f"주소가 누락됐습니다. {totalNewsList[i]['title']}")
+                        return
                     checkedNewsList.append(totalNewsList[i])
             
             for i in range(len(checkedNewsList)): #checkedNewsList에서 신문/방송 기사와 인터넷 기사 분류
