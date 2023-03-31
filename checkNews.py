@@ -40,7 +40,10 @@ def getPress(source,domain):
             'www.ktv.go.kr' : 'KTV국민방송',
             'www.areyou.co.kr' : '아유경제',
             'www.newsmaker.or.kr' : '뉴스메이커',
-            'thepublic.kr' : '더퍼블릭'
+            'thepublic.kr' : '더퍼블릭',
+            'www.ekn.kr' : '에너지경제',
+            'www.goodkyung.com' : '굿모닝경제',
+            
         } 
 
         if domain in pressSetting:

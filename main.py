@@ -77,6 +77,8 @@ class WindowClass(QMainWindow, form_class) :
         header.setSectionResizeMode(6, QHeaderView.Stretch)
         header.setSectionResizeMode(7, QHeaderView.Stretch)
 
+        self.newsTable.setStyleSheet("QTableView::item:selected { background-color: #FFFF00; }")
+
         self.btn_delete.clicked.connect(self.deleteRow)
 
         self.newsTable.doubleClicked.connect(self.on_double_click)
@@ -394,6 +396,7 @@ class messageWindow(QDialog,form_messageWindow):
         self.setupUi(self)
 
         self.setWindowIcon(QIcon(icon))
+        self.setWindowFlags(self.windowFlags() & ~Qt.WindowContextHelpButtonHint)
 
         self.show()
 

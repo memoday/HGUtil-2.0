@@ -164,8 +164,17 @@
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
+      <property name="dragEnabled">
+       <bool>false</bool>
+      </property>
+      <property name="dragDropOverwriteMode">
+       <bool>false</bool>
+      </property>
       <property name="alternatingRowColors">
        <bool>true</bool>
+      </property>
+      <property name="selectionBehavior">
+       <enum>QAbstractItemView::SelectRows</enum>
       </property>
       <property name="sortingEnabled">
        <bool>true</bool>
