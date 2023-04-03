@@ -43,7 +43,8 @@ def getPress(source,domain):
             'thepublic.kr' : '더퍼블릭',
             'www.ekn.kr' : '에너지경제',
             'www.goodkyung.com' : '굿모닝경제',
-            
+            'www.newstomato.com' : '뉴스토마토',
+            'www.sisaon.co.kr' : '시사오늘',
         } 
 
         if domain in pressSetting:
