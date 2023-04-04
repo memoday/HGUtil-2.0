@@ -40,26 +40,10 @@ def getPublishedDatetime(source,domain) -> tuple:
             publishedTime = finalTime
 
         except:
-
-            datetime_formats = {
-                'www.newspim.com': {
-                    'datetimeSelector': '#send-time',
-                    'format': '%Y년%m월%d일 %H:%M'
-                },
-                'ch1.skbroadband.com': {
-                    'datetimeSelector': 'body > div.wrapper > div.container > div.contentBox > div > div.wrap_content_view > div.content_metadata > dl > dd > div > span',
-                    'format': '%Y-%m-%d %H:%M:%S'
-                },
-                'www.sisa-news.com': {
-                    'datetimeSelector': '#container > div.column.col73.mb00 > div:nth-child(1) > div > div.arv_005_01 > div.fix_art_top > div > div > ul.art_info > li:nth-child(2)',
-                    'datetimeFormat': '%Y.%m.%d %H:%M:%S',
-                    'datetimeTrim': 3
-                }
-            }
-
+            
             try:
-                if domain in datetime_formats.keys():
-                    domain_dict = datetime_formats.get(domain)
+                if domain in press_dict.pressData.keys():
+                    domain_dict = press_dict.pressData.get(domain)
 
                     rawDatetime = source.select_one(domain_dict['datetimeSelector']).text
                     if 'datetimeTrim' in domain_dict:
