@@ -4,6 +4,7 @@ import re
 from datetime import datetime
 from urllib.parse import urlparse
 import html
+import press_dict
 
 def get_real_url_from_shortlink(url): #단축링크 원본링크로 변경
     resp = requests.get(url,headers={'User-Agent':'Mozilla/5.0'})
@@ -11,47 +12,13 @@ def get_real_url_from_shortlink(url): #단축링크 원본링크로 변경
     return resp.url
 
 def getPress(source,domain):
-        pressSetting = { #press meta값이 없을 때 수동으로 언론사 이름을 제공해줌
-            'www.sisa-news.com' : '시사뉴스',
-            'www.ilyosisa.co.kr' : '일요시사',
-            'www.skyedaily.com' : '스카이데일리',
-            'idsn.co.kr' : '매일안전신문',
-            'www.siminilbo.co.kr' : '시민일보',
-            'www.wsobi.com' : '여성소비자신문',
-            'realty.chosun.com' : '땅집고',
-            'www.the-pr.co.kr' : 'The PR Time',
-            'www.vegannews.co.kr' : '비건뉴스',
-            'www.wikitree.co.kr' : '위키트리',
-            'www.viva100.com' :'브릿지경제',
-            'www.discoverynews.kr' : '디스커버리뉴스',
-            'www.joongboo.com' : '중부일보',
-            'www.nspna.com' : 'NSP통신',
-            'www.asiatoday.co.kr' : '아시아투데이',
-            'www.kihoilbo.co.kr' : '기호일보',
-            'www.thedailypost.kr' : '데일리포스트',
-            'www.donga.com' : '동아일보',
-            'ch1.skbroadband.com' : 'SK브로드밴드',
-            'www.obsnews.co.kr' : 'OBS',
-            'www.harpersbazaar.co.kr' : '하퍼스바자',
-            'mbnmoney.mbn.co.kr' : '매일경제TV',
-            'www.jeonmae.co.kr' : '전국매일신문',
-            'www.queen.co.kr' : 'Queen',
-            'www.foodneconomy.com' : '푸드경제신문',
-            'www.ktv.go.kr' : 'KTV국민방송',
-            'www.areyou.co.kr' : '아유경제',
-            'www.newsmaker.or.kr' : '뉴스메이커',
-            'thepublic.kr' : '더퍼블릭',
-            'www.ekn.kr' : '에너지경제',
-            'www.goodkyung.com' : '굿모닝경제',
-            'www.newstomato.com' : '뉴스토마토',
-            'www.sisaon.co.kr' : '시사오늘',
-            'hobbyen-news.com' : '하비엔뉴스',
-            'www.job-post.co.kr' : '잡포스트',
-        } 
+        
+        pressKeys = press_dict.pressData.keys()
 
-        if domain in pressSetting:
+        if domain in pressKeys:
+            domain_dict = press_dict.pressData.get(domain)
             print('도메인 주소: '+domain)
-            press = pressSetting[domain]
+            press = domain_dict['name']
         else:
             try:
                 press = source.find('meta',property='og:site_name')['content']
@@ -76,17 +43,17 @@ def getPublishedDatetime(source,domain) -> tuple:
 
             datetime_formats = {
                 'www.newspim.com': {
-                    'selector': '#send-time',
+                    'datetimeSelector': '#send-time',
                     'format': '%Y년%m월%d일 %H:%M'
                 },
                 'ch1.skbroadband.com': {
-                    'selector': 'body > div.wrapper > div.container > div.contentBox > div > div.wrap_content_view > div.content_metadata > dl > dd > div > span',
+                    'datetimeSelector': 'body > div.wrapper > div.container > div.contentBox > div > div.wrap_content_view > div.content_metadata > dl > dd > div > span',
                     'format': '%Y-%m-%d %H:%M:%S'
                 },
                 'www.sisa-news.com': {
-                    'selector': '#container > div.column.col73.mb00 > div:nth-child(1) > div > div.arv_005_01 > div.fix_art_top > div > div > ul.art_info > li:nth-child(2)',
-                    'format': '%Y.%m.%d %H:%M:%S',
-                    'trim': 3
+                    'datetimeSelector': '#container > div.column.col73.mb00 > div:nth-child(1) > div > div.arv_005_01 > div.fix_art_top > div > div > ul.art_info > li:nth-child(2)',
+                    'datetimeFormat': '%Y.%m.%d %H:%M:%S',
+                    'datetimeTrim': 3
                 }
             }
 
@@ -94,10 +61,10 @@ def getPublishedDatetime(source,domain) -> tuple:
                 if domain in datetime_formats.keys():
                     domain_dict = datetime_formats.get(domain)
 
-                    rawDatetime = source.select_one(domain_dict['selector']).text
-                    if 'trim' in domain_dict:
-                        rawDatetime = rawDatetime[domain_dict['trim']:]
-                    datetime_obj = datetime.strptime(rawDatetime,domain_dict['format'])
+                    rawDatetime = source.select_one(domain_dict['datetimeSelector']).text
+                    if 'datetimeTrim' in domain_dict:
+                        rawDatetime = rawDatetime[domain_dict['datetimeTrim']:]
+                    datetime_obj = datetime.strptime(rawDatetime,domain_dict['datetimeFormat'])
                     publishedDate = datetime_obj.strftime('%Y.%m.%d.')
                     publishedTime = datetime_obj.strftime('%H:%M')
             except:
@@ -210,11 +177,13 @@ def checkNews(url) -> tuple : #언론사별 selector
         except:
             title = ''
             print('title meta값을 찾을 수 없습니다')
+
         #언론사 찾기
         press = getPress(source,domain)
 
         #본문 찾기
         contentEdited = getContent(source,domain)
+
         #발행일자 찾기
         publishedDate,publishedTime = getPublishedDatetime(source,domain)
 
