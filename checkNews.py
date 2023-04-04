@@ -45,6 +45,8 @@ def getPress(source,domain):
             'www.goodkyung.com' : '굿모닝경제',
             'www.newstomato.com' : '뉴스토마토',
             'www.sisaon.co.kr' : '시사오늘',
+            'hobbyen-news.com' : '하비엔뉴스',
+            'www.job-post.co.kr' : '잡포스트',
         } 
 
         if domain in pressSetting:
@@ -71,24 +73,33 @@ def getPublishedDatetime(source,domain) -> tuple:
             publishedTime = finalTime
 
         except:
+
+            datetime_formats = {
+                'www.newspim.com': {
+                    'selector': '#send-time',
+                    'format': '%Y년%m월%d일 %H:%M'
+                },
+                'ch1.skbroadband.com': {
+                    'selector': 'body > div.wrapper > div.container > div.contentBox > div > div.wrap_content_view > div.content_metadata > dl > dd > div > span',
+                    'format': '%Y-%m-%d %H:%M:%S'
+                },
+                'www.sisa-news.com': {
+                    'selector': '#container > div.column.col73.mb00 > div:nth-child(1) > div > div.arv_005_01 > div.fix_art_top > div > div > ul.art_info > li:nth-child(2)',
+                    'format': '%Y.%m.%d %H:%M:%S',
+                    'trim': 3
+                }
+            }
+
             try:
-                if 'www.newspim.com' in domain:
-                    rawDatetime = source.select_one('#send-time').text
-                    print(rawDatetime)
-                    datetime_obj = datetime.strptime(rawDatetime, '%Y년%m월%d일 %H:%M')
+                if domain in datetime_formats.keys():
+                    domain_dict = datetime_formats.get(domain)
+
+                    rawDatetime = source.select_one(domain_dict['selector']).text
+                    if 'trim' in domain_dict:
+                        rawDatetime = rawDatetime[domain_dict['trim']:]
+                    datetime_obj = datetime.strptime(rawDatetime,domain_dict['format'])
                     publishedDate = datetime_obj.strftime('%Y.%m.%d.')
                     publishedTime = datetime_obj.strftime('%H:%M')
-                
-                elif 'ch1.skbroadband.com' in domain:
-                    rawDatetime = source.select_one('body > div.wrapper > div.container > div.contentBox > div > div.wrap_content_view > div.content_metadata > dl > dd > div > span').text
-                    print(rawDatetime)
-                    datetime_obj = datetime.strptime(rawDatetime,'%Y-%m-%d %H:%M:%S')
-                    publishedDate = datetime_obj.strftime('%Y.%m.%d.')
-                    publishedTime = datetime_obj.strftime('%H:%M')
-                else:
-                    publishedDate = ''
-                    publishedTime = ''
-                    print('published_time meta값을 찾을 수 없습니다')
             except:
                 publishedDate = ''
                 publishedTime = ''
