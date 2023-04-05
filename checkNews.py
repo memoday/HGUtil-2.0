@@ -86,6 +86,8 @@ def getPublishedDatetime(source,domain) -> tuple:
                         rawDatetime = rawDatetime[domain_dict['datetimeTrim']:]
                     if 'datetimeTrimEnd' in domain_dict:
                         rawDatetime = rawDatetime[:domain_dict['datetimeTrimEnd']]
+                    if 'datetimeRange' in domain_dict:
+                        rawDatetime = rawDatetime[domain_dict['datetimeRange'][0]:domain_dict['datetimeRange'][1]]
                     datetime_obj = datetime.strptime(rawDatetime,domain_dict['datetimeFormat'])
                     publishedDate = datetime_obj.strftime('%Y.%m.%d.')
                     publishedTime = datetime_obj.strftime('%H:%M')

@@ -2,9 +2,9 @@
 
 #datetimeSelector : <str> 발행일자 Selector
 #datetimeFormat : <str> 발행일자 날짜양식
-#datetimeTrim : <int> 발행일자 앞 글자 제거
-#datetimeTrim ex) '입력 2023-04-05 08:14' 일 경우 'trim = 3', [3:] = 2023-04-05 08:14
+#datetimeTrim : <int> 발행일자 앞 글자 제거 ex) '입력 2023-04-05 08:14' 일 경우 'trim = 3', [3:] = 2023-04-05 08:14
 #datetimeTrimEnd : <int> 발행일자 뒷 글자 제거
+#datetimeRange : [<int>,<int>] Trim으로 발행일자 정보를 제대로 불러오지 못하는 경우 사용함
 
 #titleSelector : <str> meta값에 불필요한 값이 섞여있는 경우가 있어 특정 기사는 titleSelector로 제목을 불러옴
 #titleCorrectionNeeded : <bool> 단순 Selector로 본문 내용을 찾지 못할 때 사용함, beautifulsoup에서 find로 태그를 찾음
@@ -98,7 +98,10 @@ pressData = {
         'name': '하퍼스바자'
     },
     'mbnmoney.mbn.co.kr': {
-        'name': '매일경제TV'
+        'name': '매일경제TV',
+        'datetimeSelector' : 'body > div.container > div > div.newsview_top_area > div > div > div.left_tit > p',
+        'datetimeFormat' : '%Y-%m-%d %H:%M',
+        'datetimeTrim' : 5,
     },
     'www.jeonmae.co.kr': {
         'name': '전국매일신문'
@@ -163,6 +166,12 @@ pressData = {
         'datetimeSelector' : 'body > div.container > div.article-title > div > span:nth-child(2)',
         'datetimeFormat' : '%Y-%m-%d %H:%M:%S',
         'datetimeTrim' : 2,
+    },
+    'www.mediapen.com' : {
+        'name' : '미디어펜',
+        'datetimeSelector' : '#wrap > div.container > div > div.article-warp > div.article-content.pt-20.text-center > div:nth-child(1) > div.article-top.pt-20 > div.date-repoter',
+        'datetimeRange' : [0,18],
+        'datetimeFormat' : '%Y-%m-%d %H:%M:%S',
     }
 }
 
