@@ -7,6 +7,8 @@
 #datetimeTrimEnd : <int> 발행일자 뒷 글자 제거
 
 #titleSelector : <str> meta값에 불필요한 값이 섞여있는 경우가 있어 특정 기사는 titleSelector로 제목을 불러옴
+#titleCorrectionNeeded : <bool> 단순 Selector로 본문 내용을 찾지 못할 때 사용함, beautifulsoup에서 find로 태그를 찾음
+#titleCorrectionFind : <str> find로 찾을 태그를 입력해야함, beautifulsoup find() 안에 바로 들어가는 string임 ex) "'div', class_='content_s'"
 
 #contentSelector : <str> 기사 본문 Selector, 230405 본문 태그가 단순하게 되어있는 기사만 등록함
 #contentCorrectionNeeded : <bool> 단순 Selector로 본문 내용을 찾지 못할 때 사용함, beautifulsoup에서 find로 태그를 찾음
@@ -117,7 +119,9 @@ pressData = {
         'name': '뉴스메이커',
         'datetimeSelector' : 'body > table > tbody > tr > td > table:nth-child(6) > tbody > tr > td:nth-child(1) > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(6) > td > table > tbody > tr > td:nth-child(2) > span > font',
         'datetimeFormat' : '%Y년 %m월 %d일 (월) %H:%M:%S',
-        'titleSelector' : 'body > table > tbody > tr > td > table:nth-child(6) > tbody > tr > td:nth-child(1) > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(3) > td',
+        'titleSelector' : 'body > table',
+        'titleCorrectionNeeded' : True,
+        'titleCorrectionFind' : "'td',class_='view_t'",
     },
     'thepublic.kr': {
         'name': '더퍼블릭'
@@ -150,9 +154,15 @@ pressData = {
     'www.redian.org': {
         'name': '레디앙'
     },
-    'www.ajunews.com':{
+    'www.ajunews.com': {
         'name' : '아주경제',
         'titleSelector' : '#container > div.view > article.view_header > div.inner > h1',
+    },
+    'www.metroseoul.co.kr' : {
+        'name' : '메트로신문',
+        'datetimeSelector' : 'body > div.container > div.article-title > div > span:nth-child(2)',
+        'datetimeFormat' : '%Y-%m-%d %H:%M:%S',
+        'datetimeTrim' : 2,
     }
 }
 

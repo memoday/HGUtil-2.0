@@ -19,6 +19,16 @@ def getTitle(source,domain):
         if 'titleSelector' in domain_dict:
             try:
                 title = source.select_one(domain_dict['titleSelector']).text
+                if domain_dict['titleCorrectionNeeded'] == True:
+                    title = source.select_one(domain_dict['titleSelector'])
+                    title = eval(f"source.find({domain_dict['titleCorrectionFind']})")
+                    title = str(title)
+                    title = title.replace('\t','')
+                    title = title.replace('\n','')
+                    to_clean = re.compile('<.*?>') # <> 사이에 있는 것들
+                    title = re.sub(to_clean,'',title) #html태그 모두 지우기
+                else:
+                    pass
             except:
                 title = ''
         else:
@@ -97,7 +107,7 @@ def getContent(source,domain):
         domain_dict = press_dict.pressData.get(domain)
         if 'contentSelector' in domain_dict:
             content = source.select_one(domain_dict['contentSelector']).text
-            
+
             if domain_dict['contentCorrectionNeeded'] == True:
                 content = source.select_one(domain_dict['contentSelector'])
                 content = eval(f"source.find({domain_dict['contentCorrectionFind']})")
