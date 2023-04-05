@@ -11,6 +11,31 @@ def get_real_url_from_shortlink(url): #단축링크 원본링크로 변경
     print('Original URL:'+resp.url)
     return resp.url
 
+def getTitle(source,domain):
+    pressKeys = press_dict.pressData.keys()
+
+    if domain in pressKeys:
+        domain_dict = press_dict.pressData.get(domain)
+        if 'titleSelector' in domain_dict:
+            try:
+                title = source.select_one(domain_dict['titleSelector']).text
+            except:
+                title = ''
+        else:
+            try:
+                title = source.find('meta',property='og:title')['content']
+            except:
+                title = ''
+                print('title meta값을 찾을 수 없습니다')
+    else:
+        try:
+            title = source.find('meta',property='og:title')['content']
+        except:
+            title = ''
+            print('title meta값을 찾을 수 없습니다')
+
+    return title
+
 def getPress(source,domain):
         
         pressKeys = press_dict.pressData.keys()
@@ -28,6 +53,7 @@ def getPress(source,domain):
         return press
 
 def getPublishedDatetime(source,domain) -> tuple:
+
         try:
             metaDate = source.find('meta',property='article:published_time')['content']
             rawDate = metaDate[0:10]
@@ -48,20 +74,42 @@ def getPublishedDatetime(source,domain) -> tuple:
                     rawDatetime = source.select_one(domain_dict['datetimeSelector']).text
                     if 'datetimeTrim' in domain_dict:
                         rawDatetime = rawDatetime[domain_dict['datetimeTrim']:]
+                    if 'datetimeTrimEnd' in domain_dict:
+                        rawDatetime = rawDatetime[:domain_dict['datetimeTrimEnd']]
                     datetime_obj = datetime.strptime(rawDatetime,domain_dict['datetimeFormat'])
                     publishedDate = datetime_obj.strftime('%Y.%m.%d.')
                     publishedTime = datetime_obj.strftime('%H:%M')
-            except:
+                else:
+                    publishedDate = ''
+                    publishedTime = ''
+            except Exception as e:
                 publishedDate = ''
                 publishedTime = ''
                 print('published_time meta값을 찾을 수 없습니다')
+                print(e)
         
         return publishedDate,publishedTime
 
 def getContent(source,domain):
 
-    if 'ch1.skbroadband.com' in domain:
-        content = source.find('meta',property='og:description')['content']
+    pressKeys = press_dict.pressData.keys()
+    if domain in pressKeys:
+        domain_dict = press_dict.pressData.get(domain)
+        if 'contentSelector' in domain_dict:
+            content = source.select_one(domain_dict['contentSelector']).text
+            
+            if domain_dict['contentCorrectionNeeded'] == True:
+                content = source.select_one(domain_dict['contentSelector'])
+                content = eval(f"source.find({domain_dict['contentCorrectionFind']})")
+                content = str(content)
+                content = content.replace('<br/>','\r\n')
+                to_clean = re.compile('<.*?>') # <> 사이에 있는 것들
+                content = re.sub(to_clean,'',content) #html태그 모두 지우기
+            else:
+                pass
+            print(content)
+        else:
+            content = ''
     else:
         content = ''
 
@@ -128,8 +176,8 @@ def checkNews(url) -> tuple : #언론사별 selector
         publishedTime = datetime.strftime(publishedTime, '%H:%M')
         
         contentStr = str(content).replace('<br/>','\r\n') #<br>태그 Enter키로 변경
-        contentStr = str(contentStr).replace('</table>','\r\n') #이미지 부연설명 내용과 분리
-        contentStr = contentStr.replace('</img>','') #이미지 위치 확인
+        contentStr = str(contentStr).replace('</table>','\r\n\r\n') #이미지 부연설명 내용과 분리
+        contentStr = contentStr.replace('</img>','\r\n') #이미지 위치 확인
         to_clean = re.compile('<.*?>') # <> 사이에 있는 것들
         contentEdited = re.sub(to_clean,'',contentStr) #html태그 모두 지우기
     
@@ -148,19 +196,15 @@ def checkNews(url) -> tuple : #언론사별 selector
         publishedTime = datetime.strftime(publishedTime, '%H:%M')
 
         contentStr = str(content).replace('<br/>','\r\n') #<br>태그 Enter키로 변경
-        contentStr = str(contentStr).replace('</table>','\r\n') #이미지 부연설명 내용과 분리
-        contentStr = contentStr.replace('</img>','') #이미지 위치 확인
+        contentStr = str(contentStr).replace('</table>','\r\n\r\n') #이미지 부연설명 내용과 분리
+        contentStr = contentStr.replace('</img>','\r\n') #이미지 위치 확인
         to_clean = re.compile('<.*?>') # <> 사이에 있는 것들
         contentEdited = re.sub(to_clean,'',contentStr) #html태그 모두 지우기        
         
     else:
         print("호환되지 않는 링크로 meta값을 탐색합니다.")
         #제목 찾기
-        try:
-            title = source.find('meta',property='og:title')['content']
-        except:
-            title = ''
-            print('title meta값을 찾을 수 없습니다')
+        title = getTitle(source,domain)
 
         #언론사 찾기
         press = getPress(source,domain)
