@@ -10,9 +10,9 @@ import naverShorten
 import checkNews as cn
 import toMessage
 import webbrowser
-from PyQt5.QtCore import *
+from PyQt5.QtCore import Qt
 
-__version__ = 'v1.1.1'
+__version__ = 'v1.1.2'
 
 settings = QSettings("table.ini", QSettings.IniFormat)
 
@@ -66,6 +66,8 @@ class WindowClass(QMainWindow, form_class) :
         self.btn_exit.clicked.connect(self.exit)
         self.btn_save.clicked.connect(self.save)
         self.btn_load.clicked.connect(self.load)
+        
+        self.autoStart.setChecked(True)
 
         header = self.newsTable.horizontalHeader()       
         header.setSectionResizeMode(0, QHeaderView.ResizeToContents)

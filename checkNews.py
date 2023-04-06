@@ -34,6 +34,11 @@ def getTitle(source,domain):
         else:
             try:
                 title = source.find('meta',property='og:title')['content']
+    
+                if 'titleTrim' in domain_dict:
+                    title = title[domain_dict['titleTrim']:]
+                if 'titleTrimEnd' in domain_dict:
+                    title = title[:-domain_dict['titleTrimEnd']]
             except:
                 title = ''
                 print('title meta값을 찾을 수 없습니다')
@@ -85,7 +90,7 @@ def getPublishedDatetime(source,domain) -> tuple:
                     if 'datetimeTrim' in domain_dict:
                         rawDatetime = rawDatetime[domain_dict['datetimeTrim']:]
                     if 'datetimeTrimEnd' in domain_dict:
-                        rawDatetime = rawDatetime[:domain_dict['datetimeTrimEnd']]
+                        rawDatetime = rawDatetime[:-domain_dict['datetimeTrimEnd']]
                     if 'datetimeRange' in domain_dict:
                         rawDatetime = rawDatetime[domain_dict['datetimeRange'][0]:domain_dict['datetimeRange'][1]]
                     datetime_obj = datetime.strptime(rawDatetime,domain_dict['datetimeFormat'])
@@ -133,7 +138,7 @@ def checkNews(url) -> tuple : #언론사별 selector
 
     url = get_real_url_from_shortlink(url)
     web = requests.get(url,headers={'User-Agent':'Mozilla/5.0'})
-    if web.encoding != 'UTF-8':
+    if web.encoding != 'UTF-8' or web.encoding != 'utf-8':
         web.encoding=None
     source = BeautifulSoup(web.text,'html.parser')
 

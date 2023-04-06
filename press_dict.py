@@ -3,12 +3,14 @@
 #datetimeSelector : <str> 발행일자 Selector
 #datetimeFormat : <str> 발행일자 날짜양식
 #datetimeTrim : <int> 발행일자 앞 글자 제거 ex) '입력 2023-04-05 08:14' 일 경우 'trim = 3', [3:] = 2023-04-05 08:14
-#datetimeTrimEnd : <int> 발행일자 뒷 글자 제거
+#datetimeTrimEnd : <int> 발행일자 뒷 글자 제거 ex) [:-<int>]
 #datetimeRange : [<int>,<int>] Trim으로 발행일자 정보를 제대로 불러오지 못하는 경우 사용함
 
 #titleSelector : <str> meta값에 불필요한 값이 섞여있는 경우가 있어 특정 기사는 titleSelector로 제목을 불러옴
 #titleCorrectionNeeded : <bool> 단순 Selector로 본문 내용을 찾지 못할 때 사용함, beautifulsoup에서 find로 태그를 찾음
 #titleCorrectionFind : <str> find로 찾을 태그를 입력해야함, beautifulsoup find() 안에 바로 들어가는 string임 ex) "'div', class_='content_s'"
+#titleTrim : <int> 제목 앞 글자 제거
+#titleTrimEnd : <int> 제목 뒷 글자 제거
 
 #contentSelector : <str> 기사 본문 Selector, 230405 본문 태그가 단순하게 되어있는 기사만 등록함
 #contentCorrectionNeeded : <bool> 단순 Selector로 본문 내용을 찾지 못할 때 사용함, beautifulsoup에서 find로 태그를 찾음
@@ -121,7 +123,7 @@ pressData = {
     'www.newsmaker.or.kr': {
         'name': '뉴스메이커',
         'datetimeSelector' : 'body > table > tbody > tr > td > table:nth-child(6) > tbody > tr > td:nth-child(1) > table:nth-child(2) > tbody > tr > td > table > tbody > tr:nth-child(6) > td > table > tbody > tr > td:nth-child(2) > span > font',
-        'datetimeFormat' : '%Y년 %m월 %d일 (월) %H:%M:%S',
+        'datetimeFormat' : '%Y년 %m월 %d일 (%a) %H:%M:%S',
         'titleSelector' : 'body > table',
         'titleCorrectionNeeded' : True,
         'titleCorrectionFind' : "'td',class_='view_t'",
@@ -140,7 +142,7 @@ pressData = {
         'datetimeSelector' : '#main-top > div.rn_container.mt90px.mb30px > div.rn_sti_case > div.rn_sdate',
         'datetimeFormat': '%Y-%m-%d %H:%M:%S',
         'datetimeTrim' : 6,
-        'datetimeTrimEnd' : 19,
+        'datetimeTrimEnd' : 37,
     },
     'www.sisaon.co.kr': {
         'name': '시사오늘'
@@ -172,6 +174,13 @@ pressData = {
         'datetimeSelector' : '#wrap > div.container > div > div.article-warp > div.article-content.pt-20.text-center > div:nth-child(1) > div.article-top.pt-20 > div.date-repoter',
         'datetimeRange' : [0,18],
         'datetimeFormat' : '%Y-%m-%d %H:%M:%S',
+    },
+    'www.lak.co.kr' : {
+        'name' : '환경과조경',
+        'datetimeSelector' : '#forPrint > div.btn_tools.viewtitle > ul > li:nth-child(1)',
+        'datetimeFormat' : '%Y-%m-%d %H:%M',
+        'datetimeTrim' : 3,
+        'titleTrimEnd' : 13,
     }
 }
 
