@@ -12,7 +12,7 @@ import toMessage
 import webbrowser
 from PyQt5.QtCore import Qt
 
-__version__ = 'v1.1.2'
+__version__ = 'v1.2.0'
 
 settings = QSettings("table.ini", QSettings.IniFormat)
 
