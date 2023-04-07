@@ -1,6 +1,12 @@
 import win32com.client as win32  # 모듈 임포트
 from datetime import date
 import time
+import os, sys, json
+import requests
+
+def resource_path(relative_path):
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
 
 #한글 생성, 쪽 여백 등 기본 설정 및 헤더 생성 작업
 def createHWP():
@@ -353,8 +359,65 @@ def fillScrap(title,press,publishedDate,publishedTime,summary):
     hwpText(summary)
     hwpText("\r\n\r\n\r\n\r\n\r\n\r\n")
 
+def replaceImages(imageCode):
+
+    for i in range(len(imageCode)):
+        hwp.HAction.GetDefault("RepeatFind", hwp.HParameterSet.HFindReplace.HSet)
+        hwp.HParameterSet.HFindReplace.ReplaceString = ""
+        hwp.HParameterSet.HFindReplace.FindString = imageCode[i]
+        hwp.HParameterSet.HFindReplace.IgnoreReplaceString = 0
+        hwp.HParameterSet.HFindReplace.IgnoreFindString = 0
+        hwp.HParameterSet.HFindReplace.Direction = hwp.FindDir("AllDoc")
+        hwp.HParameterSet.HFindReplace.WholeWordOnly = 0
+        hwp.HParameterSet.HFindReplace.UseWildCards = 0
+        hwp.HParameterSet.HFindReplace.SeveralWords = 0
+        hwp.HParameterSet.HFindReplace.AllWordForms = 0
+        hwp.HParameterSet.HFindReplace.MatchCase = 0
+        hwp.HParameterSet.HFindReplace.ReplaceMode = 0
+        hwp.HParameterSet.HFindReplace.ReplaceStyle = ""
+        hwp.HParameterSet.HFindReplace.FindStyle = ""
+        hwp.HParameterSet.HFindReplace.FindRegExp = 0
+        hwp.HParameterSet.HFindReplace.FindJaso = 0
+        hwp.HParameterSet.HFindReplace.HanjaFromHangul = 0
+        hwp.HParameterSet.HFindReplace.IgnoreMessage = 1
+        hwp.HParameterSet.HFindReplace.FindType = 1
+        hwp.HAction.Execute("RepeatFind", hwp.HParameterSet.HFindReplace.HSet)
+        hwpText('\r\n')
+        try:
+            image_path = resource_path(f'images/{imageCode[i]}.jpg')
+            hwp.InsertPicture(image_path)
+        except Exception as e:
+            print(e)
+            pass
+
+
 #메인 함수
-def main(paperNewsList,internetNewsList):
+def main(paperNewsList,internetNewsList,finalNewsList):
+
+    long_url = []
+    imageCode = []
+
+    def get_real_url_from_shortlink(url): #단축링크 원본링크로 변경
+        resp = requests.get(url,headers={'User-Agent':'Mozilla/5.0'})
+        print('Original URL:'+resp.url)
+        return resp.url
+    
+    #이미지 데이터 처리하는 과정
+    for i in range(len(finalNewsList)):
+        long_url.append(get_real_url_from_shortlink(finalNewsList[i]['shortenUrl']))
+    
+    with open('image_dict.json', 'r') as f:
+        image_json = json.load(f)
+
+    for i in range(len(long_url)):
+        jsonKeys = image_json.keys()
+        if long_url[i] in jsonKeys:
+            print(long_url[i])
+            for key in image_json[long_url[i]].keys():
+                print(key)
+                imageCode.append(key)
+
+    #한글 생성
     createHWP()
     if len(paperNewsList) > 0:
         createTable(category="신문/방송 보도사항", count=len(paperNewsList))
@@ -383,3 +446,5 @@ def main(paperNewsList,internetNewsList):
         for i in range(len(internetNewsList)):
             title, press, publishedDate, publishedTime,content = internetNewsList[i]['title'], internetNewsList[i]['press'], internetNewsList[i]['publishedDate'], internetNewsList[i]['publishedTime'], internetNewsList[i]['content']
             fillScrap(title, press, publishedDate, publishedTime,content)
+    
+    replaceImages(imageCode)

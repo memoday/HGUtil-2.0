@@ -5,6 +5,8 @@ from datetime import datetime
 from urllib.parse import urlparse
 import html
 import press_dict
+import hashlib
+import json
 
 def get_real_url_from_shortlink(url): #단축링크 원본링크로 변경
     resp = requests.get(url,headers={'User-Agent':'Mozilla/5.0'})
@@ -148,6 +150,33 @@ def checkNews(url) -> tuple : #언론사별 selector
         press = source.select_one("#ct > div.media_end_head.go_trans > div.media_end_head_top > a > img.media_end_head_top_logo_img.light_type")['alt']
         content = source.select_one("#newsct_article")
         publishedInfo = source.select_one("#ct > div.media_end_head.go_trans > div.media_end_head_info.nv_notrans > div.media_end_head_info_datestamp > div > span")['data-date-time']
+
+        # find all <img> tags
+        img_tags = content.find_all('img')
+        # replace each <img> tag with a new string
+        for image in img_tags:
+
+            image_url = image['data-src']
+
+            hash_object = hashlib.sha256(image_url.encode())
+            verificationCode = hash_object.hexdigest()
+
+            with open('image_dict.json', 'r') as f:
+                image_json = json.load(f)
+
+            if url in image_json:
+                image_json[url][verificationCode] = image_url
+            else:
+                image_json[url] = {verificationCode: image_url}
+
+            with open('image_dict.json', 'w') as f:
+                json.dump(image_json, f, indent=4, sort_keys=True)
+
+            reponse = requests.get(image_url)
+            with open(f'images/{verificationCode}.jpg','wb') as f:
+                f.write(reponse.content)
+            image.replace_with(verificationCode)
+
         contentStr = str(content).replace('<br/>','\r\n') #<br>태그 Enter키로 변경
         contentStr = str(contentStr).replace('</table>','\r\n\r\n') #이미지 부연설명 내용과 분리
         contentStr = contentStr.replace('</img>','') #이미지 위치 확인

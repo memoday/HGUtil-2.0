@@ -222,7 +222,7 @@ class WindowClass(QMainWindow, form_class) :
                 elif finalNewsList[i]["newsType"] == "인터넷":
                     internetNewsList.append(finalNewsList[i])
 
-            hwpMacro.main(paperNewsList,internetNewsList)
+            hwpMacro.main(paperNewsList,internetNewsList,finalNewsList)
         except Exception as e:
             self.statusBar().showMessage("exportHangul 작업 실패: "+str(e))
 
