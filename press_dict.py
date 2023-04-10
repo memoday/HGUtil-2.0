@@ -181,6 +181,13 @@ pressData = {
         'datetimeFormat' : '%Y-%m-%d %H:%M',
         'datetimeTrim' : 3,
         'titleTrimEnd' : 13,
+    },
+    'theviewers.co.kr' : {
+        'name' : '뷰어스',
+        'datetimeSelector' : '#wrapper > div.sub-container > div.sub-layout > div.cont-article > article > div > div.info-area > span.mid-space',
+        'datetimeFormat' : '%Y.%m.%d %H:%M',
+        'datetimeTrim' : 32,
+        'titleTrimEnd' : 6,
     }
 }
 

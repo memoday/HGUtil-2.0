@@ -139,6 +139,8 @@ def checkNews(url) -> tuple : #언론사별 selector
 
     domain = urlparse(url).netloc #도메인 이름 가져옴 ex) https://www.example.com/ex/123 -> www.example.com
 
+    print(domain)
+
     url = get_real_url_from_shortlink(url)
     web = requests.get(url,headers={'User-Agent':'Mozilla/5.0'})
     if web.encoding != 'UTF-8' or web.encoding != 'utf-8':
@@ -217,7 +219,10 @@ def checkNews(url) -> tuple : #언론사별 selector
         contentStr = contentStr.replace('<em class="img_desc">','\r\n\r\n')
         contentStr = contentStr.replace('</em>','\r\n')
         contentStr = contentStr.replace('</strong>','\r\n\r\n')
+        contentStr = contentStr.replace('<div','\r\n\r\n<div')
+        contentStr = contentStr.replace('</span>','\r\n')
         contentStr = contentStr.replace('			','') #방송기사 본문에서 [앵커] 앞에 알 수 없는 공백이 있어 이를 제거함
+        print(contentStr)
         to_clean = re.compile('<.*?>') # <> 사이에 있는 것들
         contentEdited = re.sub(to_clean,'',contentStr) #html태그 모두 지우기
 
