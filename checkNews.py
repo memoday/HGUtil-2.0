@@ -7,6 +7,7 @@ import html
 import press_dict
 import hashlib
 import json
+from PIL import Image
 
 def get_real_url_from_shortlink(url): #단축링크 원본링크로 변경
     resp = requests.get(url,headers={'User-Agent':'Mozilla/5.0'})
@@ -155,32 +156,60 @@ def checkNews(url) -> tuple : #언론사별 selector
         img_tags = content.find_all('img')
         # replace each <img> tag with a new string
         for image in img_tags:
+            try:
+                image_url = image['data-src']
 
-            image_url = image['data-src']
+                if 'gif' in image_url[-13:]:
+                    pass
+                elif 'jpg' in image_url[-13:]:
+                    hash_object = hashlib.sha256(image_url.encode())
+                    verificationCode = hash_object.hexdigest()
 
-            if 'gif' in image_url[-13:]:
-                pass
-            elif 'jpg' in image_url[-13:]:
-                hash_object = hashlib.sha256(image_url.encode())
-                verificationCode = hash_object.hexdigest()
+                    try:
+                        with open('image_dict.json', 'r') as f:
+                            image_json = json.load(f)
+                    except:
+                        with open('image_dict.json', 'w') as f:
+                            # Write an empty JSON object to the file
+                            json.dump({}, f)
+                        with open('image_dict.json', 'r') as f:
+                            image_json = json.load(f)
 
-                with open('image_dict.json', 'r') as f:
-                    image_json = json.load(f)
+                    if url in image_json:
+                        image_json[url][verificationCode] = image_url
+                    else:
+                        image_json[url] = {verificationCode: image_url}
 
-                if url in image_json:
-                    image_json[url][verificationCode] = image_url
+                    with open('image_dict.json', 'w') as f: #json에 image 관련 데이터 저장
+                        json.dump(image_json, f, indent=4, sort_keys=True)
+
+                    reponse = requests.get(image_url) #인식된 image 다운로드
+                    with open(f'images/{verificationCode}.jpg','wb') as f:
+                        f.write(reponse.content)
+
+                    image.replace_with(verificationCode) #html 소스에 있는<img> 태그를 verificationCode로 일시적으로 바꿈, exportHangul 과정에서 verificationCode를 사진으로 변경함
+
+                    try: #다운 받은 이미지의 크기를 조정함
+                        with Image.open(f'images/{verificationCode}.jpg') as downloadImage:
+                            # Change the size while preserving the aspect ratio
+                            width, height = downloadImage.size
+                            if width >= 360:
+                                ratio = width / 360
+                                new_size = (int(width / ratio), int(height / ratio))
+                                downloadImage = downloadImage.resize(new_size, resample=Image.BICUBIC)
+
+                                # Save the updated image with original quality
+                                downloadImage.save(f'images/{verificationCode}.jpg', quality=95)
+                            else:
+                                print(f"Image {verificationCode} is too small to resize.")
+                    except Exception as e:
+                        print(e)
+                        print('이미지 크기 조정 과정에서 오류가 발생했습니다.')
                 else:
-                    image_json[url] = {verificationCode: image_url}
-
-                with open('image_dict.json', 'w') as f:
-                    json.dump(image_json, f, indent=4, sort_keys=True)
-
-                reponse = requests.get(image_url)
-                with open(f'images/{verificationCode}.jpg','wb') as f:
-                    f.write(reponse.content)
-                image.replace_with(verificationCode)
-            else:
-                pass
+                    pass
+            except Exception as e:
+                print(e)
+                print('Image data-src 를 불러오는 과정에서 오류가 발생했습니다.')
 
         contentStr = str(content).replace('<br/>','\r\n') #<br>태그 Enter키로 변경
         contentStr = str(contentStr).replace('</table>','\r\n\r\n') #이미지 부연설명 내용과 분리

@@ -360,7 +360,6 @@ def fillScrap(title,press,publishedDate,publishedTime,summary):
     hwpText("\r\n\r\n\r\n\r\n\r\n\r\n")
 
 def replaceImages(imageCode):
-
     try:
         for i in range(len(imageCode)):
             hwp.HAction.GetDefault("RepeatFind", hwp.HParameterSet.HFindReplace.HSet)
