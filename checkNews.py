@@ -158,24 +158,29 @@ def checkNews(url) -> tuple : #언론사별 selector
 
             image_url = image['data-src']
 
-            hash_object = hashlib.sha256(image_url.encode())
-            verificationCode = hash_object.hexdigest()
+            if 'gif' in image_url[-13:]:
+                pass
+            elif 'jpg' in image_url[-13:]:
+                hash_object = hashlib.sha256(image_url.encode())
+                verificationCode = hash_object.hexdigest()
 
-            with open('image_dict.json', 'r') as f:
-                image_json = json.load(f)
+                with open('image_dict.json', 'r') as f:
+                    image_json = json.load(f)
 
-            if url in image_json:
-                image_json[url][verificationCode] = image_url
+                if url in image_json:
+                    image_json[url][verificationCode] = image_url
+                else:
+                    image_json[url] = {verificationCode: image_url}
+
+                with open('image_dict.json', 'w') as f:
+                    json.dump(image_json, f, indent=4, sort_keys=True)
+
+                reponse = requests.get(image_url)
+                with open(f'images/{verificationCode}.jpg','wb') as f:
+                    f.write(reponse.content)
+                image.replace_with(verificationCode)
             else:
-                image_json[url] = {verificationCode: image_url}
-
-            with open('image_dict.json', 'w') as f:
-                json.dump(image_json, f, indent=4, sort_keys=True)
-
-            reponse = requests.get(image_url)
-            with open(f'images/{verificationCode}.jpg','wb') as f:
-                f.write(reponse.content)
-            image.replace_with(verificationCode)
+                pass
 
         contentStr = str(content).replace('<br/>','\r\n') #<br>태그 Enter키로 변경
         contentStr = str(contentStr).replace('</table>','\r\n\r\n') #이미지 부연설명 내용과 분리
@@ -266,4 +271,5 @@ def checkNews(url) -> tuple : #언론사별 selector
     return title,press,contentEdited,publishedDate,publishedTime
 
 if __name__ == "__main__":
-    title,press,contentEdited,publishedDate,publishedTime = checkNews('https://n.news.naver.com/mnews/article/052/0001858853?sid=102')
+    title,press,contentEdited,publishedDate,publishedTime = checkNews('https://n.news.naver.com/mnews/article/023/0003755458?sid=102')
+    print(contentEdited)

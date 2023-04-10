@@ -361,34 +361,37 @@ def fillScrap(title,press,publishedDate,publishedTime,summary):
 
 def replaceImages(imageCode):
 
-    for i in range(len(imageCode)):
-        hwp.HAction.GetDefault("RepeatFind", hwp.HParameterSet.HFindReplace.HSet)
-        hwp.HParameterSet.HFindReplace.ReplaceString = ""
-        hwp.HParameterSet.HFindReplace.FindString = imageCode[i]
-        hwp.HParameterSet.HFindReplace.IgnoreReplaceString = 0
-        hwp.HParameterSet.HFindReplace.IgnoreFindString = 0
-        hwp.HParameterSet.HFindReplace.Direction = hwp.FindDir("AllDoc")
-        hwp.HParameterSet.HFindReplace.WholeWordOnly = 0
-        hwp.HParameterSet.HFindReplace.UseWildCards = 0
-        hwp.HParameterSet.HFindReplace.SeveralWords = 0
-        hwp.HParameterSet.HFindReplace.AllWordForms = 0
-        hwp.HParameterSet.HFindReplace.MatchCase = 0
-        hwp.HParameterSet.HFindReplace.ReplaceMode = 0
-        hwp.HParameterSet.HFindReplace.ReplaceStyle = ""
-        hwp.HParameterSet.HFindReplace.FindStyle = ""
-        hwp.HParameterSet.HFindReplace.FindRegExp = 0
-        hwp.HParameterSet.HFindReplace.FindJaso = 0
-        hwp.HParameterSet.HFindReplace.HanjaFromHangul = 0
-        hwp.HParameterSet.HFindReplace.IgnoreMessage = 1
-        hwp.HParameterSet.HFindReplace.FindType = 1
-        hwp.HAction.Execute("RepeatFind", hwp.HParameterSet.HFindReplace.HSet)
-        hwpText('\r\n')
-        try:
-            image_path = resource_path(f'images/{imageCode[i]}.jpg')
-            hwp.InsertPicture(image_path)
-        except Exception as e:
-            print(e)
-            pass
+    try:
+        for i in range(len(imageCode)):
+            hwp.HAction.GetDefault("RepeatFind", hwp.HParameterSet.HFindReplace.HSet)
+            hwp.HParameterSet.HFindReplace.ReplaceString = ""
+            hwp.HParameterSet.HFindReplace.FindString = imageCode[i]
+            hwp.HParameterSet.HFindReplace.IgnoreReplaceString = 0
+            hwp.HParameterSet.HFindReplace.IgnoreFindString = 0
+            hwp.HParameterSet.HFindReplace.Direction = hwp.FindDir("AllDoc")
+            hwp.HParameterSet.HFindReplace.WholeWordOnly = 0
+            hwp.HParameterSet.HFindReplace.UseWildCards = 0
+            hwp.HParameterSet.HFindReplace.SeveralWords = 0
+            hwp.HParameterSet.HFindReplace.AllWordForms = 0
+            hwp.HParameterSet.HFindReplace.MatchCase = 0
+            hwp.HParameterSet.HFindReplace.ReplaceMode = 0
+            hwp.HParameterSet.HFindReplace.ReplaceStyle = ""
+            hwp.HParameterSet.HFindReplace.FindStyle = ""
+            hwp.HParameterSet.HFindReplace.FindRegExp = 0
+            hwp.HParameterSet.HFindReplace.FindJaso = 0
+            hwp.HParameterSet.HFindReplace.HanjaFromHangul = 0
+            hwp.HParameterSet.HFindReplace.IgnoreMessage = 1
+            hwp.HParameterSet.HFindReplace.FindType = 1
+            hwp.HAction.Execute("RepeatFind", hwp.HParameterSet.HFindReplace.HSet)
+            hwpText('\r\n')
+            try:
+                image_path = resource_path(f'images/{imageCode[i]}.jpg')
+                hwp.InsertPicture(image_path)
+            except Exception as e:
+                print(e)
+                pass
+    except Exception as e:
+        print(e)
 
 
 #메인 함수
