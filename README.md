@@ -122,3 +122,17 @@ def getSecret():
 
 ![image](https://user-images.githubusercontent.com/74040890/225817878-f21786ae-6636-4619-ab98-abfc407c8aed.png)
 
+<h1>5. 기타 </h1>
+<h2> 5-1. 보안 팝업 (보안 승인 모듈 추가하기) </h2>
+
+- 파일 수정, 그림 삽입 등 과정에서 팝업 뜨는걸 방지해주는 모듈입니다.
+- 보안 승인 모듈은 한컴디벨로퍼에서 다운이 가능합니다.
+- 상세 적용방법은 아래 링크에서 확인해주시길 바랍니다.
+
+https://developer.hancom.com/hwpctrl-hwpautomation/
+
+<br>
+
+![보안모듈](https://user-images.githubusercontent.com/74040890/231094919-245a85b2-1f2b-4990-92fd-1cc34fa0a7c5.png)
+
+
