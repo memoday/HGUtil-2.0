@@ -22,7 +22,7 @@ def getTitle(source,domain):
         if 'titleSelector' in domain_dict:
             try:
                 title = source.select_one(domain_dict['titleSelector']).text
-                if domain_dict['titleCorrectionNeeded'] == True:
+                if 'titleCorrectionNeeded' in domain_dict and domain_dict['titleCorrectionNeeded'] == True:
                     title = source.select_one(domain_dict['titleSelector'])
                     title = eval(f"source.find({domain_dict['titleCorrectionFind']})")
                     title = str(title)
@@ -119,7 +119,7 @@ def getContent(source,domain):
         if 'contentSelector' in domain_dict:
             content = source.select_one(domain_dict['contentSelector']).text
 
-            if domain_dict['contentCorrectionNeeded'] == True:
+            if 'contentCorrectionNeeded' in domain_dict and domain_dict['contentCorrectionNeeded'] == True:
                 content = source.select_one(domain_dict['contentSelector'])
                 content = eval(f"source.find({domain_dict['contentCorrectionFind']})")
                 content = str(content)
