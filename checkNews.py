@@ -52,6 +52,7 @@ def getTitle(source,domain):
             title = ''
             print('title meta값을 찾을 수 없습니다')
 
+    title = html.unescape(title)
     return title
 
 def getPress(source,domain):

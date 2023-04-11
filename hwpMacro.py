@@ -384,8 +384,10 @@ def replaceImages(imageCode):
             hwp.HAction.Execute("RepeatFind", hwp.HParameterSet.HFindReplace.HSet)
             hwpText('\r\n')
             try:
-                image_path = resource_path(f'images/{imageCode[i]}.jpg')
+                image_path = os.getcwd() + f'\images\{imageCode[i]}.jpg'
                 hwp.InsertPicture(image_path)
+                print(os.path.exists(image_path))
+                print(f'이미지를 첨부했습니다 {imageCode[i]}')
             except Exception as e:
                 print(e)
                 pass
@@ -449,4 +451,6 @@ def main(paperNewsList,internetNewsList,finalNewsList):
             title, press, publishedDate, publishedTime,content = internetNewsList[i]['title'], internetNewsList[i]['press'], internetNewsList[i]['publishedDate'], internetNewsList[i]['publishedTime'], internetNewsList[i]['content']
             fillScrap(title, press, publishedDate, publishedTime,content)
     
+    print('hwpMacro 이미지 첨부를 시작합니다')
     replaceImages(imageCode)
+    print('hwpMacro 작업이 끝났습니다')

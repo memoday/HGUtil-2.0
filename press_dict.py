@@ -188,6 +188,29 @@ pressData = {
         'datetimeFormat' : '%Y.%m.%d %H:%M',
         'datetimeTrim' : 32,
         'titleTrimEnd' : 6,
+    },
+    'www.kyongbuk.co.kr' : {
+        'name' : '경북일보',
+    },
+    'www.ifm.kr' : {
+        'name' : '경인방송',
+        'datetimeSelector' : '#main_content > div.article_header > div > div > span:nth-child(1)',
+        'datetimeFormat' : '%Y-%m-%d %H:%M'
+    },
+    'www.econotelling.com' : {
+        'name' : '이코노텔링',
+    },
+    'www.sportsw.kr' : {
+        'name' : '스포츠W'
+    },
+    'weekly.cnbnews.com' : {
+        'name' : 'CNB저널(문화경제)',
+        'datetimeSelector' : '#container_v2 > div > div > div > div.section_h12_v2 > div.section_12_v2 > div.m01_arv1 > div.viewsubject > p',
+        'datetimeFormat' : '%Y.%m.%d %H:%M:%S',
+        'datetimeTrim' : -19,
+    },
+    'www.allurekorea.com' : {
+        'name' : 'allure',
     }
 }
 
