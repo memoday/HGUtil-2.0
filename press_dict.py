@@ -243,5 +243,12 @@ pressData = {
     },
     'www.sportsq.co.kr' : {
         'name' : '스포츠Q',
+    },
+    'www.dnews.co.kr' : {
+        'name' : '대한경제',
+        'datetimeSelector' : '#container > div > div.view_contents.innerNews > div.newsCont > div.dateFont > em',
+        'datetimeFormat' : '%Y-%m-%d %H:%M:%S',
+        'datetimeTrim' : 5,
+        'datetimeTrimEnd' : 2,
     }
 }
