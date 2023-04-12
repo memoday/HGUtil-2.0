@@ -203,11 +203,11 @@ def checkNews(url) -> tuple : #언론사별 selector
                 print('Image data-src 를 불러오는 과정에서 오류가 발생했습니다.')  
 
         contentStr = str(content).replace('<br/>','\r\n') #<br>태그 Enter키로 변경
-        contentStr = str(contentStr).replace('</table>','\r\n\r\n') #이미지 부연설명 내용과 분리
+        contentStr = str(contentStr).replace('</table>','\r\n') #이미지 부연설명 내용과 분리
         contentStr = contentStr.replace('</img>','') #이미지 위치 확인
-        contentStr = contentStr.replace('<em class="img_desc">','\r\n\r\n')
+        contentStr = contentStr.replace('<em class="img_desc">','\r\n')
         contentStr = contentStr.replace('</em>','\r\n')
-        contentStr = contentStr.replace('</strong>','\r\n\r\n')
+        contentStr = contentStr.replace('</strong>','\r\n')
         contentStr = contentStr.replace('<div','\r\n\r\n<div')
         contentStr = contentStr.replace('</span>','\r\n')
         contentStr = contentStr.replace('			','') #방송기사 본문에서 [앵커] 앞에 알 수 없는 공백이 있어 이를 제거함
