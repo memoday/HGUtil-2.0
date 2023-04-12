@@ -186,28 +186,28 @@ def checkNews(url) -> tuple : #언론사별 selector
                     with open('image_dict.json', 'w') as f: #json에 image 관련 데이터 저장
                         json.dump(image_json, f, indent=4, sort_keys=True)
 
-                    reponse = requests.get(image_url) #인식된 image 다운로드
-                    with open(f'images/{verificationCode}.jpg','wb') as f:
-                        f.write(reponse.content)
+                    # reponse = requests.get(image_url) #인식된 image 다운로드
+                    # with open(f'images/{verificationCode}.jpg','wb') as f:
+                    #     f.write(reponse.content)
 
                     image.replace_with(verificationCode) #html 소스에 있는<img> 태그를 verificationCode로 일시적으로 바꿈, exportHangul 과정에서 verificationCode를 사진으로 변경함
 
-                    try: #다운 받은 이미지의 크기를 조정함
-                        with Image.open(f'images/{verificationCode}.jpg') as downloadImage:
-                            # Change the size while preserving the aspect ratio
-                            width, height = downloadImage.size
-                            if width >= 360:
-                                ratio = width / 360
-                                new_size = (int(width / ratio), int(height / ratio))
-                                downloadImage = downloadImage.resize(new_size, resample=Image.BICUBIC)
+                    # try: #다운 받은 이미지의 크기를 조정함
+                    #     with Image.open(f'images/{verificationCode}.jpg') as downloadImage:
+                    #         # Change the size while preserving the aspect ratio
+                    #         width, height = downloadImage.size
+                    #         if width >= 360:
+                    #             ratio = width / 360
+                    #             new_size = (int(width / ratio), int(height / ratio))
+                    #             downloadImage = downloadImage.resize(new_size, resample=Image.BICUBIC)
 
-                                # Save the updated image with original quality
-                                downloadImage.save(f'images/{verificationCode}.jpg', quality=95)
-                            else:
-                                print(f"Image {verificationCode} is too small to resize.")
-                    except Exception as e:
-                        print(e)
-                        print('이미지 크기 조정 과정에서 오류가 발생했습니다.')
+                    #             # Save the updated image with original quality
+                    #             downloadImage.save(f'images/{verificationCode}.jpg', quality=95)
+                    #         else:
+                    #             print(f"Image {verificationCode} is too small to resize.")
+                    # except Exception as e:
+                    #     print(e)
+                    #     print('이미지 크기 조정 과정에서 오류가 발생했습니다.')
                 else:
                     pass
             except Exception as e:

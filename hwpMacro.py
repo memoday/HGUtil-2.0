@@ -3,6 +3,8 @@ from datetime import date
 import time
 import os, sys, json
 import requests
+from PIL import Image
+import shutil
 
 def resource_path(relative_path):
     base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
@@ -410,16 +412,51 @@ def main(paperNewsList,internetNewsList,finalNewsList):
     for i in range(len(finalNewsList)):
         long_url.append(get_real_url_from_shortlink(finalNewsList[i]['shortenUrl']))
     
+    # with open('image_dict.json', 'r') as f:
+    #     image_json = json.load(f)
+
+    # for i in range(len(long_url)):
+    #     jsonKeys = image_json.keys()
+    #     if long_url[i] in jsonKeys:
+    #         print(long_url[i])
+    #         for key in image_json[long_url[i]].keys():
+    #             print(key)
+    #             imageCode.append(key)
+
+    if not os.path.exists("images"):
+        os.makedirs("images")
+
     with open('image_dict.json', 'r') as f:
         image_json = json.load(f)
 
     for i in range(len(long_url)):
         jsonKeys = image_json.keys()
         if long_url[i] in jsonKeys:
-            print(long_url[i])
-            for key in image_json[long_url[i]].keys():
-                print(key)
-                imageCode.append(key)
+            print(f'입력한 키: {long_url[i]}')
+            for verificationCode in image_json[long_url[i]].keys():
+                print(f'반환된 값: {verificationCode}')
+
+                imageCode.append(verificationCode)
+                image_url = image_json[long_url[i]][verificationCode]
+                reponse = requests.get(image_url) #인식된 image 다운로드
+                with open(f'images/{verificationCode}.jpg','wb') as f:
+                    f.write(reponse.content)
+                try: #다운 받은 이미지의 크기를 조정함
+                    with Image.open(f'images/{verificationCode}.jpg') as downloadImage:
+                        # Change the size while preserving the aspect ratio
+                        width, height = downloadImage.size
+                        if width >= 360:
+                            ratio = width / 360
+                            new_size = (int(width / ratio), int(height / ratio))
+                            downloadImage = downloadImage.resize(new_size, resample=Image.BICUBIC)
+
+                            # Save the updated image with original quality
+                            downloadImage.save(f'images/{verificationCode}.jpg', quality=95)
+                        else:
+                            print(f"Image {verificationCode} is too small to resize.")
+                except Exception as e:
+                    print(e)
+                    print('이미지 크기 조정 과정에서 오류가 발생했습니다.')
 
     #한글 생성
     createHWP()
@@ -453,4 +490,13 @@ def main(paperNewsList,internetNewsList,finalNewsList):
     
     print('hwpMacro 이미지 첨부를 시작합니다')
     replaceImages(imageCode)
+
+    image_folder_path = os.getcwd() + '\images'
+
+    if os.path.exists(image_folder_path):
+        shutil.rmtree(image_folder_path)
+        print(f"Folder {image_folder_path} and its contents have been deleted.")
+    else:
+        print(f"Folder {image_folder_path} does not exist.")
+
     print('hwpMacro 작업이 끝났습니다')

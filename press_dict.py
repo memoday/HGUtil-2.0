@@ -211,6 +211,37 @@ pressData = {
     },
     'www.allurekorea.com' : {
         'name' : 'allure',
+    },
+    'tbs.seoul.kr' : {
+        'name' : 'TBS',
+        'titleTrimEnd' : 18,
+    },
+    'www.naeil.com' : {
+        'name' : '내일신문',
+        'datetimeSelector' : '#contentArea > div.caL2 > div > div.articleArea > div.date',
+        'datetimeFormat' : '%Y-%m-%d %H:%M:%S',
+        'datetimeTrimEnd' : 3,
+    },
+    'news.bbsi.co.kr' : {
+        'name' : 'BBS NEWS',
+        'datetimeSelector' : '#article-view > div > header > div > article:nth-child(1) > ul > li:nth-child(2)',
+        'datetimeFormat' : '%Y.%m.%d %H:%M',
+        'datetimeTrim' : 4,
+        'titleSelector' : '#article-view > div > header > h3',
+    },
+    'www.e2news.com' : {
+        'name' : '이투뉴스',
+    },
+    'www.todayenergy.kr' : {
+        'name' : '투데이에너지',
+        'datetimeSelector' : '#user-container > div.float-center.max-width-1280 > header > section > div > ul > li:nth-child(2)',
+        'datetimeFormat' : '%Y.%m.%d %H:%M',
+        'datetimeTrim' : 4,
+    },
+    'www.tournews21.com' : {
+        'name' : '투어코리아',
+    },
+    'www.sportsq.co.kr' : {
+        'name' : '스포츠Q',
     }
 }
-
