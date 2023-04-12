@@ -163,7 +163,7 @@ class WindowClass(QMainWindow, form_class) :
                     self.newsTable.setItem(row_index,6,QTableWidgetItem(summary))
                     self.newsTable.setItem(row_index,7,QTableWidgetItem(shortenUrl))
 
-                self.statusBar().showMessage(f"기사를 등록했습니다. {press}_{title}")
+                self.statusBar().showMessage(f"기사를 등록했습니다. ({press})")
                 newsList.clear()
                 input_link.clear()
             

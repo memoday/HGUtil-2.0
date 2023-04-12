@@ -155,28 +155,36 @@ def checkNews(url) -> tuple : #언론사별 selector
         content = source.select_one("#newsct_article")
         publishedInfo = source.select_one("#ct > div.media_end_head.go_trans > div.media_end_head_info.nv_notrans > div.media_end_head_info_datestamp > div > span")['data-date-time']
 
-        # find all <img> tags
+        try:
+            with open('image_dict.json', 'r') as f:
+                image_json = json.load(f)
+        except:
+            with open('image_dict.json', 'w') as f:
+                # Write an empty JSON object to the file
+                json.dump({}, f)
+            with open('image_dict.json', 'r') as f:
+                image_json = json.load(f)
+                 
+        if url in image_json: #이미 json에 있는 데이터일 경우, 기존 데이터 삭제 후 새로 데이터를 불러옴
+            print(image_json[url])
+            del image_json[url]
+            with open('image_dict.json', 'w') as f:
+                json.dump(image_json, f)
+            with open('image_dict.json', 'r') as f:
+                image_json = json.load(f)
+
         img_tags = content.find_all('img')
+
         # replace each <img> tag with a new string
         for image in img_tags:
             try:
                 image_url = image['data-src']
 
-                if 'gif' in image_url[-13:]:
+                if 'gif' in image_url[-20:]:
                     pass
-                elif 'jpg' in image_url[-13:]:
+                elif 'jpg' in image_url[-20:] or 'png' in image_url[-20:]:
                     hash_object = hashlib.sha256(image_url.encode())
                     verificationCode = hash_object.hexdigest()
-
-                    try:
-                        with open('image_dict.json', 'r') as f:
-                            image_json = json.load(f)
-                    except:
-                        with open('image_dict.json', 'w') as f:
-                            # Write an empty JSON object to the file
-                            json.dump({}, f)
-                        with open('image_dict.json', 'r') as f:
-                            image_json = json.load(f)
 
                     if url in image_json:
                         image_json[url][verificationCode] = image_url
@@ -186,33 +194,13 @@ def checkNews(url) -> tuple : #언론사별 selector
                     with open('image_dict.json', 'w') as f: #json에 image 관련 데이터 저장
                         json.dump(image_json, f, indent=4, sort_keys=True)
 
-                    # reponse = requests.get(image_url) #인식된 image 다운로드
-                    # with open(f'images/{verificationCode}.jpg','wb') as f:
-                    #     f.write(reponse.content)
-
                     image.replace_with(verificationCode) #html 소스에 있는<img> 태그를 verificationCode로 일시적으로 바꿈, exportHangul 과정에서 verificationCode를 사진으로 변경함
 
-                    # try: #다운 받은 이미지의 크기를 조정함
-                    #     with Image.open(f'images/{verificationCode}.jpg') as downloadImage:
-                    #         # Change the size while preserving the aspect ratio
-                    #         width, height = downloadImage.size
-                    #         if width >= 360:
-                    #             ratio = width / 360
-                    #             new_size = (int(width / ratio), int(height / ratio))
-                    #             downloadImage = downloadImage.resize(new_size, resample=Image.BICUBIC)
-
-                    #             # Save the updated image with original quality
-                    #             downloadImage.save(f'images/{verificationCode}.jpg', quality=95)
-                    #         else:
-                    #             print(f"Image {verificationCode} is too small to resize.")
-                    # except Exception as e:
-                    #     print(e)
-                    #     print('이미지 크기 조정 과정에서 오류가 발생했습니다.')
                 else:
                     pass
             except Exception as e:
                 print(e)
-                print('Image data-src 를 불러오는 과정에서 오류가 발생했습니다.')
+                print('Image data-src 를 불러오는 과정에서 오류가 발생했습니다.')  
 
         contentStr = str(content).replace('<br/>','\r\n') #<br>태그 Enter키로 변경
         contentStr = str(contentStr).replace('</table>','\r\n\r\n') #이미지 부연설명 내용과 분리
@@ -223,7 +211,6 @@ def checkNews(url) -> tuple : #언론사별 selector
         contentStr = contentStr.replace('<div','\r\n\r\n<div')
         contentStr = contentStr.replace('</span>','\r\n')
         contentStr = contentStr.replace('			','') #방송기사 본문에서 [앵커] 앞에 알 수 없는 공백이 있어 이를 제거함
-        print(contentStr)
         to_clean = re.compile('<.*?>') # <> 사이에 있는 것들
         contentEdited = re.sub(to_clean,'',contentStr) #html태그 모두 지우기
 
@@ -259,8 +246,55 @@ def checkNews(url) -> tuple : #언론사별 selector
         rawPublishedTime = rawPublishedTime.replace('오전','AM')
         rawPublishedTime = rawPublishedTime.replace('오후','PM')
         publishedTime = datetime.strptime(rawPublishedTime, '%p %I:%M') # %I가 12시간 형식, %H가 24시간 형식
-        publishedTime = datetime.strftime(publishedTime, '%H:%M')
+        publishedTime = datetime.strftime(publishedTime, '%H:%M')   
         
+        try:
+            with open('image_dict.json', 'r') as f:
+                image_json = json.load(f)
+        except:
+            with open('image_dict.json', 'w') as f:
+                # Write an empty JSON object to the file
+                json.dump({}, f)
+            with open('image_dict.json', 'r') as f:
+                image_json = json.load(f)
+                 
+        if url in image_json: #이미 json에 있는 데이터일 경우, 기존 데이터 삭제 후 새로 데이터를 불러옴
+            print(image_json[url])
+            del image_json[url]
+            with open('image_dict.json', 'w') as f:
+                json.dump(image_json, f)
+            with open('image_dict.json', 'r') as f:
+                image_json = json.load(f)
+
+        img_tags = content.find_all('img')
+
+        # replace each <img> tag with a new string
+        for image in img_tags:
+            try:
+                image_url = image['src']
+
+                if 'gif' in image_url[-20:]:
+                    pass
+                elif 'jpg' in image_url[-20:] or 'png' in image_url[-20:]:
+                    hash_object = hashlib.sha256(image_url.encode())
+                    verificationCode = hash_object.hexdigest()
+
+                    if url in image_json:
+                        image_json[url][verificationCode] = image_url
+                    else:
+                        image_json[url] = {verificationCode: image_url}
+
+                    with open('image_dict.json', 'w') as f: #json에 image 관련 데이터 저장
+                        json.dump(image_json, f, indent=4, sort_keys=True)
+
+                    image.replace_with(verificationCode) #html 소스에 있는<img> 태그를 verificationCode로 일시적으로 바꿈, exportHangul 과정에서 verificationCode를 사진으로 변경함
+
+                else:
+                    pass
+            except Exception as e:
+                print(e)
+                print('Image data-src 를 불러오는 과정에서 오류가 발생했습니다.')  
+
         contentStr = str(content).replace('<br/>','\r\n') #<br>태그 Enter키로 변경
         contentStr = str(contentStr).replace('</table>','\r\n\r\n') #이미지 부연설명 내용과 분리
         contentStr = contentStr.replace('</img>','\r\n') #이미지 위치 확인
@@ -281,9 +315,57 @@ def checkNews(url) -> tuple : #언론사별 selector
         publishedTime = datetime.strptime(rawPublishedTime, '%p %I:%M') # %I가 12시간 형식, %H가 24시간 형식
         publishedTime = datetime.strftime(publishedTime, '%H:%M')
 
-        contentStr = str(content).replace('<br/>','\r\n') #<br>태그 Enter키로 변경
+        try:
+            with open('image_dict.json', 'r') as f:
+                image_json = json.load(f)
+        except:
+            with open('image_dict.json', 'w') as f:
+                # Write an empty JSON object to the file
+                json.dump({}, f)
+            with open('image_dict.json', 'r') as f:
+                image_json = json.load(f)
+                 
+        if url in image_json: #이미 json에 있는 데이터일 경우, 기존 데이터 삭제 후 새로 데이터를 불러옴
+            print(image_json[url])
+            del image_json[url]
+            with open('image_dict.json', 'w') as f:
+                json.dump(image_json, f)
+            with open('image_dict.json', 'r') as f:
+                image_json = json.load(f)
+
+        img_tags = content.find_all('img')
+
+        # replace each <img> tag with a new string
+        for image in img_tags:
+            try:
+                image_url = image['src']
+
+                if 'gif' in image_url[-20:]:
+                    pass
+                elif 'jpg' in image_url[-20:] or 'png' in image_url[-20:]:
+                    hash_object = hashlib.sha256(image_url.encode())
+                    verificationCode = hash_object.hexdigest()
+
+                    if url in image_json:
+                        image_json[url][verificationCode] = image_url
+                    else:
+                        image_json[url] = {verificationCode: image_url}
+
+                    with open('image_dict.json', 'w') as f: #json에 image 관련 데이터 저장
+                        json.dump(image_json, f, indent=4, sort_keys=True)
+
+                    image.replace_with(verificationCode) #html 소스에 있는<img> 태그를 verificationCode로 일시적으로 바꿈, exportHangul 과정에서 verificationCode를 사진으로 변경함
+
+                else:
+                    pass
+            except Exception as e:
+                print(e)
+                print('Image data-src 를 불러오는 과정에서 오류가 발생했습니다.')  
+
+        contentStr = str(content).replace('<em class="img_desc">','\r\n\r\n<em class="img_desc">')
+        contentStr = str(contentStr).replace('<br/>','\r\n') #<br>태그 Enter키로 변경
         contentStr = str(contentStr).replace('</table>','\r\n\r\n') #이미지 부연설명 내용과 분리
-        contentStr = contentStr.replace('</img>','\r\n') #이미지 위치 확인
+        contentStr = contentStr.replace('</img>','\r\n\r\n') #이미지 위치 확인
         to_clean = re.compile('<.*?>') # <> 사이에 있는 것들
         contentEdited = re.sub(to_clean,'',contentStr) #html태그 모두 지우기        
         
