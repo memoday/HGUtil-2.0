@@ -250,5 +250,11 @@ pressData = {
         'datetimeFormat' : '%Y-%m-%d %H:%M:%S',
         'datetimeTrim' : 5,
         'datetimeTrimEnd' : 2,
+    },
+    'www.news2day.co.kr' : {
+        'name' : '뉴스투데이',
+        'datetimeSelector' : '#main > div.contents.main_contents > div > div > div > div > div.layout_sortable > div.date > span:nth-child(2)',
+        'datetimeFormat' : '%Y.%m.%d %H:%M',
+        'datetimeTrim' : 6,
     }
 }
