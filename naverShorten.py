@@ -37,6 +37,3 @@ def naverShorten(longUrl):
         return shortenUrl
     else:
         print("Error Code:" + rescode)
-
-if __name__ == "__main__":
-    print(naverShorten('https://odium.kr'))

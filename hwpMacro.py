@@ -386,7 +386,7 @@ def replaceImages(imageCode):
             hwp.HAction.Execute("RepeatFind", hwp.HParameterSet.HFindReplace.HSet)
             hwpText('\r\n')
             try:
-                image_path = os.getcwd() + f'\images\{imageCode[i]}.jpg'
+                image_path = os.getcwd() + f'\HGUtil_images\{imageCode[i]}.jpg'
                 hwp.InsertPicture(image_path)
                 print(os.path.exists(image_path))
                 print(f'이미지를 첨부했습니다 {imageCode[i]}')
@@ -423,8 +423,8 @@ def main(paperNewsList,internetNewsList,finalNewsList):
     #             print(key)
     #             imageCode.append(key)
 
-    if not os.path.exists("images"):
-        os.makedirs("images")
+    if not os.path.exists("HGUtil_images"):
+        os.makedirs("HGUtil_images")
 
     with open('image_dict.json', 'r') as f:
         image_json = json.load(f)
@@ -439,19 +439,19 @@ def main(paperNewsList,internetNewsList,finalNewsList):
                 imageCode.append(verificationCode)
                 image_url = image_json[long_url[i]][verificationCode]
                 reponse = requests.get(image_url) #인식된 image 다운로드
-                with open(f'images/{verificationCode}.jpg','wb') as f:
+                with open(f'HGUtil_images/{verificationCode}.jpg','wb') as f:
                     f.write(reponse.content)
                 try: #다운 받은 이미지의 크기를 조정함
-                    with Image.open(f'images/{verificationCode}.jpg') as downloadImage:
+                    with Image.open(f'HGUtil_images/{verificationCode}.jpg') as downloadImage:
                         # Change the size while preserving the aspect ratio
                         width, height = downloadImage.size
-                        if width >= 360:
-                            ratio = width / 360
+                        if width >= 350:
+                            ratio = width / 350
                             new_size = (int(width / ratio), int(height / ratio))
                             downloadImage = downloadImage.resize(new_size, resample=Image.BICUBIC)
 
                             # Save the updated image with original quality
-                            downloadImage.save(f'images/{verificationCode}.jpg', quality=95)
+                            downloadImage.save(f'HGUtil_images/{verificationCode}.jpg', quality=95)
                         else:
                             print(f"Image {verificationCode} is too small to resize.")
                 except Exception as e:
@@ -491,7 +491,7 @@ def main(paperNewsList,internetNewsList,finalNewsList):
     print('hwpMacro 이미지 첨부를 시작합니다')
     replaceImages(imageCode)
 
-    image_folder_path = os.getcwd() + '\images'
+    image_folder_path = os.getcwd() + '\HGUtil_images'
 
     if os.path.exists(image_folder_path):
         shutil.rmtree(image_folder_path)

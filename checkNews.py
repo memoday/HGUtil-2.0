@@ -208,7 +208,7 @@ def checkNews(url) -> tuple : #언론사별 selector
         contentStr = contentStr.replace('<em class="img_desc">','\r\n')
         contentStr = contentStr.replace('</em>','\r\n')
         contentStr = contentStr.replace('</strong>','\r\n')
-        contentStr = contentStr.replace('<div','\r\n\r\n<div')
+        contentStr = contentStr.replace('<div','\r\n<div')
         contentStr = contentStr.replace('</span>','\r\n')
         contentStr = contentStr.replace('			','') #방송기사 본문에서 [앵커] 앞에 알 수 없는 공백이 있어 이를 제거함
         to_clean = re.compile('<.*?>') # <> 사이에 있는 것들
