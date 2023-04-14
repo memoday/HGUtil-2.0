@@ -138,11 +138,11 @@ def getContent(source,domain):
 
 def checkNews(url) -> tuple : #언론사별 selector
 
-    domain = urlparse(url).netloc #도메인 이름 가져옴 ex) https://www.example.com/ex/123 -> www.example.com
-
-    print(domain)
-
     url = get_real_url_from_shortlink(url)
+
+    domain = urlparse(url).netloc #도메인 이름 가져옴 ex) https://www.example.com/ex/123 -> www.example.com
+    print(domain)
+    
     web = requests.get(url,headers={'User-Agent':'Mozilla/5.0'})
     if web.encoding != 'UTF-8' or web.encoding != 'utf-8':
         web.encoding=None
