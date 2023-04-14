@@ -256,5 +256,14 @@ pressData = {
         'datetimeSelector' : '#main > div.contents.main_contents > div > div > div > div > div.layout_sortable > div.date > span:nth-child(2)',
         'datetimeFormat' : '%Y.%m.%d %H:%M',
         'datetimeTrim' : 6,
-    }
+    },
+    'www.cstimes.com' : {
+        'name' : '컨슈머타임스',
+    },
+    'www.lkp.news' : {
+        'name' : '리버티코리아포스트',
+    },
+    'www.fetv.co.kr' : {
+        'name' : 'FETV',
+    },
 }
