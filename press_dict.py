@@ -266,4 +266,15 @@ pressData = {
     'www.fetv.co.kr' : {
         'name' : 'FETV',
     },
+    'home.ebs.co.kr' : {
+        'name' : 'EBS',
+        'titleTrim' : 9,
+    },
+    'www.gosiweek.com' : {
+        'name' : '공무원수험신문',
+        'datetimeSelector' : '#pritnDiv > div.news_title > div.artc_tlt > dt > ul > li.right > div > span.nn',
+        'datetimeFormat' : '%Y.%m.%d %H:%M',
+        'datetimeTrimEnd' : 3,
+        'titleSelector' : '#pritnDiv > div.news_title > div.artc_tlt > dl > span',
+    },
 }
