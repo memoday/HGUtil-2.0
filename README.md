@@ -135,4 +135,10 @@ https://developer.hancom.com/hwpctrl-hwpautomation/
 
 ![보안모듈](https://user-images.githubusercontent.com/74040890/231094919-245a85b2-1f2b-4990-92fd-1cc34fa0a7c5.png)
 
+<br>
+
+![image](https://user-images.githubusercontent.com/74040890/232679312-fa32efe2-d346-4100-b14f-31891bb2710e.png)
+
+<br>
+C드라이브에 보안모듈 이름을 "FilePathCheckerModule.dll"로 저장해둔 상태로 레지스트리를 위와 같이 추가했습니다.
 
