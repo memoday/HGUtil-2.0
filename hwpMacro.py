@@ -17,6 +17,7 @@ def createHWP():
     global pset
     hwp = win32.gencache.EnsureDispatch("hwpframe.hwpobject")  # 한/글 실행하기
     hwp.XHwpWindows.Item(0).Visible = True  # 백그라운드 숨김 해제
+    hwp.RegisterModule("FilePathCheckDLL","FilePathCheckerModule") # 보안모듈 추가, 레지스트리 작업 필요함
 
     act = hwp.CreateAction("ParagraphShape")  # 액션 생성 #linespacing을 위한 값
     pset = act.CreateSet()  # 파라미터셋 생성
