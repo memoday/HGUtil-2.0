@@ -397,6 +397,28 @@ def replaceImages(imageCode):
     except Exception as e:
         print(e)
 
+def saveAs():
+    filename = '한강관련 주요보도사항_'
+    extension ='.hwpx'
+
+    today = time.strftime('%y.%m.%d.') 
+    hours = int(time.strftime('%H'))
+
+    if hours <= 12:
+        reportHour = "09"
+    else :
+        reportHour = '17'
+
+    filename = filename+f'{today}{reportHour}시'
+    checkFileExists = os.path.join(os.getcwd(), filename + extension)
+    
+    if os.path.exists(checkFileExists):
+        print('지정된 경로에 동일 명의 파일이 존재해 저장을 중단했습니다.')
+        return
+    else:
+        pass
+
+    hwp.SaveAs(os.path.join(os.getcwd(), filename + extension))
 
 #메인 함수
 def main(paperNewsList,internetNewsList,finalNewsList):
@@ -499,5 +521,5 @@ def main(paperNewsList,internetNewsList,finalNewsList):
         print(f"Folder {image_folder_path} and its contents have been deleted.")
     else:
         print(f"Folder {image_folder_path} does not exist.")
-
+    saveAs()
     print('hwpMacro 작업이 끝났습니다')
