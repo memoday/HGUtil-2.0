@@ -277,4 +277,11 @@ pressData = {
         'datetimeTrimEnd' : 3,
         'titleSelector' : '#pritnDiv > div.news_title > div.artc_tlt > dl > span',
     },
+    'ilyo.co.kr' : {
+        'name' : '일요신문',
+    },
+    'www.fashionbiz.co.kr' : {
+        'name' : '패션비즈',
+        'titleSelector' : 'head > title:nth-child(8)',
+    },
 }
