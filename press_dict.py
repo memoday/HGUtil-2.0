@@ -284,4 +284,35 @@ pressData = {
         'name' : '패션비즈',
         'titleSelector' : 'head > title:nth-child(8)',
     },
+    'www.handmk.com' : {
+        'name' : '핸드메이커',
+    },
+    'medigatenews.com' : {
+         'name' : '메디게이트뉴스',
+         'titleTrim' : 15,
+    },
+    'www.irobotnews.com' : {
+        'name' : '로봇신문',
+        'titleTrimEnd' : 9,
+    },
+    'www.kyeongin.com' : {
+        'name' : '경인일보',
+        'datetimeSelector' : '#content > div.view2021 > div > div.view-title-box > div.view-title > div > span > span.news-date',
+        'datetimeFormat' : '%Y-%m-%d %H:%M',
+        'datetimeTrim' : 14,
+        'datetimeTrimEnd' : 8,
+    },
+    'www.cdntv.co.kr' : {
+        'name' : 'CDN뉴스',
+        'datetimeSelector' : '#bo_v_info > strong:nth-child(4)',
+        'datetimeFormat' : '%y-%m-%d %H:%M',
+    },
+    'www.boannews.com' : {
+        'name' : '보안뉴스',
+        'datetimeSelector' : '#news_util01',
+        'datetimeTrim' : 15,
+    },
+    'www.sisajournal-e.com' : {
+        'name' : '시사저널이코노미',
+    }
 }
