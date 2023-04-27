@@ -314,5 +314,18 @@ pressData = {
     },
     'www.sisajournal-e.com' : {
         'name' : '시사저널이코노미',
-    }
+    },
+    'kr.aving.net' : {
+        'name' : '에이빙뉴스',
+    },
+    'www.sentv.co.kr' : {
+        'name' : '서울경제TV',
+        'datetimeSelector' : '#news_print_wrap > section > section.news_home_list.section_1 > div.util-area > span.date',
+        'datetimeFormat' : '%Y-%m-%d %H:%M:%S',
+        'datetimeTrim' : 3,
+    },
+    'www.youngnong.co.kr' : {
+        'name' : '한국영농신문',
+        'titleTrimEnd' : 10,
+    },
 }
