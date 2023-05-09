@@ -328,4 +328,57 @@ pressData = {
         'name' : '한국영농신문',
         'titleTrimEnd' : 10,
     },
+    'www.segyebiz.com' : {
+        'name' : '세계비즈',
+    },
+    'www.vogue.co.kr' : {
+        'name' : 'Vogue',
+    },
+    'www.sporbiz.co.kr' : {
+        'name' : '한스경제'
+    },
+    'www.polinews.co.kr' : {
+        'name' : '폴리뉴스'
+    }, 
+    'www.digitaltoday.co.kr' : {
+        'name' : '디지털투데이'
+    },
+    'www.fntimes.com' : {
+        'name' : 'fntimes'
+    },
+    'www.jungle.co.kr' : {
+        'name' : '디자인정글',
+    },
+    'www.aflnews.co.kr' : {
+        'name' : '농수축산신문',
+        'titleSelector' : '#article-view > div > header > h3',
+    },
+    'news.cpbc.co.kr' : {
+        'name' : '가톨릭평화방송평화신문',
+        # 'datetimeSelector' : '#cnbc-front-articleHeader-self > div > div > div.ah_info > span.ahi_date',
+        # 'datetimeFormat' : '%Y.%m.%d.%H:%M',
+        # 'datetimeTrim' : 3,
+    },
+    'kenews.co.kr' : {
+        'name' : '한국농촌경제신문',
+        'datetimeSelector' : '#container > div > div:nth-child(1) > div > div.arv_001 > div.art_top > ul.art_info > li:nth-child(2)',
+        'datetimeFormat' : '2023.%m.%d %H:%M:%S',
+        'datetimeTrim' : 3,
+    },
+    'www.raonnews.com' : {
+        'name' : '라온신문',
+        'datetimeSelector' : '#container > div > div.sublay.sub_article > div.sl > div > div.arv_008 > div > div > div > ul.art_info > li:nth-child(2)',
+        'datetimeFormat' : '%Y.%m.%d %H:%M:%S',
+        'datetimeTrim' : 3,
+    },
+    'www.olchiolchi.com' : {
+        'name' :'올치올치',
+        'titleSelector' : '#main-content > div > div > div > div > div.et_pb_column.et_pb_column_3_4.et_pb_column_0_tb_body.et_pb_specialty_column.et_pb_css_mix_blend_mode_passthrough > div.et_pb_row_inner.et_pb_row_inner_0_tb_body.post_row > div > div.et_pb_with_border.et_pb_module.et_pb_post_title.et_pb_post_title_0_tb_body.et_pb_bg_layout_light.et_pb_text_align_center > div > h1',
+    },
+    'www.livesnews.com' : {
+        'name' : '라이브팜뉴스',
+        'datetimeSelector' : '#container > div > div:nth-child(1) > div > div.arv_001 > div.art_top > ul.art_info > li:nth-child(2)',
+        'datetimeFormat' : '%Y.%m.%d %H:%M:%S',
+        'datetimeTrim' : 3,
+    },
 }
