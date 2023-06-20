@@ -381,4 +381,27 @@ pressData = {
         'datetimeFormat' : '%Y.%m.%d %H:%M:%S',
         'datetimeTrim' : 3,
     },
+    'www.businesskorea.co.kr' : {
+        'name' : '비지니스코리아',
+    },
+    'radio.ytn.co.kr' : {
+        'name' : 'YTN라디오',
+    },
+    'autotimes.hankyung.com' : {
+        'name' : '오토타임즈',
+        'datetimeSelector' : '#talklink_contents > div.view-title > p > span.i_date',
+        'datetimeFormat' : '%Y-%m-%d %H:%M',
+        'datetimeTrim' : 3,
+        'titleSelector' : '#talklink_contents > div.view-title > h2',
+    },
+    'jhealthmedia.joins.com' : {
+        'name' : '중앙일보 헬스미디어',
+        'datetimeSelector' : '#container > div > div.left_area > div.article_head > div.clearfx > div.byline > em:nth-child(2)',
+        'datetimeFormat' : '%Y.%m.%d %H:%M',
+        'datetimeTrim' : 3,
+        'titleTrimEnd' : 13,
+    },
+    'www.cnbnews.com' : {
+        'name' : 'CNB뉴스',
+    },
 }
