@@ -180,8 +180,6 @@ class WindowClass(QMainWindow, form_class) :
         try:
             rows = self.newsTable.rowCount()
             columns = self.newsTable.columnCount()
-            print(rows)
-            print(columns)
 
             finalNewsList = []
             paperNewsList = []
@@ -219,13 +217,17 @@ class WindowClass(QMainWindow, form_class) :
 
                 finalNewsList.append(news)
             
-            for i in range(len(finalNewsList)):
-                if finalNewsList[i]["newsType"] == "신문/방송":
-                    paperNewsList.append(finalNewsList[i])
-                elif finalNewsList[i]["newsType"] == "인터넷":
-                    internetNewsList.append(finalNewsList[i])
+            if len(finalNewsList) <= 0:
+                self.statusBar().showMessage('선택된 기사가 없습니다.')
+                return
+            else:
+                for i in range(len(finalNewsList)):
+                    if finalNewsList[i]["newsType"] == "신문/방송":
+                        paperNewsList.append(finalNewsList[i])
+                    elif finalNewsList[i]["newsType"] == "인터넷":
+                        internetNewsList.append(finalNewsList[i])
 
-            hwpMacro.main(paperNewsList,internetNewsList,finalNewsList)
+                hwpMacro.main(paperNewsList,internetNewsList,finalNewsList)
         except Exception as e:
             self.statusBar().showMessage("exportHangul 작업 실패: "+str(e))
 
@@ -233,8 +235,6 @@ class WindowClass(QMainWindow, form_class) :
         try:
             rows = self.newsTable.rowCount()
             columns = self.newsTable.columnCount()
-            print(rows)
-            print(columns)
 
             totalNewsList = []
             checkedNewsList = []
@@ -288,8 +288,6 @@ class WindowClass(QMainWindow, form_class) :
         try:
             rows = self.newsTable.rowCount()
             columns = self.newsTable.columnCount()
-            print(rows)
-            print(columns)
 
             finalNewsList = []
             paperNewsList = []
@@ -324,16 +322,20 @@ class WindowClass(QMainWindow, form_class) :
 
                 finalNewsList.append(news)
             
-            for i in range(len(finalNewsList)):
-                if finalNewsList[i]["newsType"] == "신문/방송":
-                    paperNewsList.append(finalNewsList[i])
-                elif finalNewsList[i]["newsType"] == "인터넷":
-                    internetNewsList.append(finalNewsList[i])
+            if len(finalNewsList) <= 0:
+                self.statusBar().showMessage('선택된 기사가 없습니다.')
+                return
+            else:
+                for i in range(len(finalNewsList)):
+                    if finalNewsList[i]["newsType"] == "신문/방송":
+                        paperNewsList.append(finalNewsList[i])
+                    elif finalNewsList[i]["newsType"] == "인터넷":
+                        internetNewsList.append(finalNewsList[i])
 
-            hwpMacro.exportSummary(paperNewsList,internetNewsList,finalNewsList)
+                hwpMacro.exportSummary(paperNewsList,internetNewsList,finalNewsList)
+
         except Exception as e:
             self.statusBar().showMessage("exportHangul 작업 실패: "+str(e))
-
 
     def exportSelectionSummary(self):
         try:
@@ -374,13 +376,18 @@ class WindowClass(QMainWindow, form_class) :
 
                 finalNewsList.append(news)
             
-            for i in range(len(finalNewsList)):
-                if finalNewsList[i]["newsType"] == "신문/방송":
-                    paperNewsList.append(finalNewsList[i])
-                elif finalNewsList[i]["newsType"] == "인터넷":
-                    internetNewsList.append(finalNewsList[i])
+            if len(finalNewsList) <= 0:
+                self.statusBar().showMessage('선택된 기사가 없습니다.')
+                return
+            else:
+                for i in range(len(finalNewsList)):
+                    if finalNewsList[i]["newsType"] == "신문/방송":
+                        paperNewsList.append(finalNewsList[i])
+                    elif finalNewsList[i]["newsType"] == "인터넷":
+                        internetNewsList.append(finalNewsList[i])
 
-            hwpMacro.exportSelectionSummary(paperNewsList,internetNewsList,finalNewsList)
+                hwpMacro.exportSelectionSummary(paperNewsList,internetNewsList,finalNewsList)
+                
         except Exception as e:
             self.statusBar().showMessage("exportHangul 작업 실패: "+str(e))
 
