@@ -153,14 +153,11 @@ def fontHeadline():
     hwp.HAction.Execute("CharShape", hwp.HParameterSet.HCharShape.HSet)
 
 def graphAlignCenter():
-    try:
-        hwp.HAction.GetDefault("TablePropertyDialog", hwp.HParameterSet.HShapeObject.HSet)
-        hwp.HParameterSet.HShapeObject.HorzAlign = hwp.HAlign("Left")
-        hwp.HParameterSet.HShapeObject.HSet.SetItem("ShapeType", 3)
-        hwp.HParameterSet.HShapeObject.HSet.SetItem("ShapeCellSize", 0)
-        hwp.HAction.Execute("TablePropertyDialog", hwp.HParameterSet.HShapeObject.HSet)
-    except:
-        pass
+    shape_obejct = hwp.HParameterSet.HShapeObject
+    hwp.HAction.GetDefault("TablePropertyDialog", shape_obejct.HSet)
+    shape_obejct.HorzAlign = hwp.HAlign("Left")
+    hwp.HAction.Execute("TablePropertyDialog", shape_obejct.HSet)
+
 
 def graphBorder():
     hwp.HAction.GetDefault("CellBorder", hwp.HParameterSet.HCellBorderFill.HSet)
@@ -522,4 +519,115 @@ def main(paperNewsList,internetNewsList,finalNewsList):
     else:
         print(f"Folder {image_folder_path} does not exist.")
     saveAs()
+    print('hwpMacro 작업이 끝났습니다')
+
+def exportSummary(paperNewsList,internetNewsList,finalNewsList):
+    #한글 생성
+    createHWP()
+    if len(paperNewsList) > 0:
+        createTable(category="신문/방송 보도사항", count=len(paperNewsList))
+        for i in range(len(paperNewsList)):
+            publishedDate, press, title,url, summary = paperNewsList[i]['publishedDate'], paperNewsList[i]['press'], paperNewsList[i]['title'], paperNewsList[i]['shortenUrl'], paperNewsList[i]['summary']
+            title = str(title+"\r\n"+url)
+            fillData(publishedDate,press,title,summary)
+        hwp.MovePos(3)
+        hwpText('\r\n\r\n')
+    if len(internetNewsList) > 0:
+        createTable(category="인터넷 보도사항", count=len(internetNewsList))
+        for i in range(len(internetNewsList)):
+            publishedDate, press, title, url, summary = internetNewsList[i]['publishedDate'], internetNewsList[i]['press'], internetNewsList[i]['title'], internetNewsList[i]['shortenUrl'], internetNewsList[i]['summary']
+            title = str(title+"\r\n"+url)
+            fillData(publishedDate,press,title,summary)
+    
+    print('hwpMacro 작업이 끝났습니다')
+
+def exportSelectionSummary(paperNewsList,internetNewsList,finalNewsList):
+
+    long_url = []
+    imageCode = []
+
+    def get_real_url_from_shortlink(url): #단축링크 원본링크로 변경
+        resp = requests.get(url,headers={'User-Agent':'Mozilla/5.0'})
+        print('Original URL:'+resp.url)
+        return resp.url
+    
+    #이미지 데이터 처리하는 과정
+    for i in range(len(finalNewsList)):
+        long_url.append(get_real_url_from_shortlink(finalNewsList[i]['shortenUrl']))
+
+    if not os.path.exists("HGUtil_images"):
+        os.makedirs("HGUtil_images")
+
+    with open('image_dict.json', 'r') as f:
+        image_json = json.load(f)
+
+    for i in range(len(long_url)):
+        jsonKeys = image_json.keys()
+        if long_url[i] in jsonKeys:
+            print(f'입력한 키: {long_url[i]}')
+            for verificationCode in image_json[long_url[i]].keys():
+                print(f'반환된 값: {verificationCode}')
+
+                imageCode.append(verificationCode)
+                image_url = image_json[long_url[i]][verificationCode]
+                reponse = requests.get(image_url) #인식된 image 다운로드
+                with open(f'HGUtil_images/{verificationCode}.jpg','wb') as f:
+                    f.write(reponse.content)
+                try: #다운 받은 이미지의 크기를 조정함
+                    with Image.open(f'HGUtil_images/{verificationCode}.jpg') as downloadImage:
+                        # Change the size while preserving the aspect ratio
+                        width, height = downloadImage.size
+                        if width >= 350:
+                            ratio = width / 350
+                            new_size = (int(width / ratio), int(height / ratio))
+                            downloadImage = downloadImage.resize(new_size, resample=Image.BICUBIC)
+
+                            # Save the updated image with original quality
+                            downloadImage.save(f'HGUtil_images/{verificationCode}.jpg', quality=95)
+                        else:
+                            print(f"Image {verificationCode} is too small to resize.")
+                except Exception as e:
+                    print(e)
+                    print('이미지 크기 조정 과정에서 오류가 발생했습니다.')
+
+    #한글 생성
+    createHWP()
+    if len(paperNewsList) > 0:
+        createTable(category="신문/방송 보도사항", count=len(paperNewsList))
+        for i in range(len(paperNewsList)):
+            publishedDate, press, title,url, summary = paperNewsList[i]['publishedDate'], paperNewsList[i]['press'], paperNewsList[i]['title'], paperNewsList[i]['shortenUrl'], paperNewsList[i]['summary']
+            title = str(title+"\r\n"+url)
+            fillData(publishedDate,press,title,summary)
+        hwp.MovePos(3)
+        hwpText('\r\n\r\n')
+    if len(internetNewsList) > 0:
+        createTable(category="인터넷 보도사항", count=len(internetNewsList))
+        for i in range(len(internetNewsList)):
+            publishedDate, press, title, url, summary = internetNewsList[i]['publishedDate'], internetNewsList[i]['press'], internetNewsList[i]['title'], internetNewsList[i]['shortenUrl'], internetNewsList[i]['summary']
+            title = str(title+"\r\n"+url)
+            fillData(publishedDate,press,title,summary)
+    hwp.MovePos(3)
+
+    if len(paperNewsList) > 0:
+        hwp.HAction.Run("BreakPage")
+        for i in range(len(paperNewsList)):
+            title, press, publishedDate, publishedTime,content = paperNewsList[i]['title'], paperNewsList[i]['press'], paperNewsList[i]['publishedDate'], paperNewsList[i]['publishedTime'], paperNewsList[i]['content']
+            fillScrap(title, press, publishedDate, publishedTime,content)
+        hwp.MovePos(3)
+    if len(internetNewsList) > 0:
+        hwp.HAction.Run("BreakPage")
+        for i in range(len(internetNewsList)):
+            title, press, publishedDate, publishedTime,content = internetNewsList[i]['title'], internetNewsList[i]['press'], internetNewsList[i]['publishedDate'], internetNewsList[i]['publishedTime'], internetNewsList[i]['content']
+            fillScrap(title, press, publishedDate, publishedTime,content)
+    
+    print('hwpMacro 이미지 첨부를 시작합니다')
+    replaceImages(imageCode)
+
+    image_folder_path = os.getcwd() + '\HGUtil_images'
+
+    if os.path.exists(image_folder_path):
+        shutil.rmtree(image_folder_path)
+        print(f"Folder {image_folder_path} and its contents have been deleted.")
+    else:
+        print(f"Folder {image_folder_path} does not exist.")
     print('hwpMacro 작업이 끝났습니다')

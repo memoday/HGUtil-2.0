@@ -12,7 +12,7 @@ import toMessage
 import webbrowser
 from PyQt5.QtCore import Qt
 
-__version__ = 'v1.2.4'
+__version__ = 'v1.3.0'
 
 settings = QSettings("table.ini", QSettings.IniFormat)
 
@@ -66,8 +66,11 @@ class WindowClass(QMainWindow, form_class) :
         self.btn_exit.clicked.connect(self.exit)
         self.btn_save.clicked.connect(self.save)
         self.btn_load.clicked.connect(self.load)
+        self.btn_summary.clicked.connect(self.exportSummary)
+        self.btn_selectionSummary.clicked.connect(self.exportSelectionSummary)
         
         self.autoStart.setChecked(True)
+        self.doubleClickWeb.setChecked(True)
 
         header = self.newsTable.horizontalHeader()       
         header.setSectionResizeMode(0, QHeaderView.ResizeToContents)
@@ -280,6 +283,106 @@ class WindowClass(QMainWindow, form_class) :
             
         except Exception as e:
             self.statusBar().showMessage("exportMessage 작업 실패: "+str(e))
+
+    def exportSummary(self):
+        try:
+            rows = self.newsTable.rowCount()
+            columns = self.newsTable.columnCount()
+            print(rows)
+            print(columns)
+
+            finalNewsList = []
+            paperNewsList = []
+            internetNewsList = []
+            for i in range(rows):
+                newsType = self.newsTable.cellWidget(i,1).currentText() #table데이터를 배열화하는 작업
+                publishedDateTime = self.newsTable.item(i,2).text()
+                press = self.newsTable.item(i,3).text()
+                title = self.newsTable.item(i,4).text()
+                content = self.newsTable.item(i,5).text()
+                summary = self.newsTable.item(i,6).text()
+                shortenUrl = self.newsTable.item(i,7).text()
+                # print(newsType)
+                # print(publishedDateTime,press,title,content,summary,shortenUrl)
+
+                if publishedDateTime == "":
+                    self.statusBar().showMessage('날짜가 입력되지 않은 기사가 있습니다.')
+                    return
+                publishedDate, publishedTime = publishedDateTime.split('T')
+                publishedDate = publishedDate.replace("-",".")
+
+                news = {
+                    'title' : title,
+                    'press' : press,
+                    'publishedDate' : publishedDate,
+                    'publishedTime' : publishedTime,
+                    'shortenUrl' : shortenUrl,
+                    'content': content,
+                    'summary' : summary,
+                    'newsType' : newsType,
+                    }
+
+                finalNewsList.append(news)
+            
+            for i in range(len(finalNewsList)):
+                if finalNewsList[i]["newsType"] == "신문/방송":
+                    paperNewsList.append(finalNewsList[i])
+                elif finalNewsList[i]["newsType"] == "인터넷":
+                    internetNewsList.append(finalNewsList[i])
+
+            hwpMacro.exportSummary(paperNewsList,internetNewsList,finalNewsList)
+        except Exception as e:
+            self.statusBar().showMessage("exportHangul 작업 실패: "+str(e))
+
+
+    def exportSelectionSummary(self):
+        try:
+            rows = self.newsTable.rowCount()
+            columns = self.newsTable.columnCount()
+
+            finalNewsList = []
+            paperNewsList = []
+            internetNewsList = []
+            for i in range(rows):
+                checked = self.newsTable.cellWidget(i,0).isChecked()
+                if not checked:
+                    continue
+                newsType = self.newsTable.cellWidget(i,1).currentText() #table데이터를 배열화하는 작업
+                publishedDateTime = self.newsTable.item(i,2).text()
+                press = self.newsTable.item(i,3).text()
+                title = self.newsTable.item(i,4).text()
+                content = self.newsTable.item(i,5).text()
+                summary = self.newsTable.item(i,6).text()
+                shortenUrl = self.newsTable.item(i,7).text()
+
+                if publishedDateTime == "":
+                    self.statusBar().showMessage('날짜가 입력되지 않은 기사가 있습니다.')
+                    return
+                publishedDate, publishedTime = publishedDateTime.split('T')
+                publishedDate = publishedDate.replace("-",".")
+
+                news = {
+                    'title' : title,
+                    'press' : press,
+                    'publishedDate' : publishedDate,
+                    'publishedTime' : publishedTime,
+                    'shortenUrl' : shortenUrl,
+                    'content': content,
+                    'summary' : summary,
+                    'newsType' : newsType,
+                    }
+
+                finalNewsList.append(news)
+            
+            for i in range(len(finalNewsList)):
+                if finalNewsList[i]["newsType"] == "신문/방송":
+                    paperNewsList.append(finalNewsList[i])
+                elif finalNewsList[i]["newsType"] == "인터넷":
+                    internetNewsList.append(finalNewsList[i])
+
+            hwpMacro.exportSelectionSummary(paperNewsList,internetNewsList,finalNewsList)
+        except Exception as e:
+            self.statusBar().showMessage("exportHangul 작업 실패: "+str(e))
 
     def deleteRow(self):
         selected = self.newsTable.currentRow()

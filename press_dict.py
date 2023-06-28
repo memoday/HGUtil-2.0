@@ -404,4 +404,28 @@ pressData = {
     'www.cnbnews.com' : {
         'name' : 'CNB뉴스',
     },
+    'www.esquirekorea.co.kr':{
+        'name' : '에스콰이어'
+    },
+    'www.economytalk.kr':{
+        'name':'이코노미톡뉴스'
+    },
+    'www.medicaltimes.com' :{
+        'name' : '메디칼타임즈',
+        'datetimeSelector' : '#container > section > div > div > div.viewTitle_wrap > div:nth-child(3) > div.viewInfo_wrap.clearfix > div.date_info > span',
+        'datetimeFormat' : '%Y-%m-%d %H:%M:%S',
+        'datetimeTrim': 6,
+    },
+    'www.thevaluenews.co.kr':{
+        'name':'더밸류뉴스',
+        'datetimeSelector' : '#contents > div.basicView > div.viewContentWrap > div.titleWrap > div.registModifyDate > ul > li',
+        'datetimeFormat' : '%Y-%m-%d %H:%M:%S',
+        'datetimeTrim' : 5,
+    },
+        'www.ceoscoredaily.com':{
+        'name':'CEO스코어데일리'
+    },
+        'www.finomy.com':{
+        'name':'현대경제신문',
+    },
 }
