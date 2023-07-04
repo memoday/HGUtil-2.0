@@ -12,7 +12,7 @@ import toMessage
 import webbrowser
 from PyQt5.QtCore import Qt
 
-__version__ = 'v1.3.0'
+__version__ = 'v1.3.1'
 
 settings = QSettings("table.ini", QSettings.IniFormat)
 
@@ -68,6 +68,7 @@ class WindowClass(QMainWindow, form_class) :
         self.btn_load.clicked.connect(self.load)
         self.btn_summary.clicked.connect(self.exportSummary)
         self.btn_selectionSummary.clicked.connect(self.exportSelectionSummary)
+        self.btn_manualAdd.clicked.connect(self.manualAdd)
         
         self.autoStart.setChecked(True)
         self.doubleClickWeb.setChecked(True)
@@ -87,6 +88,28 @@ class WindowClass(QMainWindow, form_class) :
         self.btn_delete.clicked.connect(self.deleteRow)
 
         self.newsTable.doubleClicked.connect(self.on_double_click)
+
+    def manualAdd(self):
+        self.combo = QComboBox() #신문/방송 or 인터넷 콤보박스 추가
+        self.combo.addItem("신문/방송")
+        self.combo.addItem("인터넷")
+        self.combo.setCurrentIndex(1)
+
+        row_index = self.newsTable.rowCount()
+        self.newsTable.insertRow(row_index)
+
+        ckbox = QCheckBox()
+        ckbox.setChecked(False)
+
+        cellWidget = QWidget()
+        layoutCB = QHBoxLayout(cellWidget)
+        layoutCB.addWidget(ckbox)
+        layoutCB.setAlignment(Qt.AlignCenter)
+        layoutCB.setContentsMargins(0, 0, 0, 0)
+        cellWidget.setLayout(layoutCB)
+
+        self.newsTable.setCellWidget(row_index, 0, cellWidget)
+        self.newsTable.setCellWidget(row_index,1,self.combo)
 
     def on_double_click(self):
         if self.doubleClickWeb.isChecked() == True:
@@ -141,7 +164,6 @@ class WindowClass(QMainWindow, form_class) :
                     self.combo.addItem("신문/방송")
                     self.combo.addItem("인터넷")
                     self.combo.setCurrentIndex(1)
-                    self.checkbox = QCheckBox() #체크박스 추가
 
                     if publishedDate != "" and publishedTime != "":
                         date_obj = datetime.strptime(publishedDate, '%Y.%m.%d.')
@@ -157,7 +179,17 @@ class WindowClass(QMainWindow, form_class) :
                     else:
                         publishedDateTime = ""
 
-                    self.newsTable.setCellWidget(row_index,0,self.checkbox)
+                    ckbox = QCheckBox()
+                    ckbox.setChecked(False)
+
+                    cellWidget = QWidget()
+                    layoutCB = QHBoxLayout(cellWidget)
+                    layoutCB.addWidget(ckbox)
+                    layoutCB.setAlignment(Qt.AlignCenter)
+                    layoutCB.setContentsMargins(0, 0, 0, 0)
+                    cellWidget.setLayout(layoutCB)
+
+                    self.newsTable.setCellWidget(row_index, 0, cellWidget)
                     self.newsTable.setCellWidget(row_index,1,self.combo)
                     self.newsTable.setItem(row_index,2,QTableWidgetItem(publishedDateTime))
                     self.newsTable.setItem(row_index,3,QTableWidgetItem(press))
