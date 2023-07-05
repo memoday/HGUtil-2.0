@@ -14,8 +14,6 @@ from PyQt5.QtCore import Qt
 
 __version__ = 'v1.3.1'
 
-settings = QSettings("table.ini", QSettings.IniFormat)
-
 def resource_path(relative_path):
     base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base_path, relative_path)
@@ -84,10 +82,9 @@ class WindowClass(QMainWindow, form_class) :
         header.setSectionResizeMode(7, QHeaderView.Stretch)
 
         self.newsTable.setStyleSheet("QTableView::item:selected { background-color: #FFFF00; }")
-
         self.btn_delete.clicked.connect(self.deleteRow)
-
         self.newsTable.doubleClicked.connect(self.on_double_click)
+
 
     def manualAdd(self):
         self.combo = QComboBox() #신문/방송 or 인터넷 콤보박스 추가
@@ -98,17 +95,9 @@ class WindowClass(QMainWindow, form_class) :
         row_index = self.newsTable.rowCount()
         self.newsTable.insertRow(row_index)
 
-        ckbox = QCheckBox()
-        ckbox.setChecked(False)
+        self.checkbox = QCheckBox()
 
-        cellWidget = QWidget()
-        layoutCB = QHBoxLayout(cellWidget)
-        layoutCB.addWidget(ckbox)
-        layoutCB.setAlignment(Qt.AlignCenter)
-        layoutCB.setContentsMargins(0, 0, 0, 0)
-        cellWidget.setLayout(layoutCB)
-
-        self.newsTable.setCellWidget(row_index, 0, cellWidget)
+        self.newsTable.setCellWidget(row_index,0,self.checkbox)
         self.newsTable.setCellWidget(row_index,1,self.combo)
 
     def on_double_click(self):
@@ -179,17 +168,9 @@ class WindowClass(QMainWindow, form_class) :
                     else:
                         publishedDateTime = ""
 
-                    ckbox = QCheckBox()
-                    ckbox.setChecked(False)
+                    self.checkbox = QCheckBox()
 
-                    cellWidget = QWidget()
-                    layoutCB = QHBoxLayout(cellWidget)
-                    layoutCB.addWidget(ckbox)
-                    layoutCB.setAlignment(Qt.AlignCenter)
-                    layoutCB.setContentsMargins(0, 0, 0, 0)
-                    cellWidget.setLayout(layoutCB)
-
-                    self.newsTable.setCellWidget(row_index, 0, cellWidget)
+                    self.newsTable.setCellWidget(row_index,0,self.checkbox)
                     self.newsTable.setCellWidget(row_index,1,self.combo)
                     self.newsTable.setItem(row_index,2,QTableWidgetItem(publishedDateTime))
                     self.newsTable.setItem(row_index,3,QTableWidgetItem(press))
@@ -205,7 +186,7 @@ class WindowClass(QMainWindow, form_class) :
             else:
                 pass
         except Exception as e:
-            self.statusBar().showMessage("addNews() 오류: "+str(e))
+            self.statusBar().showMessage("[ERROR]"+str(e))
         self.newsTable.setSortingEnabled(True)
 
     def exportHangul(self):
@@ -228,7 +209,7 @@ class WindowClass(QMainWindow, form_class) :
                 # print(publishedDateTime,press,title,content,summary,shortenUrl)
 
                 if publishedDateTime == "":
-                    self.statusBar().showMessage('날짜가 입력되지 않은 기사가 있습니다.')
+                    self.statusBar().showMessage('[ERROR]날짜가 입력되지 않은 기사가 있습니다.')
                     return
                 publishedDate, publishedTime = publishedDateTime.split('T')
                 publishedDate = publishedDate.replace("-",".")
@@ -261,7 +242,7 @@ class WindowClass(QMainWindow, form_class) :
 
                 hwpMacro.main(paperNewsList,internetNewsList,finalNewsList)
         except Exception as e:
-            self.statusBar().showMessage("exportHangul 작업 실패: "+str(e))
+            self.statusBar().showMessage("[ERROR]"+str(e))
 
     def exportMessage(self):
         try:
@@ -296,10 +277,10 @@ class WindowClass(QMainWindow, form_class) :
             for i in range(len(totalNewsList)): #체크된 기사들 checkedNewsList 배열로 이동
                 if totalNewsList[i]['checked'] == True:
                     if totalNewsList[i]['summary'] == '':
-                        self.statusBar().showMessage(f"주요내용이 누락됐습니다. {totalNewsList[i]['title']}")
+                        self.statusBar().showMessage(f"[ERROR]주요내용이 누락됐습니다. {totalNewsList[i]['title']}")
                         return
                     elif totalNewsList[i]['shortenUrl'] == '':
-                        self.statusBar().showMessage(f"주소가 누락됐습니다. {totalNewsList[i]['title']}")
+                        self.statusBar().showMessage(f"[ERROR]주소가 누락됐습니다. {totalNewsList[i]['title']}")
                         return
                     checkedNewsList.append(totalNewsList[i])
             
@@ -314,7 +295,7 @@ class WindowClass(QMainWindow, form_class) :
             self.show()
             
         except Exception as e:
-            self.statusBar().showMessage("exportMessage 작업 실패: "+str(e))
+            self.statusBar().showMessage("[ERROR]"+str(e))
 
     def exportSummary(self):
         try:
@@ -336,7 +317,7 @@ class WindowClass(QMainWindow, form_class) :
                 # print(publishedDateTime,press,title,content,summary,shortenUrl)
 
                 if publishedDateTime == "":
-                    self.statusBar().showMessage('날짜가 입력되지 않은 기사가 있습니다.')
+                    self.statusBar().showMessage('[ERROR]날짜가 입력되지 않은 기사가 있습니다.')
                     return
                 publishedDate, publishedTime = publishedDateTime.split('T')
                 publishedDate = publishedDate.replace("-",".")
@@ -355,7 +336,7 @@ class WindowClass(QMainWindow, form_class) :
                 finalNewsList.append(news)
             
             if len(finalNewsList) <= 0:
-                self.statusBar().showMessage('선택된 기사가 없습니다.')
+                self.statusBar().showMessage('[ERROR]선택된 기사가 없습니다.')
                 return
             else:
                 for i in range(len(finalNewsList)):
@@ -367,7 +348,7 @@ class WindowClass(QMainWindow, form_class) :
                 hwpMacro.exportSummary(paperNewsList,internetNewsList,finalNewsList)
 
         except Exception as e:
-            self.statusBar().showMessage("exportHangul 작업 실패: "+str(e))
+            self.statusBar().showMessage("[ERROR]"+str(e))
 
     def exportSelectionSummary(self):
         try:
@@ -390,7 +371,7 @@ class WindowClass(QMainWindow, form_class) :
                 shortenUrl = self.newsTable.item(i,7).text()
 
                 if publishedDateTime == "":
-                    self.statusBar().showMessage('날짜가 입력되지 않은 기사가 있습니다.')
+                    self.statusBar().showMessage('[ERROR]날짜가 입력되지 않은 기사가 있습니다.')
                     return
                 publishedDate, publishedTime = publishedDateTime.split('T')
                 publishedDate = publishedDate.replace("-",".")
@@ -409,7 +390,7 @@ class WindowClass(QMainWindow, form_class) :
                 finalNewsList.append(news)
             
             if len(finalNewsList) <= 0:
-                self.statusBar().showMessage('선택된 기사가 없습니다.')
+                self.statusBar().showMessage('[ERROR]선택된 기사가 없습니다.')
                 return
             else:
                 for i in range(len(finalNewsList)):
@@ -421,7 +402,7 @@ class WindowClass(QMainWindow, form_class) :
                 hwpMacro.exportSelectionSummary(paperNewsList,internetNewsList,finalNewsList)
                 
         except Exception as e:
-            self.statusBar().showMessage("exportHangul 작업 실패: "+str(e))
+            self.statusBar().showMessage("[ERROR]"+str(e))
 
     def deleteRow(self):
         selected = self.newsTable.currentRow()
@@ -432,9 +413,10 @@ class WindowClass(QMainWindow, form_class) :
             self.statusBar().showMessage("삭제할 기사를 선택해주세요.")
 
     def save(self):
+        settings = QSettings("table.ini", QSettings.IniFormat)
         rowCount = self.newsTable.rowCount()
         if rowCount == 0:
-            self.statusBar().showMessage('table.ini에 저장할 데이터가 존재하지 않습니다.')
+            self.statusBar().showMessage('저장할 데이터가 없습니다.')
             return
         tableList = []
         for i in range(rowCount):
@@ -465,7 +447,7 @@ class WindowClass(QMainWindow, form_class) :
         savedTime = datetime.now().replace(microsecond=0)
         savedTime = savedTime.strftime("%H:%M:%S")
         print(savedTime)
-        self.statusBar().showMessage('테이블을 table.ini에 저장되었습니다. '+str(savedTime))
+        self.statusBar().showMessage('현재 테이블이 table.ini에 저장됐습니다. '+str(savedTime))
     
     def load(self):
         try: 
@@ -479,6 +461,7 @@ class WindowClass(QMainWindow, form_class) :
                 else:
                     return
             
+            settings = QSettings("table.ini", QSettings.IniFormat)
             ini = settings.value("Table")
 
             self.newsTable.setRowCount(len(ini))
@@ -520,8 +503,9 @@ class WindowClass(QMainWindow, form_class) :
                 self.newsTable.setItem(i,5,QTableWidgetItem(content))
                 self.newsTable.setItem(i,6,QTableWidgetItem(summary))
                 self.newsTable.setItem(i,7,QTableWidgetItem(shortenUrl))
+            self.statusBar().showMessage(f'기사 {len(ini)}건을 불러왔습니다.')
         except Exception as e:
-            self.statusBar().showMessage('load() Error: '+str(e))
+            self.statusBar().showMessage('[ERROR]'+str(e))
 
     def keyPressEvent(self, event):
         if event.modifiers() == Qt.ControlModifier and event.key() == Qt.Key_S:

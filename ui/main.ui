@@ -179,6 +179,11 @@
     </item>
     <item row="0" column="0" colspan="7">
      <widget class="QTableWidget" name="newsTable">
+      <property name="font">
+       <font>
+        <bold>false</bold>
+       </font>
+      </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
