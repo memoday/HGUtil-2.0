@@ -99,6 +99,12 @@ class WindowClass(QMainWindow, form_class) :
 
         self.newsTable.setCellWidget(row_index,0,self.checkbox)
         self.newsTable.setCellWidget(row_index,1,self.combo)
+        self.newsTable.setItem(row_index,2,QTableWidgetItem(''))
+        self.newsTable.setItem(row_index,3,QTableWidgetItem(''))
+        self.newsTable.setItem(row_index,4,QTableWidgetItem(''))
+        self.newsTable.setItem(row_index,5,QTableWidgetItem(''))
+        self.newsTable.setItem(row_index,6,QTableWidgetItem(''))
+        self.newsTable.setItem(row_index,7,QTableWidgetItem(''))
 
     def on_double_click(self):
         if self.doubleClickWeb.isChecked() == True:

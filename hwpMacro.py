@@ -424,9 +424,12 @@ def main(paperNewsList,internetNewsList,finalNewsList):
     imageCode = []
 
     def get_real_url_from_shortlink(url): #단축링크 원본링크로 변경
-        resp = requests.get(url,headers={'User-Agent':'Mozilla/5.0'})
-        print('Original URL:'+resp.url)
-        return resp.url
+        if url != '':
+            resp = requests.get(url,headers={'User-Agent':'Mozilla/5.0'})
+            print('Original URL:'+resp.url)
+            return resp.url
+        else:
+            return ''
     
     #이미지 데이터 처리하는 과정
     for i in range(len(finalNewsList)):
