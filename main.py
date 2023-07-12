@@ -192,7 +192,7 @@ class WindowClass(QMainWindow, form_class) :
             else:
                 pass
         except Exception as e:
-            self.statusBar().showMessage("[ERROR]"+str(e))
+            self.statusBar().showMessage("[오류] "+str(e))
         self.newsTable.setSortingEnabled(True)
 
     def exportHangul(self):
@@ -215,7 +215,7 @@ class WindowClass(QMainWindow, form_class) :
                 # print(publishedDateTime,press,title,content,summary,shortenUrl)
 
                 if publishedDateTime == "":
-                    self.statusBar().showMessage('[ERROR]날짜가 입력되지 않은 기사가 있습니다.')
+                    self.statusBar().showMessage('[오류] 날짜가 입력되지 않은 기사가 있습니다.')
                     return
                 publishedDate, publishedTime = publishedDateTime.split('T')
                 publishedDate = publishedDate.replace("-",".")
@@ -248,7 +248,7 @@ class WindowClass(QMainWindow, form_class) :
 
                 hwpMacro.main(paperNewsList,internetNewsList,finalNewsList)
         except Exception as e:
-            self.statusBar().showMessage("[ERROR]"+str(e))
+            self.statusBar().showMessage("[오류] "+str(e))
 
     def exportMessage(self):
         try:
@@ -283,10 +283,10 @@ class WindowClass(QMainWindow, form_class) :
             for i in range(len(totalNewsList)): #체크된 기사들 checkedNewsList 배열로 이동
                 if totalNewsList[i]['checked'] == True:
                     if totalNewsList[i]['summary'] == '':
-                        self.statusBar().showMessage(f"[ERROR]주요내용이 누락됐습니다. {totalNewsList[i]['title']}")
+                        self.statusBar().showMessage(f"[오류] 주요내용이 누락됐습니다. {totalNewsList[i]['title']}")
                         return
                     elif totalNewsList[i]['shortenUrl'] == '':
-                        self.statusBar().showMessage(f"[ERROR]주소가 누락됐습니다. {totalNewsList[i]['title']}")
+                        self.statusBar().showMessage(f"[오류] 주소가 누락됐습니다. {totalNewsList[i]['title']}")
                         return
                     checkedNewsList.append(totalNewsList[i])
             
@@ -301,7 +301,7 @@ class WindowClass(QMainWindow, form_class) :
             self.show()
             
         except Exception as e:
-            self.statusBar().showMessage("[ERROR]"+str(e))
+            self.statusBar().showMessage("[오류] "+str(e))
 
     def exportSummary(self):
         try:
@@ -323,7 +323,7 @@ class WindowClass(QMainWindow, form_class) :
                 # print(publishedDateTime,press,title,content,summary,shortenUrl)
 
                 if publishedDateTime == "":
-                    self.statusBar().showMessage('[ERROR]날짜가 입력되지 않은 기사가 있습니다.')
+                    self.statusBar().showMessage('[오류] 날짜가 입력되지 않은 기사가 있습니다.')
                     return
                 publishedDate, publishedTime = publishedDateTime.split('T')
                 publishedDate = publishedDate.replace("-",".")
@@ -342,7 +342,7 @@ class WindowClass(QMainWindow, form_class) :
                 finalNewsList.append(news)
             
             if len(finalNewsList) <= 0:
-                self.statusBar().showMessage('[ERROR]선택된 기사가 없습니다.')
+                self.statusBar().showMessage('[오류] 선택된 기사가 없습니다.')
                 return
             else:
                 for i in range(len(finalNewsList)):
@@ -354,7 +354,7 @@ class WindowClass(QMainWindow, form_class) :
                 hwpMacro.exportSummary(paperNewsList,internetNewsList,finalNewsList)
 
         except Exception as e:
-            self.statusBar().showMessage("[ERROR]"+str(e))
+            self.statusBar().showMessage("[오류] "+str(e))
 
     def exportSelectionSummary(self):
         try:
@@ -377,7 +377,7 @@ class WindowClass(QMainWindow, form_class) :
                 shortenUrl = self.newsTable.item(i,7).text()
 
                 if publishedDateTime == "":
-                    self.statusBar().showMessage('[ERROR]날짜가 입력되지 않은 기사가 있습니다.')
+                    self.statusBar().showMessage('[오류] 날짜가 입력되지 않은 기사가 있습니다.')
                     return
                 publishedDate, publishedTime = publishedDateTime.split('T')
                 publishedDate = publishedDate.replace("-",".")
@@ -396,7 +396,7 @@ class WindowClass(QMainWindow, form_class) :
                 finalNewsList.append(news)
             
             if len(finalNewsList) <= 0:
-                self.statusBar().showMessage('[ERROR]선택된 기사가 없습니다.')
+                self.statusBar().showMessage('[오류] 선택된 기사가 없습니다.')
                 return
             else:
                 for i in range(len(finalNewsList)):
@@ -408,7 +408,7 @@ class WindowClass(QMainWindow, form_class) :
                 hwpMacro.exportSelectionSummary(paperNewsList,internetNewsList,finalNewsList)
                 
         except Exception as e:
-            self.statusBar().showMessage("[ERROR]"+str(e))
+            self.statusBar().showMessage("[오류] "+str(e))
 
     def deleteRow(self):
         selected = self.newsTable.currentRow()
@@ -511,7 +511,7 @@ class WindowClass(QMainWindow, form_class) :
                 self.newsTable.setItem(i,7,QTableWidgetItem(shortenUrl))
             self.statusBar().showMessage(f'기사 {len(ini)}건을 불러왔습니다.')
         except Exception as e:
-            self.statusBar().showMessage('[ERROR]'+str(e))
+            self.statusBar().showMessage('[오류] '+str(e))
 
     def keyPressEvent(self, event):
         if event.modifiers() == Qt.ControlModifier and event.key() == Qt.Key_S:

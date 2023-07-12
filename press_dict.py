@@ -422,10 +422,16 @@ pressData = {
         'datetimeFormat' : '%Y-%m-%d %H:%M:%S',
         'datetimeTrim' : 5,
     },
-        'www.ceoscoredaily.com':{
+    'www.ceoscoredaily.com':{
         'name':'CEO스코어데일리'
     },
-        'www.finomy.com':{
+    'www.finomy.com':{
         'name':'현대경제신문',
+    },
+    'www.mhj21.com':{
+        'name':'문화저널21',
+        'datetimeSelector' : '#wrap > div.article_head > div.read_option_top > div.writer_time',
+        'datetimeFormat' : '%Y/%m/%d [%H:%M]',
+        'datetimeRange' : [-19,-1]
     },
 }

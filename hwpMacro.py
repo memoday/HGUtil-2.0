@@ -10,6 +10,14 @@ def resource_path(relative_path):
     base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base_path, relative_path)
 
+def get_real_url_from_shortlink(url): #단축링크 원본링크로 변경
+    if url != '':
+        resp = requests.get(url,headers={'User-Agent':'Mozilla/5.0'})
+        print('Original URL:'+resp.url)
+        return resp.url
+    else:
+        return ''
+
 #한글 생성, 쪽 여백 등 기본 설정 및 헤더 생성 작업
 def createHWP():
     global hwp
@@ -422,14 +430,6 @@ def main(paperNewsList,internetNewsList,finalNewsList):
 
     long_url = []
     imageCode = []
-
-    def get_real_url_from_shortlink(url): #단축링크 원본링크로 변경
-        if url != '':
-            resp = requests.get(url,headers={'User-Agent':'Mozilla/5.0'})
-            print('Original URL:'+resp.url)
-            return resp.url
-        else:
-            return ''
     
     #이미지 데이터 처리하는 과정
     for i in range(len(finalNewsList)):
@@ -560,11 +560,6 @@ def exportSelectionSummary(paperNewsList,internetNewsList,finalNewsList):
 
     long_url = []
     imageCode = []
-
-    def get_real_url_from_shortlink(url): #단축링크 원본링크로 변경
-        resp = requests.get(url,headers={'User-Agent':'Mozilla/5.0'})
-        print('Original URL:'+resp.url)
-        return resp.url
     
     #이미지 데이터 처리하는 과정
     for i in range(len(finalNewsList)):
