@@ -606,7 +606,10 @@ def exportSelectionSummary(paperNewsList,internetNewsList,finalNewsList):
         createTable(category="신문/방송 보도사항", count=len(paperNewsList))
         for i in range(len(paperNewsList)):
             publishedDate, press, title,url, summary = paperNewsList[i]['publishedDate'], paperNewsList[i]['press'], paperNewsList[i]['title'], paperNewsList[i]['shortenUrl'], paperNewsList[i]['summary']
-            title = str(title+"\r\n"+url)
+            if url == '':
+                title = str(title)
+            else:
+                title = str(title+"\r\n"+url)
             fillData(publishedDate,press,title,summary)
         hwp.MovePos(3)
         hwpText('\r\n\r\n')
@@ -614,7 +617,10 @@ def exportSelectionSummary(paperNewsList,internetNewsList,finalNewsList):
         createTable(category="인터넷 보도사항", count=len(internetNewsList))
         for i in range(len(internetNewsList)):
             publishedDate, press, title, url, summary = internetNewsList[i]['publishedDate'], internetNewsList[i]['press'], internetNewsList[i]['title'], internetNewsList[i]['shortenUrl'], internetNewsList[i]['summary']
-            title = str(title+"\r\n"+url)
+            if url == '':
+                title = str(title)
+            else:
+                title = str(title+"\r\n"+url)
             fillData(publishedDate,press,title,summary)
     hwp.MovePos(3)
 
