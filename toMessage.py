@@ -14,7 +14,7 @@ def messageHeader():
     return messageHeader
 
 def messageFooter():
-    messageFooter = '-문화홍보과-'
+    messageFooter = '-한강개발기획과-'
     return messageFooter
 
 def toMessage(paperNewsList,internetNewsList):
@@ -32,7 +32,7 @@ def toMessage(paperNewsList,internetNewsList):
     noNews = []
 
     if len(paperNewsList) < 1 and len(internetNewsList) < 1:
-        reportNone = f'금일({today}) {reportHour}시까지 한강 관련 주요 보도사항 없습니다.\n\n-문화홍보과-'
+        reportNone = f'금일({today}) {reportHour}시까지 한강 관련 주요 보도사항 없습니다.\n\n-한강개발기획과-'
         noNews.append(reportNone)
         return noNews
 
