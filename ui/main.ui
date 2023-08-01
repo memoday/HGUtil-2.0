@@ -93,19 +93,6 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="6">
-     <widget class="QPushButton" name="btn_addNews">
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="toolTip">
-       <string>테이블에 뉴스를 추가합니다.</string>
-      </property>
-      <property name="text">
-       <string>등록</string>
-      </property>
-     </widget>
-    </item>
     <item row="2" column="0">
      <widget class="QPushButton" name="btn_hwp">
       <property name="focusPolicy">
@@ -164,16 +151,6 @@
       </property>
       <property name="text">
        <string>삭제</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="6">
-     <widget class="QPushButton" name="btn_exit">
-      <property name="toolTip">
-       <string>프로그램을 종료합니다.</string>
-      </property>
-      <property name="text">
-       <string>종료</string>
       </property>
      </widget>
     </item>
@@ -279,6 +256,19 @@
        </widget>
       </item>
      </layout>
+    </item>
+    <item row="1" column="6">
+     <widget class="QPushButton" name="btn_addNews">
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>테이블에 뉴스를 추가합니다.</string>
+      </property>
+      <property name="text">
+       <string>등록</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

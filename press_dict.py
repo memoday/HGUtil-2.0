@@ -434,4 +434,16 @@ pressData = {
         'datetimeFormat' : '%Y/%m/%d [%H:%M]',
         'datetimeRange' : [-19,-1]
     },
+    'kizmom.hankyung.com':{
+        'name':'키즈맘',
+        'datetimeSelector' : '#container > div > div.rightWrap > div.news_con.mt23 > div.con_l > div > div.view_top_wrap > div > div.data > span:nth-child(1)',
+        'datetimeFormat' : '%Y-%m-%d %H:%M:%S',
+        'datetimeTrim' : 3,
+    },
+    'www.metroseoul.co.kr' : {
+        'name' : '매트로신문',
+        'datetimeSelector' : 'body > div.container > div.article-title > div > span:nth-child(2)',
+        'datetimeFormat' : '%Y-%m-%d %H:%M:%S',
+        'datetimeTrim' : 2,
+    },
 }
