@@ -61,7 +61,6 @@ class WindowClass(QMainWindow, form_class) :
         self.btn_hwp.clicked.connect(self.exportHangul)
         self.btn_message.clicked.connect(self.exportMessage)
         self.input_link.returnPressed.connect(self.addNews)
-        self.btn_exit.clicked.connect(self.exit)
         self.btn_save.clicked.connect(self.save)
         self.btn_load.clicked.connect(self.load)
         self.btn_summary.clicked.connect(self.exportSummary)
@@ -519,9 +518,7 @@ class WindowClass(QMainWindow, form_class) :
 
     def closeEvent(self, event):
         sys.exit(0)
-        
-    def exit(self) :
-        sys.exit(0)
+
 
 class messageWindow(QDialog,form_messageWindow):
     

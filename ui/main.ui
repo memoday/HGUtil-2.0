@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>900</width>
+    <width>1000</width>
     <height>500</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>750</width>
-    <height>500</height>
+    <height>200</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -24,72 +24,16 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="0">
-     <widget class="QPushButton" name="btn_save">
-      <property name="toolTip">
-       <string>현재 테이블을 table.ini에 저장합니다. (Ctrl+S)</string>
-      </property>
-      <property name="text">
-       <string>저장</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QPushButton" name="btn_load">
-      <property name="toolTip">
-       <string>저장한 테이블(table.ini)을 불러옵니다.</string>
-      </property>
-      <property name="text">
-       <string>불러오기</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="2">
-     <widget class="QPushButton" name="btn_message">
-      <property name="toolTip">
-       <string>저장한 테이블(table.ini)을 불러옵니다.</string>
-      </property>
-      <property name="text">
-       <string>메시지</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="3">
-     <widget class="QPushButton" name="btn_manualAdd">
+    <item row="2" column="3">
+     <widget class="QPushButton" name="btn_delete">
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
       <property name="toolTip">
-       <string>선택된 셀의 행을 삭제합니다.</string>
+       <string>선택한 기사를 삭제합니다.</string>
       </property>
       <property name="text">
-       <string>수동 추가</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="4">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>   뉴스 링크</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="5">
-     <widget class="QLineEdit" name="input_link">
-      <property name="inputMask">
-       <string notr="true"/>
-      </property>
-      <property name="dragEnabled">
-       <bool>true</bool>
-      </property>
-      <property name="placeholderText">
-       <string notr="true"/>
-      </property>
-      <property name="clearButtonEnabled">
-       <bool>false</bool>
+       <string>삭제</string>
       </property>
      </widget>
     </item>
@@ -118,13 +62,98 @@
       </property>
      </widget>
     </item>
+    <item row="1" column="4">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>   뉴스 링크</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
     <item row="2" column="1">
      <widget class="QPushButton" name="btn_selectionSummary">
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
       <property name="toolTip">
-       <string>저장한 테이블(table.ini)을 불러옵니다.</string>
+       <string>선택한 기사를 hwp로 내보냅니다.</string>
       </property>
       <property name="text">
        <string>한글(선택)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="5">
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="autoStart">
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>링크가 복사된 상태에서 등록을 하면 복사된 링크를 바로 등록합니다.</string>
+        </property>
+        <property name="text">
+         <string>바로 등록</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QCheckBox" name="doubleClickWeb">
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>테이블 주소셀을 더블클릭하면 웹으로 이동하게 됩니다.</string>
+        </property>
+        <property name="text">
+         <string>주소 더블클릭</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="1" column="5">
+     <widget class="QLineEdit" name="input_link">
+      <property name="inputMask">
+       <string notr="true"/>
+      </property>
+      <property name="dragEnabled">
+       <bool>true</bool>
+      </property>
+      <property name="placeholderText">
+       <string notr="true"/>
+      </property>
+      <property name="clearButtonEnabled">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QPushButton" name="btn_message">
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>선택한 기사를 메시지 양식으로 내보냅니다.</string>
+      </property>
+      <property name="text">
+       <string>메시지</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QPushButton" name="btn_save">
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>현재 테이블을 저장합니다. (Ctrl+S)</string>
+      </property>
+      <property name="text">
+       <string>저장</string>
       </property>
      </widget>
     </item>
@@ -134,23 +163,36 @@
        <enum>Qt::NoFocus</enum>
       </property>
       <property name="toolTip">
-       <string>선택한 기사를 메시지로 내보냅니다.</string>
+       <string>선택된 기사를 요약표로 내보냅니다.</string>
       </property>
       <property name="text">
        <string>요약표</string>
       </property>
      </widget>
     </item>
-    <item row="2" column="3">
-     <widget class="QPushButton" name="btn_delete">
+    <item row="1" column="3">
+     <widget class="QPushButton" name="btn_manualAdd">
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
       <property name="toolTip">
-       <string>선택된 셀의 행을 삭제합니다.</string>
+       <string>행을 추가합니다.</string>
       </property>
       <property name="text">
-       <string>삭제</string>
+       <string>수동 추가</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QPushButton" name="btn_load">
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>저장한 테이블을 불러옵니다.</string>
+      </property>
+      <property name="text">
+       <string>불러오기</string>
       </property>
      </widget>
     </item>
@@ -233,37 +275,19 @@
       </column>
      </widget>
     </item>
-    <item row="2" column="5">
-     <layout class="QFormLayout" name="formLayout">
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="autoStart">
-        <property name="toolTip">
-         <string>링크가 복사된 상태에서 등록을 하면 복사된 링크를 바로 등록합니다.</string>
-        </property>
-        <property name="text">
-         <string>바로 등록</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QCheckBox" name="doubleClickWeb">
-        <property name="toolTip">
-         <string>테이블 주소셀을 더블클릭하면 웹으로 이동하게 됩니다.</string>
-        </property>
-        <property name="text">
-         <string>주소 더블클릭</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="1" column="6">
+    <item row="1" column="6" rowspan="2">
      <widget class="QPushButton" name="btn_addNews">
+      <property name="minimumSize">
+       <size>
+        <width>100</width>
+        <height>50</height>
+       </size>
+      </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
       <property name="toolTip">
-       <string>테이블에 뉴스를 추가합니다.</string>
+       <string/>
       </property>
       <property name="text">
        <string>등록</string>
