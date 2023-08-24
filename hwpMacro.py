@@ -248,10 +248,14 @@ def createTable(category,count): #category: 테이블명 count: 테이블별 행
     hwp.HAction.Run("TableRightCell")
 
 #표 아래 스크랩 내용 작성 함수
-def scrapTitle():
-    hwp.HAction.Run("Select")
-    hwp.HAction.Run("Select")
-    hwp.HAction.Run("Select")
+def scrapTitle(spaceInTitle):
+    if spaceInTitle == False:
+        hwp.HAction.Run("Select")
+        hwp.HAction.Run("Select")
+    else:    
+        hwp.HAction.Run("Select")
+        hwp.HAction.Run("Select")
+        hwp.HAction.Run("Select")
     hwp.HAction.GetDefault("CharShape", hwp.HParameterSet.HCharShape.HSet)
     hwp.HParameterSet.HCharShape.FaceNameUser = "돋움"
     hwp.HParameterSet.HCharShape.FontTypeUser = hwp.FontType("TTF")
@@ -353,9 +357,13 @@ def fillData(date,press,title,summary):
     hwp.HAction.Run("TableRightCell")
 
 def fillScrap(title,press,publishedDate,publishedTime,summary):
+    if ' ' not in title: #제목에 공백이 없는 경우 scrapTitle() 에서 Select를 2번만 해야함
+        spaceInTitle = False
+    elif ' ' in title:
+        spaceInTitle = True
     hwp.HAction.Run("ParagraphShapeAlignCenter")
     hwpText(title)
-    scrapTitle()
+    scrapTitle(spaceInTitle)
     hwpText("\r\n")
 
     hwp.HAction.Run("ParagraphShapeAlignRight")

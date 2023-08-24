@@ -446,4 +446,10 @@ pressData = {
         'datetimeFormat' : '%Y-%m-%d %H:%M:%S',
         'datetimeTrim' : 2,
     },
+    'www.fntimes.com' : {
+        'name' : '한국금융신문',
+    },
+    'stoo.com' : {
+        'name' : '스포츠투데이',
+    },
 }
