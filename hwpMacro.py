@@ -356,7 +356,7 @@ def fillData(date,press,title,summary):
     fontDodum()
     hwp.HAction.Run("TableRightCell")
 
-def fillScrap(title,press,publishedDate,publishedTime,summary):
+def fillScrap(title,press,publishedDate,publishedTime,summary,lastScrap):
     if ' ' not in title: #제목에 공백이 없는 경우 scrapTitle() 에서 Select를 2번만 해야함
         spaceInTitle = False
     elif ' ' in title:
@@ -373,7 +373,8 @@ def fillScrap(title,press,publishedDate,publishedTime,summary):
 
     hwp.HAction.Run("ParagraphShapeAlignJustify")
     hwpText(summary)
-    hwpText("\r\n\r\n\r\n\r\n\r\n\r\n")
+    if lastScrap == False:
+        hwpText("\r\n\r\n\r\n\r\n\r\n\r\n")
 
 def replaceImages(imageCode):
     try:
@@ -515,15 +516,21 @@ def main(paperNewsList,internetNewsList,finalNewsList):
 
     if len(paperNewsList) > 0:
         hwp.HAction.Run("BreakPage")
+        lastScrap = False
         for i in range(len(paperNewsList)):
             title, press, publishedDate, publishedTime,content = paperNewsList[i]['title'], paperNewsList[i]['press'], paperNewsList[i]['publishedDate'], paperNewsList[i]['publishedTime'], paperNewsList[i]['content']
-            fillScrap(title, press, publishedDate, publishedTime,content)
+            if i  == len(paperNewsList) - 1 and len(internetNewsList) < 0: #마지막 기사일 때
+                lastScrap = True
+            fillScrap(title, press, publishedDate, publishedTime,content,lastScrap)
         hwp.MovePos(3)
     if len(internetNewsList) > 0:
+        lastScrap = False
         hwp.HAction.Run("BreakPage")
         for i in range(len(internetNewsList)):
             title, press, publishedDate, publishedTime,content = internetNewsList[i]['title'], internetNewsList[i]['press'], internetNewsList[i]['publishedDate'], internetNewsList[i]['publishedTime'], internetNewsList[i]['content']
-            fillScrap(title, press, publishedDate, publishedTime,content)
+            if i  == len(internetNewsList) - 1: #마지막 기사일 때
+                lastScrap = True
+            fillScrap(title, press, publishedDate, publishedTime,content,lastScrap)
     
     print('hwpMacro 이미지 첨부를 시작합니다')
     replaceImages(imageCode)

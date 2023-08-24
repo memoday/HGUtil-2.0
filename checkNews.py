@@ -118,6 +118,7 @@ def getContent(source,domain):
         domain_dict = press_dict.pressData.get(domain)
         if 'contentSelector' in domain_dict:
             content = source.select_one(domain_dict['contentSelector']).text
+            content = content.replace('\n','\r\n')
 
             if 'contentCorrectionNeeded' in domain_dict and domain_dict['contentCorrectionNeeded'] == True:
                 content = source.select_one(domain_dict['contentSelector'])

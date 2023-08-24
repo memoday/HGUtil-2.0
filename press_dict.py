@@ -162,6 +162,7 @@ pressData = {
     'www.ajunews.com': {
         'name' : '아주경제',
         'titleSelector' : '#container > div.view > article.view_header > div.inner > h1',
+        'contentSelector' : '#articleBody > div:nth-child(2)',
     },
     'www.metroseoul.co.kr' : {
         'name' : '메트로신문',
@@ -451,5 +452,11 @@ pressData = {
     },
     'stoo.com' : {
         'name' : '스포츠투데이',
+    },
+    'www.newspim.com' : {
+        'name' : '뉴스핌',
+        'datetimeSelector' : '#send-time',
+        'datetimeFormat' : '%Y년%m월%d일 %H:%M',
+        'contentSelector' : '#news-contents',
     },
 }
