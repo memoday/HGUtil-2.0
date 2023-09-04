@@ -459,4 +459,13 @@ pressData = {
         'datetimeFormat' : '%Y년%m월%d일 %H:%M',
         'contentSelector' : '#news-contents',
     },
+    'www.cts.tv' : {
+        'name' : 'CTS',
+    },
+    'ebn.co.kr' : {
+        'name' : 'EBN',
+        'datetimeSelector': '#newsInfo > li:nth-child(1)',
+        'datetimeFormat' : '%Y.%m.%d %H:%M',
+        'datetimeRange' : [3,19],
+    },
 }
