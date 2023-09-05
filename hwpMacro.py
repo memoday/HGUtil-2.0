@@ -455,40 +455,42 @@ def main(paperNewsList,internetNewsList,finalNewsList):
     #             print(key)
     #             imageCode.append(key)
 
-    if not os.path.exists("HGUtil_images"):
-        os.makedirs("HGUtil_images")
+    if os.path.exists("image_dict.json"):
 
-    with open('image_dict.json', 'r') as f:
-        image_json = json.load(f)
+        if not os.path.exists("HGUtil_images"):
+            os.makedirs("HGUtil_images")
 
-    for i in range(len(long_url)):
-        jsonKeys = image_json.keys()
-        if long_url[i] in jsonKeys:
-            print(f'입력한 키: {long_url[i]}')
-            for verificationCode in image_json[long_url[i]].keys():
-                print(f'반환된 값: {verificationCode}')
+        with open('image_dict.json', 'r') as f:
+            image_json = json.load(f)
 
-                imageCode.append(verificationCode)
-                image_url = image_json[long_url[i]][verificationCode]
-                reponse = requests.get(image_url) #인식된 image 다운로드
-                with open(f'HGUtil_images/{verificationCode}.jpg','wb') as f:
-                    f.write(reponse.content)
-                try: #다운 받은 이미지의 크기를 조정함
-                    with Image.open(f'HGUtil_images/{verificationCode}.jpg') as downloadImage:
-                        # Change the size while preserving the aspect ratio
-                        width, height = downloadImage.size
-                        if width >= 350:
-                            ratio = width / 350
-                            new_size = (int(width / ratio), int(height / ratio))
-                            downloadImage = downloadImage.resize(new_size, resample=Image.BICUBIC)
+        for i in range(len(long_url)):
+            jsonKeys = image_json.keys()
+            if long_url[i] in jsonKeys:
+                print(f'입력한 키: {long_url[i]}')
+                for verificationCode in image_json[long_url[i]].keys():
+                    print(f'반환된 값: {verificationCode}')
 
-                            # Save the updated image with original quality
-                            downloadImage.save(f'HGUtil_images/{verificationCode}.jpg', quality=95)
-                        else:
-                            print(f"Image {verificationCode} is too small to resize.")
-                except Exception as e:
-                    print(e)
-                    print('이미지 크기 조정 과정에서 오류가 발생했습니다.')
+                    imageCode.append(verificationCode)
+                    image_url = image_json[long_url[i]][verificationCode]
+                    reponse = requests.get(image_url) #인식된 image 다운로드
+                    with open(f'HGUtil_images/{verificationCode}.jpg','wb') as f:
+                        f.write(reponse.content)
+                    try: #다운 받은 이미지의 크기를 조정함
+                        with Image.open(f'HGUtil_images/{verificationCode}.jpg') as downloadImage:
+                            # Change the size while preserving the aspect ratio
+                            width, height = downloadImage.size
+                            if width >= 350:
+                                ratio = width / 350
+                                new_size = (int(width / ratio), int(height / ratio))
+                                downloadImage = downloadImage.resize(new_size, resample=Image.BICUBIC)
+
+                                # Save the updated image with original quality
+                                downloadImage.save(f'HGUtil_images/{verificationCode}.jpg', quality=95)
+                            else:
+                                print(f"Image {verificationCode} is too small to resize.")
+                    except Exception as e:
+                        print(e)
+                        print('이미지 크기 조정 과정에서 오류가 발생했습니다.')
 
     #한글 생성
     createHWP()
@@ -580,40 +582,42 @@ def exportSelectionSummary(paperNewsList,internetNewsList,finalNewsList):
     for i in range(len(finalNewsList)):
         long_url.append(get_real_url_from_shortlink(finalNewsList[i]['shortenUrl']))
 
-    if not os.path.exists("HGUtil_images"):
-        os.makedirs("HGUtil_images")
 
-    with open('image_dict.json', 'r') as f:
-        image_json = json.load(f)
+    if os.path.exists("image_dict.json"):
+        if not os.path.exists("HGUtil_images"):
+            os.makedirs("HGUtil_images")
 
-    for i in range(len(long_url)):
-        jsonKeys = image_json.keys()
-        if long_url[i] in jsonKeys:
-            print(f'입력한 키: {long_url[i]}')
-            for verificationCode in image_json[long_url[i]].keys():
-                print(f'반환된 값: {verificationCode}')
+        with open('image_dict.json', 'r') as f:
+            image_json = json.load(f)
 
-                imageCode.append(verificationCode)
-                image_url = image_json[long_url[i]][verificationCode]
-                reponse = requests.get(image_url) #인식된 image 다운로드
-                with open(f'HGUtil_images/{verificationCode}.jpg','wb') as f:
-                    f.write(reponse.content)
-                try: #다운 받은 이미지의 크기를 조정함
-                    with Image.open(f'HGUtil_images/{verificationCode}.jpg') as downloadImage:
-                        # Change the size while preserving the aspect ratio
-                        width, height = downloadImage.size
-                        if width >= 350:
-                            ratio = width / 350
-                            new_size = (int(width / ratio), int(height / ratio))
-                            downloadImage = downloadImage.resize(new_size, resample=Image.BICUBIC)
+        for i in range(len(long_url)):
+            jsonKeys = image_json.keys()
+            if long_url[i] in jsonKeys:
+                print(f'입력한 키: {long_url[i]}')
+                for verificationCode in image_json[long_url[i]].keys():
+                    print(f'반환된 값: {verificationCode}')
 
-                            # Save the updated image with original quality
-                            downloadImage.save(f'HGUtil_images/{verificationCode}.jpg', quality=95)
-                        else:
-                            print(f"Image {verificationCode} is too small to resize.")
-                except Exception as e:
-                    print(e)
-                    print('이미지 크기 조정 과정에서 오류가 발생했습니다.')
+                    imageCode.append(verificationCode)
+                    image_url = image_json[long_url[i]][verificationCode]
+                    reponse = requests.get(image_url) #인식된 image 다운로드
+                    with open(f'HGUtil_images/{verificationCode}.jpg','wb') as f:
+                        f.write(reponse.content)
+                    try: #다운 받은 이미지의 크기를 조정함
+                        with Image.open(f'HGUtil_images/{verificationCode}.jpg') as downloadImage:
+                            # Change the size while preserving the aspect ratio
+                            width, height = downloadImage.size
+                            if width >= 350:
+                                ratio = width / 350
+                                new_size = (int(width / ratio), int(height / ratio))
+                                downloadImage = downloadImage.resize(new_size, resample=Image.BICUBIC)
+
+                                # Save the updated image with original quality
+                                downloadImage.save(f'HGUtil_images/{verificationCode}.jpg', quality=95)
+                            else:
+                                print(f"Image {verificationCode} is too small to resize.")
+                    except Exception as e:
+                        print(e)
+                        print('이미지 크기 조정 과정에서 오류가 발생했습니다.')
 
     #한글 생성
     createHWP()

@@ -183,7 +183,7 @@ def checkNews(url) -> tuple : #언론사별 selector
 
                 if 'gif' in image_url[-20:]:
                     pass
-                elif 'jpg' in image_url[-20:] or 'jpeg' in image_url[-20:]:
+                elif 'jpg' in image_url[-20:] or 'jpeg' in image_url[-20:] or 'png' in image_url[-20:]:
                     hash_object = hashlib.sha256(image_url.encode())
                     verificationCode = hash_object.hexdigest()
 

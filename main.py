@@ -414,6 +414,7 @@ class WindowClass(QMainWindow, form_class) :
         if selected >= 0:
             self.newsTable.removeRow(selected)
             self.statusBar().showMessage(f"{selected+1}번째 행을 삭제했습니다.")
+            self.newsTable.setCurrentItem(None) 
         else:
             self.statusBar().showMessage("삭제할 기사를 선택해주세요.")
 
