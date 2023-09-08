@@ -80,7 +80,7 @@ class WindowClass(QMainWindow, form_class) :
         header.setSectionResizeMode(6, QHeaderView.Stretch)
         header.setSectionResizeMode(7, QHeaderView.Stretch)
 
-        self.newsTable.setStyleSheet("QTableView::item:selected { background-color: #FFFF00; }")
+        self.newsTable.setStyleSheet("QTableView::item:selected { background-color: #FFD700; }")
         self.btn_delete.clicked.connect(self.deleteRow)
         self.newsTable.doubleClicked.connect(self.on_double_click)
 

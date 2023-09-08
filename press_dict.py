@@ -468,4 +468,10 @@ pressData = {
         'datetimeFormat' : '%Y.%m.%d %H:%M',
         'datetimeRange' : [3,19],
     },
+    'www.newstree.kr':{
+        'name' :'뉴스트리코리아',
+        'datetimeSelector' : '#main > div.viewTitle > dl > dd',
+        'datetimeFormat' : '%Y-%m-%d %H:%M:%S',
+        'datetimeTrim' : -19,
+    },
 }
