@@ -12,7 +12,7 @@ import toMessage
 import webbrowser
 from PyQt5.QtCore import Qt
 
-__version__ = 'v1.3.5'
+__version__ = 'v1.3.6'
 
 def resource_path(relative_path):
     base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
