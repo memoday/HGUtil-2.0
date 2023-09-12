@@ -644,16 +644,18 @@ def exportSelectionSummary(paperNewsList,internetNewsList,finalNewsList):
     hwp.MovePos(3)
 
     if len(paperNewsList) > 0:
+        lastScrap = False
         hwp.HAction.Run("BreakPage")
         for i in range(len(paperNewsList)):
             title, press, publishedDate, publishedTime,content = paperNewsList[i]['title'], paperNewsList[i]['press'], paperNewsList[i]['publishedDate'], paperNewsList[i]['publishedTime'], paperNewsList[i]['content']
-            fillScrap(title, press, publishedDate, publishedTime,content)
+            fillScrap(title, press, publishedDate, publishedTime,content,lastScrap)
         hwp.MovePos(3)
     if len(internetNewsList) > 0:
+        lastScrap = False
         hwp.HAction.Run("BreakPage")
         for i in range(len(internetNewsList)):
             title, press, publishedDate, publishedTime,content = internetNewsList[i]['title'], internetNewsList[i]['press'], internetNewsList[i]['publishedDate'], internetNewsList[i]['publishedTime'], internetNewsList[i]['content']
-            fillScrap(title, press, publishedDate, publishedTime,content)
+            fillScrap(title, press, publishedDate, publishedTime,content,lastScrap)
     
     print('hwpMacro 이미지 첨부를 시작합니다')
     replaceImages(imageCode)

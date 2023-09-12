@@ -75,7 +75,7 @@
    <item row="2" column="0" colspan="3">
     <widget class="QTableWidget" name="paperNewsTable">
      <property name="focusPolicy">
-      <enum>Qt::NoFocus</enum>
+      <enum>Qt::ClickFocus</enum>
      </property>
      <property name="editTriggers">
       <set>QAbstractItemView::NoEditTriggers</set>
@@ -182,7 +182,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
    <item row="5" column="0" colspan="3">
     <widget class="QTableWidget" name="internetNewsTable">
      <property name="focusPolicy">
-      <enum>Qt::NoFocus</enum>
+      <enum>Qt::ClickFocus</enum>
      </property>
      <property name="editTriggers">
       <set>QAbstractItemView::NoEditTriggers</set>
