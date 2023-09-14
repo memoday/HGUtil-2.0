@@ -424,10 +424,11 @@ pressData = {
         'datetimeTrim' : 5,
     },
     'www.ceoscoredaily.com':{
-        'name':'CEO스코어데일리'
+        'name':'CEO스코어데일리',
     },
     'www.finomy.com':{
         'name':'현대경제신문',
+        'titleTrimEnd' : 10,
     },
     'www.mhj21.com':{
         'name':'문화저널21',
@@ -473,5 +474,18 @@ pressData = {
         'datetimeSelector' : '#main > div.viewTitle > dl > dd',
         'datetimeFormat' : '%Y-%m-%d %H:%M:%S',
         'datetimeTrim' : -19,
+    },
+    'www.youthdaily.co.kr' : {
+        'name' : '청년일보',
+        'datetimeSelector' : '#container > div > div:nth-child(1) > div > div.arv_005_01 > div.fix_art_top > div > div > ul.art_info > li:nth-child(2)',
+        'datetimeFormat' : '%Y.%m.%d %H:%M:%S',
+        'datetimeTrim' : 3,
+        'titleTrim' : 6,
+    },
+    'wemakenews.co.kr' : {
+        'name' : '위메이크뉴스',
+        'datetimeSelector' : '#main > div > div > div > div > div > div.page-header > div > div.view_top > div.view_top_right > div',
+        'datetimeTrim' : 7,
+        'datetimeFormat' : '%Y.%m.%d %H:%M',
     },
 }
